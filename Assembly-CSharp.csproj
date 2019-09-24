@@ -11,7 +11,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{57E09F22-FDB9-BB56-C42F-570626E35396}</ProjectGuid>
+    <ProjectGuid>{EBED9561-8BAB-C670-65D0-5BD8F804E216}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -68,108 +68,108 @@
     <Compile Include="Assets\Scripts\Monos\SystemManager.cs" />
     <Compile Include="Assets\Scripts\Systems\CarMovementSystem.cs" />
     <Compile Include="Assets\Scripts\Systems\ContinousSpawnSystem.cs" />
-    <Compile Include="Assets\Scripts\Systems\MovementSystem.cs" />
+    <Compile Include="Assets\Scripts\Systems\InputSystem.cs" />
     <Reference Include="Unity.Timeline.Editor">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Entities.Properties">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Entities.Properties.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Entities.Properties.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Jobs">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Jobs.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Jobs.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Jobs.Editor">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Jobs.Editor.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Jobs.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Entities.Editor">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Entities.Editor.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Entities.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Entities.StaticTypeRegistry">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Entities.StaticTypeRegistry.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Entities.StaticTypeRegistry.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Collections">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Collections.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Collections.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Scenes.Hybrid">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Scenes.Hybrid.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Scenes.Hybrid.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Scenes.Editor">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Scenes.Editor.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Scenes.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mathematics.Extensions">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Mathematics.Extensions.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Mathematics.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Burst.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Burst.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mathematics.Extensions.Hybrid">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Mathematics.Extensions.Hybrid.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Mathematics.Extensions.Hybrid.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rendering.Hybrid">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Rendering.Hybrid.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Rendering.Hybrid.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Entities.BuildUtils">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Entities.BuildUtils.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Entities.BuildUtils.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.XR.LegacyInputHelpers">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Entities.Hybrid">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Entities.Hybrid.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Entities.Hybrid.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mathematics">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Mathematics.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Properties">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Properties.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Properties.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Entities">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Entities.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Entities.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Properties.Reflection">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Properties.Reflection.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Properties.Reflection.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Transforms">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Transforms.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Transforms.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Transforms.Editor">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Transforms.Editor.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Transforms.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.SpatialTracking">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/UnityEditor.SpatialTracking.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/UnityEditor.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SpatialTracking">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Editor">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Burst.Editor.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Burst.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mathematics.Editor">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Mathematics.Editor.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Mathematics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.XR.LegacyInputHelpers">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Transforms.Hybrid">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/ScriptAssemblies/Unity.Transforms.Hybrid.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Transforms.Hybrid.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -355,16 +355,16 @@
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.0f2/Editor/Data/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Editor">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Editor.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.StandardEvents.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Tracker.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Tracker.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe">
-      <HintPath>E:/My Hub/2D Racer Pure ECS/Library/PackageCache/com.unity.collections@0.0.9-preview.19/System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/PackageCache/com.unity.collections@0.0.9-preview.19/System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.0f2/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>

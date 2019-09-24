@@ -9,7 +9,9 @@ using Unity.Burst;
 public class CarMovementSystem : JobComponentSystem
 {
     BeginInitializationEntityCommandBufferSystem entityCommandBufferSystem;
-    
+
+    private Entity heroEntity;
+
     [BurstCompile]
     struct MovementJob : IJobForEach<CarComponent, Translation>
     {
@@ -39,13 +41,17 @@ public class CarMovementSystem : JobComponentSystem
         entityCommandBufferSystem = World.GetOrCreateSystem<BeginInitializationEntityCommandBufferSystem>();
     }
 
-    protected override JobHandle OnUpdate(JobHandle inputDeps)
+    protected override void OnStartRunning()
     {
-        var heroEntity = this.GetSingletonEntity<HeroComponent>();
+        base.OnStartRunning();
+        this.heroEntity = this.GetSingletonEntity<HeroComponent>();
+    }
 
+    protected override JobHandle OnUpdate(JobHandle inputDeps)
+    {    
         MovementJob movementJob = new MovementJob
         {
-            HeroSpeed = this.World.EntityManager.GetComponentData<HeroComponent>(heroEntity).Speed,
+            HeroSpeed = this.World.EntityManager.GetComponentData<CarComponent>(heroEntity).Speed,
             EntityCommandBuffer = entityCommandBufferSystem.CreateCommandBuffer().ToConcurrent()
         };
         

@@ -4,11 +4,10 @@ using System;
 using System.Collections.Generic;
 using Unity.Collections;
 
-/*
-     * Component data for a Player entity.
-    */
+/// <summary>
+/// A tag for a the singleton hero entity.
+/// </summary>
 [Serializable]
 public struct HeroComponent : IComponentData
 {
-    public float Speed;
 }

@@ -11,5 +11,7 @@ public struct CarComponent : IComponentData
 {
     public float Speed;
 
+    public float Angle;
+
     public bool IsDisabled;
 }

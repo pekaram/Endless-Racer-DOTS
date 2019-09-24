@@ -1,33 +1,35 @@
 ﻿using UnityEngine;
 using Unity.Entities;
-using Unity.Transforms;
 using Unity.Jobs;
-using Unity.Mathematics;
 using Unity.Collections;
 using Unity.Burst;
 
-public class MovementSystem : JobComponentSystem
+public class InputSystem : JobComponentSystem
 {
     [BurstCompile]
-    struct MovementJob : IJobForEach<HeroComponent>
+    struct MovementJob : IJobForEach<HeroComponent, CarComponent>
     {
-        public float DeltaTime;
         public float HorizontalInput;
         public float VerticalInput;
 
         private const float Speed = 0.1f;
 
-        public void Execute(ref HeroComponent moveSpeed)
+        public void Execute([ReadOnly] ref HeroComponent moveSpeed, ref CarComponent carComponent)
+        {
+            this.HandleVerticalSpeed(ref carComponent);
+        }
+
+        private void HandleVerticalSpeed(ref CarComponent moveSpeed)
         {
             if (VerticalInput > 0)
             {
                 moveSpeed.Speed += Speed;
             }
-            else if(VerticalInput < 0)
+            else if (VerticalInput < 0)
             {
                 moveSpeed.Speed -= Speed;
             }
-            else if(moveSpeed.Speed > 0)
+            else if (moveSpeed.Speed > 0)
             {
                 moveSpeed.Speed -= Speed;
             }
@@ -38,7 +40,6 @@ public class MovementSystem : JobComponentSystem
     {
         MovementJob movementJob = new MovementJob
         {
-            DeltaTime = Time.deltaTime,
             HorizontalInput = Input.GetAxis("Horizontal"),
             VerticalInput = Input.GetAxis("Vertical"),
         };

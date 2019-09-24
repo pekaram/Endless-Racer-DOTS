@@ -1,12 +1,8 @@
-﻿using Unity.Collections;
-using Unity.Entities;
+﻿using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
-using Unity.Rendering;
 using UnityEngine.UI;
-using System.Collections.Generic;
-using System;
 using System.Reflection;
 
 public class SystemManager : MonoBehaviour 
@@ -55,7 +51,8 @@ public class SystemManager : MonoBehaviour
     private void AddHero()
     {
         this.hero = this.CreateEntityFromPrefab(this.heroPrefab);
-       this.entityManager.AddComponentData(this.hero, new HeroComponent());      
+       this.entityManager.AddComponentData(this.hero, new HeroComponent());
+        this.entityManager.AddComponentData(this.hero, new CarComponent());
     }
 
     private Entity CreateEntityFromPrefab(GameObject prefab)
@@ -87,14 +84,14 @@ public class SystemManager : MonoBehaviour
 
     private void Update()
     {
-       var data = this.entityManager.GetComponentData<HeroComponent>(hero);
-       speedText.text = Mathf.RoundToInt(data.Speed).ToString();
+        var data = this.entityManager.GetComponentData<CarComponent>(hero);
+        speedText.text = Mathf.RoundToInt(data.Speed).ToString();
         this.UpdateStreet();
     }
 
     private void UpdateStreet()
     {
-        var data = this.entityManager.GetComponentData<HeroComponent>(hero);
+        var data = this.entityManager.GetComponentData<CarComponent>(hero);
         speedText.text = Mathf.RoundToInt(data.Speed).ToString();
 
         if (street.transform.position.z > -12)
