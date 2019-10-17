@@ -13,6 +13,7 @@ public class CarMovementSystem : JobComponentSystem
     private Entity heroEntity;
 
     [BurstCompile]
+    [ExcludeComponent(typeof(HeroComponent))]
     struct MovementJob : IJobForEach<CarComponent, Translation>
     {
         public float HeroSpeed;
@@ -27,7 +28,7 @@ public class CarMovementSystem : JobComponentSystem
         {
             if (translation.Value.z > -9.5f)
             {
-                translation.Value.z -= (HeroSpeed - carComponent.Speed) /  MovementJob.KMToTranslationUnit;
+                translation.Value.z -= (HeroSpeed - carComponent.Speed) / MovementJob.KMToTranslationUnit;
             }
             else
             {

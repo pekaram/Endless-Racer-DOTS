@@ -51,7 +51,7 @@ public class SystemManager : MonoBehaviour
     private void AddHero()
     {
         this.hero = this.CreateEntityFromPrefab(this.heroPrefab);
-       this.entityManager.AddComponentData(this.hero, new HeroComponent());
+        this.entityManager.AddComponentData(this.hero, new HeroComponent());
         this.entityManager.AddComponentData(this.hero, new CarComponent());
     }
 
