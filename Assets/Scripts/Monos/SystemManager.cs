@@ -82,7 +82,7 @@ public class SystemManager : MonoBehaviour
         object componentData = genericMethodInfo.Invoke(this.entityManager, parameters);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         var data = this.entityManager.GetComponentData<CarComponent>(hero);
         speedText.text = Mathf.RoundToInt(data.Speed).ToString();

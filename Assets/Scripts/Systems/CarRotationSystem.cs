@@ -9,6 +9,7 @@ using Unity.Burst;
 
 public class CarRotationSystem : JobComponentSystem
 {
+    [BurstCompile]
     struct RotationJob : IJobForEach<CarComponent, Translation, Rotation>
     {        
         public void Execute(ref CarComponent carComponent,ref Translation translation, ref Rotation rotation)

@@ -5,8 +5,9 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Collections;
 using Unity.Burst;
+using Unity.Physics.Systems;
 
-public class CarMovementSystem : JobComponentSystem
+public class CarMovementSystem : FixedUpdateSystem
 {
     BeginInitializationEntityCommandBufferSystem entityCommandBufferSystem;
 
@@ -48,7 +49,7 @@ public class CarMovementSystem : JobComponentSystem
         this.heroEntity = this.GetSingletonEntity<HeroComponent>();
     }
 
-    protected override JobHandle OnUpdate(JobHandle inputDeps)
+    protected override JobHandle OnFixedUpdate(JobHandle inputDeps)
     {    
         MovementJob movementJob = new MovementJob
         {
