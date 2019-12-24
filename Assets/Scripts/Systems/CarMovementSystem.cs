@@ -23,6 +23,8 @@ public class CarMovementSystem : FixedUpdateSystem
 
         public const float KMToTranslationUnit = 1000;
 
+        public float MovingSpeed;
+
         public EntityCommandBuffer.Concurrent EntityCommandBuffer;
       
         public void Execute(ref CarComponent carComponent,ref Translation translation)
@@ -49,14 +51,14 @@ public class CarMovementSystem : FixedUpdateSystem
         this.heroEntity = this.GetSingletonEntity<HeroComponent>();
     }
 
-    protected override JobHandle OnFixedUpdate(JobHandle inputDeps)
-    {    
+    protected override JobHandle GetJob(JobHandle inputDeps)
+    {
         MovementJob movementJob = new MovementJob
         {
             HeroSpeed = this.World.EntityManager.GetComponentData<CarComponent>(heroEntity).Speed,
-            EntityCommandBuffer = entityCommandBufferSystem.CreateCommandBuffer().ToConcurrent()
+            EntityCommandBuffer = entityCommandBufferSystem.CreateCommandBuffer().ToConcurrent(),
         };
-        
+
         return movementJob.Schedule(this, inputDeps);
     }
 }

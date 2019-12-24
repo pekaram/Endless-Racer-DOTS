@@ -7,7 +7,7 @@ using Unity.Collections;
 using Unity.Burst;
 
 
-public class InputSystem : JobComponentSystem
+public class InputSystem : FixedUpdateSystem
 {
     [BurstCompile]
     [RequireComponentTag(typeof(HeroComponent))]
@@ -53,8 +53,8 @@ public class InputSystem : JobComponentSystem
             }
         }
     }
-
-    protected override JobHandle OnUpdate(JobHandle inputDeps)
+  
+    protected override JobHandle GetJob(JobHandle inputDeps)
     {
         MovementJob movementJob = new MovementJob
         {

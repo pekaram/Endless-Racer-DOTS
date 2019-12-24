@@ -7,7 +7,7 @@ using Unity.Collections;
 using Unity.Burst;
 
 
-public class CarRotationSystem : JobComponentSystem
+public class CarRotationSystem : FixedUpdateSystem
 {
     [BurstCompile]
     struct RotationJob : IJobForEach<CarComponent, Translation, Rotation>
@@ -16,12 +16,12 @@ public class CarRotationSystem : JobComponentSystem
         {
             if(carComponent.Angle != 0)
             {
-                translation.Value.x += carComponent.Angle / 1000 ;
+                translation.Value.x += carComponent.Angle / 500 ;
             }
         }       
     }
 
-    protected override JobHandle OnUpdate(JobHandle inputDeps)
+    protected override JobHandle GetJob(JobHandle inputDeps)
     {
         RotationJob rotationJob = new RotationJob
         {

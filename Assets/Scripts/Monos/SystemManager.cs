@@ -70,7 +70,7 @@ public class SystemManager : MonoBehaviour
             var carPosition = this.entityManager.GetComponentData<Translation>(carEntity);
             carPosition.Value.x -= 4f * i;
             this.entityManager.SetComponentData<Translation>(carEntity, carPosition);
-            this.entityManager.AddComponentData(carEntity, new CarComponent { Speed = 0.1f + 0.2f * i });
+            this.entityManager.AddComponentData(carEntity, new CarComponent { Speed = 20 });
         }
     }
 
@@ -96,7 +96,7 @@ public class SystemManager : MonoBehaviour
 
         if (street.transform.position.z > -12)
         {
-            street.transform.Translate(0, 0, -data.Speed/1000);
+            street.transform.Translate(0, 0, -data.Speed/100);
         }
         else
         {
