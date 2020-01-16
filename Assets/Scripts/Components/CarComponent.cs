@@ -13,5 +13,7 @@ public struct CarComponent : IComponentData
 
     public float Angle;
 
+    public Vector3 modelSize;
+
     public bool IsDisabled;
 }

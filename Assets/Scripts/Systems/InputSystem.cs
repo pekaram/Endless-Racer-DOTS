@@ -54,7 +54,7 @@ public class InputSystem : FixedUpdateSystem
         }
     }
   
-    protected override JobHandle GetJob(JobHandle inputDeps)
+    protected override JobHandle OnFixedUpdate(JobHandle inputDeps)
     {
         MovementJob movementJob = new MovementJob
         {

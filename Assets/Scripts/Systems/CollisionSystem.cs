@@ -9,30 +9,46 @@ using System;
 
 public class CollisionSystem : JobComponentSystem
 {
+    BeginInitializationEntityCommandBufferSystem entityCommandBufferSystem;
+
     [ExcludeComponent(typeof(HeroComponent))]
     [BurstCompile]
-    struct CollisionJob : IJobForEach<CarComponent, Translation>
+    struct CollisionJob : IJobForEachWithEntity<CarComponent, Translation>
     {
         public Translation HeroTranslation;
 
-        public void Execute(ref CarComponent carComponent, ref Translation translation)
-        {
-            if (Mathf.Abs(translation.Value.x - HeroTranslation.Value.x) < 1.1 && Mathf.Abs(translation.Value.z - HeroTranslation.Value.z) < 2.6)
-            {
-               // Debug.Log("hit");
-            }
+        public Entity heroEntity;
 
-            //Debug.Log(HeroTranslation.Value.x);
+        public EntityCommandBuffer.Concurrent EntityCommandBuffer;
+
+        public void Execute(Entity entity, int index, ref CarComponent carComponent, ref Translation translation)
+        { 
+            if (Mathf.Abs(translation.Value.x - HeroTranslation.Value.x) < carComponent.modelSize.x &&
+                Mathf.Abs(translation.Value.z - HeroTranslation.Value.z) < carComponent.modelSize.z)
+            {
+                // Hit detected
+                this.EntityCommandBuffer.DestroyEntity(index, entity);
+                this.EntityCommandBuffer.DestroyEntity(index, heroEntity);
+            }
         }
+    }
+
+    protected override void OnCreate()
+    {
+        this.entityCommandBufferSystem = World.GetOrCreateSystem<BeginInitializationEntityCommandBufferSystem>();
     }
 
     protected override JobHandle OnUpdate(JobHandle inputDeps)
     {
         var hero = this.GetSingletonEntity<HeroComponent>();
         var heroTranslation = this.World.EntityManager.GetComponentData<Translation>(hero);
+        var heroSize = this.World.EntityManager.GetComponentData<CarComponent>(hero).modelSize;
+
         CollisionJob rotationJob = new CollisionJob
         {
-            HeroTranslation = heroTranslation
+            HeroTranslation = heroTranslation,
+            heroEntity = hero,
+            EntityCommandBuffer = entityCommandBufferSystem.CreateCommandBuffer().ToConcurrent()
         };
         return rotationJob.Schedule(this, inputDeps);
     }

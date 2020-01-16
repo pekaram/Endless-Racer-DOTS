@@ -28,12 +28,37 @@ public class SystemManager : MonoBehaviour
 
     private Entity streetCar;
 
+    public Vector3 heroSize;
+
+    public Vector3 streetCarSize;
+
+    private void Awake()
+    {
+        this.heroSize = this.GetModelSizeFromCollider(this.heroPrefab);
+        this.streetCarSize = this.GetModelSizeFromCollider(this.streetCarPrefab);
+    }
+
     private void Start()
     {
         entityManager = World.Active.EntityManager;
         this.AddHero();
         this.CreateStreetCars();
         this.CreateStartingSlots();
+
+    }
+
+    private Vector3 GetModelSizeFromCollider(GameObject targetPrefab)
+    {
+        var modelObject = Instantiate(targetPrefab);
+        var collider = modelObject.GetComponent<BoxCollider>();
+        if (collider == null)
+        {
+            Debug.LogError("No box collider was found attached to this object");
+        }
+
+        var size = collider.bounds.size;
+        Destroy(modelObject);
+        return size;
     }
 
     private void CreateStartingSlots()
@@ -52,7 +77,7 @@ public class SystemManager : MonoBehaviour
     {
         this.hero = this.CreateEntityFromPrefab(this.heroPrefab);
         this.entityManager.AddComponentData(this.hero, new HeroComponent());
-        this.entityManager.AddComponentData(this.hero, new CarComponent());
+        this.entityManager.AddComponentData(this.hero, new CarComponent() { modelSize = this.heroSize});        
     }
 
     private Entity CreateEntityFromPrefab(GameObject prefab)
@@ -69,8 +94,9 @@ public class SystemManager : MonoBehaviour
             var carEntity = this.CreateEntityFromPrefab(streetCarPrefab);
             var carPosition = this.entityManager.GetComponentData<Translation>(carEntity);
             carPosition.Value.x -= 4f * i;
+            carPosition.Value.z += 1;
             this.entityManager.SetComponentData<Translation>(carEntity, carPosition);
-            this.entityManager.AddComponentData(carEntity, new CarComponent { Speed = 20 });
+            this.entityManager.AddComponentData(carEntity, new CarComponent { Speed = 20, modelSize = this.streetCarSize });
         }
     }
 
@@ -87,6 +113,22 @@ public class SystemManager : MonoBehaviour
         var data = this.entityManager.GetComponentData<CarComponent>(hero);
         speedText.text = Mathf.RoundToInt(data.Speed).ToString();
         this.UpdateStreet();
+    }
+
+    private void Update()
+    {
+        //TODO: Improve crashing
+        if(this.entityManager.Exists(this.hero))
+        {
+            return;
+        }
+
+        this.enabled = false;
+
+        foreach(var system in this.entityManager.World.Systems)
+        {
+            system.Enabled = false;
+        }
     }
 
     private void UpdateStreet()

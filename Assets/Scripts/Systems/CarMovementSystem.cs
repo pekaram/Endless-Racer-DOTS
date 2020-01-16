@@ -51,7 +51,7 @@ public class CarMovementSystem : FixedUpdateSystem
         this.heroEntity = this.GetSingletonEntity<HeroComponent>();
     }
 
-    protected override JobHandle GetJob(JobHandle inputDeps)
+    protected override JobHandle OnFixedUpdate(JobHandle inputDeps)
     {
         MovementJob movementJob = new MovementJob
         {

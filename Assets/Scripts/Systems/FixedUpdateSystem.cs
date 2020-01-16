@@ -23,7 +23,7 @@ public abstract class FixedUpdateSystem : JobComponentSystem
         public void Execute(){}
     }
 
-    protected abstract JobHandle GetJob(JobHandle inputDeps);
+    protected abstract JobHandle OnFixedUpdate(JobHandle inputDeps);
    
     protected sealed override JobHandle OnUpdate(JobHandle inputDeps)
     {
@@ -34,7 +34,7 @@ public abstract class FixedUpdateSystem : JobComponentSystem
 
         this.TimeSinceLastUpdate = DateTime.Now - this.lastOnUpdateTimeStamp.Value;
         
-        if (DateTime.Now - lastOnUpdateTimeStamp < TimeSpan.FromSeconds(Time.fixedDeltaTime))
+        if (this.TimeSinceLastUpdate < TimeSpan.FromSeconds(Time.fixedDeltaTime))
         {
             BlankJob waitJob = new BlankJob();
             return waitJob.Schedule(inputDeps);
@@ -42,7 +42,7 @@ public abstract class FixedUpdateSystem : JobComponentSystem
         else
         {
             this.lastOnUpdateTimeStamp = DateTime.Now;
-            return this.GetJob(inputDeps);
+            return this.OnFixedUpdate(inputDeps);
         }
     }
 }

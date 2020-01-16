@@ -21,7 +21,7 @@ public class CarRotationSystem : FixedUpdateSystem
         }       
     }
 
-    protected override JobHandle GetJob(JobHandle inputDeps)
+    protected override JobHandle OnFixedUpdate(JobHandle inputDeps)
     {
         RotationJob rotationJob = new RotationJob
         {

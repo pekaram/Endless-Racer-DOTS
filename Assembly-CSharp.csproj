@@ -68,6 +68,7 @@
     <Compile Include="Assets\Scripts\Monos\SystemManager.cs" />
     <Compile Include="Assets\Scripts\Systems\CarMovementSystem.cs" />
     <Compile Include="Assets\Scripts\Systems\CarRotationSystem.cs" />
+    <Compile Include="Assets\Scripts\Systems\CollisionSystem.cs" />
     <Compile Include="Assets\Scripts\Systems\ContinousSpawnSystem.cs" />
     <Compile Include="Assets\Scripts\Systems\FixedUpdateSystem.cs" />
     <Compile Include="Assets\Scripts\Systems\InputSystem.cs" />

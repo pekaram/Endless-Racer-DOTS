@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6889371880938441177}
+  - component: {fileID: 82864605347425895}
   m_Layer: 0
   m_Name: Street car
   m_TagString: Untagged
@@ -31,6 +32,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &82864605347425895
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7620282853174049738}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.08, y: 0.8, z: 2.55}
+  m_Center: {x: 0, y: 0.52, z: 0}
 --- !u!1001 &6096819688168721149
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -113,16 +127,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.5
       objectReference: {fileID: 0}
-    - target: {fileID: 4407819408829821474, guid: c0557b61b1ada0a49922ffe2622057b8,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 25ae59c83ee14384aa3b53a9bae1e5ff, type: 2}
     - target: {fileID: 8804942415739466591, guid: c0557b61b1ada0a49922ffe2622057b8,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: a0fbe8d17bd945d4d98abf704e3c1abb, type: 2}
+    - target: {fileID: 4407819408829821474, guid: c0557b61b1ada0a49922ffe2622057b8,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 25ae59c83ee14384aa3b53a9bae1e5ff, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0557b61b1ada0a49922ffe2622057b8, type: 3}
 --- !u!4 &1289988800558014951 stripped
