@@ -13,7 +13,7 @@ public class ContinousSpawnSystem : JobComponentSystem
 
     EntityQuery streetCarsGroup;
 
-    [BurstCompile]
+    //[BurstCompile]
     struct SpawnJob : IJobForEachWithEntity<GenerationSlotComponent>
     {
         public float Time;
@@ -59,7 +59,12 @@ public class ContinousSpawnSystem : JobComponentSystem
 
                     if (cars[j].IsDisabled && !slotComponent.IsOccupied)
                     {
-                        cars[j] = new CarComponent { IsDisabled = false, Speed = cars[j].Speed };
+                        var componentData = cars[j];
+                        componentData.IsDisabled = false;
+                        var randomObject = DateTime.Now.Ticks;
+                        var random = new Unity.Mathematics.Random((uint)(randomObject));
+                        componentData.Speed = random.NextInt(5, 100);
+                        cars[j] = componentData;
                         positions[j] = slotComponent.ReadOnlyPosition;
                         slotComponent.IsOccupied = true;
                         slotComponent.LastGenerationTimeStamp = Time;

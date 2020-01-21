@@ -44,7 +44,6 @@ public class SystemManager : MonoBehaviour
         this.AddHero();
         this.CreateStreetCars();
         this.CreateStartingSlots();
-
     }
 
     private Vector3 GetModelSizeFromCollider(GameObject targetPrefab)
@@ -77,6 +76,9 @@ public class SystemManager : MonoBehaviour
     {
         this.hero = this.CreateEntityFromPrefab(this.heroPrefab);
         this.entityManager.AddComponentData(this.hero, new HeroComponent());
+        var carPosition = this.entityManager.GetComponentData<Translation>(this.hero);
+        carPosition.Value.z -= 2;
+        this.entityManager.SetComponentData<Translation>(this.hero, carPosition);
         this.entityManager.AddComponentData(this.hero, new CarComponent() { modelSize = this.heroSize});        
     }
 
