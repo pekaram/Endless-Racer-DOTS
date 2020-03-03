@@ -16,4 +16,6 @@ public struct CarComponent : IComponentData
     public Vector3 modelSize;
 
     public bool IsDisabled;
+
+    public bool IsDestroyed;
 }

@@ -4,6 +4,7 @@ using Unity.Transforms;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Reflection;
+using System.Collections.Generic;
 
 public class SystemManager : MonoBehaviour 
 {
@@ -31,6 +32,8 @@ public class SystemManager : MonoBehaviour
     public Vector3 heroSize;
 
     public Vector3 streetCarSize;
+
+    private List<Entity> streetCars = new List<Entity>();
 
     private void Awake()
     {
@@ -95,6 +98,7 @@ public class SystemManager : MonoBehaviour
         {
             var carEntity = this.CreateEntityFromPrefab(streetCarPrefab);
             var carPosition = this.entityManager.GetComponentData<Translation>(carEntity);
+            this.streetCars.Add(carEntity);
             carPosition.Value.x -= 4f * i;
             carPosition.Value.z += 1;
             this.entityManager.SetComponentData<Translation>(carEntity, carPosition);
@@ -119,8 +123,18 @@ public class SystemManager : MonoBehaviour
 
     private void Update()
     {
-        //TODO: Improve crashing
-        if(this.entityManager.Exists(this.hero))
+        // Improve this to be more straight forward.
+        var didEnd = false;
+        foreach(var car in this.streetCars)
+        {
+            if (this.entityManager.GetComponentData<CarComponent>(car).IsDestroyed)
+            {
+                didEnd = true;
+                break;
+            }
+        }
+
+        if(!didEnd)
         {
             return;
         }

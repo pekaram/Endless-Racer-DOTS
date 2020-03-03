@@ -13,7 +13,7 @@ public class ContinousSpawnSystem : JobComponentSystem
 
     EntityQuery streetCarsGroup;
 
-    //[BurstCompile]
+    [BurstCompile]
     struct SpawnJob : IJobForEachWithEntity<GenerationSlotComponent>
     {
         public float Time;
@@ -25,6 +25,8 @@ public class ContinousSpawnSystem : JobComponentSystem
         public ArchetypeChunkComponentType<Translation> TranslationType;
 
         public ArchetypeChunkComponentType<CarComponent> CarComponentType;
+
+        public long randomObject;
 
         [ReadOnly] public ArchetypeChunkEntityType EntityType;
 
@@ -61,7 +63,6 @@ public class ContinousSpawnSystem : JobComponentSystem
                     {
                         var componentData = cars[j];
                         componentData.IsDisabled = false;
-                        var randomObject = DateTime.Now.Ticks;
                         var random = new Unity.Mathematics.Random((uint)(randomObject));
                         componentData.Speed = random.NextInt(5, 100);
                         cars[j] = componentData;
@@ -106,7 +107,8 @@ public class ContinousSpawnSystem : JobComponentSystem
             CarComponentType = carComponentType,
             EntityType = entityType,
             Chunks = chunks,
-        };
+            randomObject = DateTime.Now.Ticks
+    };
 
         return spwanJob.Schedule(this, JobHandle.CombineDependencies(handle, inputDeps));
     }
