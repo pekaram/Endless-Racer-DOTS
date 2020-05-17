@@ -15,7 +15,7 @@ public abstract class FixedUpdateSystem : JobComponentSystem
 {
     private DateTime? lastOnUpdateTimeStamp;
 
-    protected TimeSpan TimeSinceLastUpdate { get; set; }
+    protected TimeSpan timeSinceLastUpdate { get; set; }
     
     [BurstCompile]
     struct BlankJob : IJob
@@ -32,9 +32,9 @@ public abstract class FixedUpdateSystem : JobComponentSystem
             lastOnUpdateTimeStamp = DateTime.Now;
         }
 
-        this.TimeSinceLastUpdate = DateTime.Now - this.lastOnUpdateTimeStamp.Value;
+        this.timeSinceLastUpdate = DateTime.Now - this.lastOnUpdateTimeStamp.Value;
         
-        if (this.TimeSinceLastUpdate < TimeSpan.FromSeconds(Time.fixedDeltaTime))
+        if (this.timeSinceLastUpdate < TimeSpan.FromSeconds(Time.fixedDeltaTime))
         {
             BlankJob waitJob = new BlankJob();
             return waitJob.Schedule(inputDeps);

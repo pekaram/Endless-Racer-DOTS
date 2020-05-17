@@ -1,21 +1,43 @@
 ﻿using Unity.Entities;
-using Unity.Mathematics;
 using System;
-using System.Collections.Generic;
-using Unity.Collections;
 using UnityEngine;
-
 
 [Serializable]
 public struct CarComponent : IComponentData
 {
+    /// <summary>
+    /// Indentification id that always stays on this car 
+    /// </summary>
+    public Guid ID;
+
+    /// <summary>
+    /// Car speed, subtracted from player's speed for reflecting current player speed
+    /// </summary>
     public float Speed;
 
+    /// <summary>
+    /// Rotation angle, not implemented yet
+    /// </summary>
     public float Angle;
 
-    public Vector3 modelSize;
+    /// <summary>
+    /// Data for the box collider surrounding this object. 
+    /// Feels less accurate than <see cref="CapsuleColliderData"/> but this can be re-visted
+    /// </summary>
+    public Vector3 CubeColliderSize;
 
+    /// <summary>
+    /// Is disabled is for cars that are out of player's sight
+    /// </summary>
     public bool IsDisabled;
 
-    public bool IsDestroyed;
+    /// <summary>
+    /// For cars that did hit other object on the road.
+    /// </summary>
+    public bool IsCollided;
+
+    /// <summary>
+    /// Data for the capsule collider surrounding this car.
+    /// </summary>
+    public CapsuleColliderData CapsuleColliderData;
 }

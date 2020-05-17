@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6889371880938441177}
   - component: {fileID: 82864605347425895}
+  - component: {fileID: 9185397689266659032}
   m_Layer: 0
   m_Name: Street car
   m_TagString: Untagged
@@ -43,8 +44,22 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.08, y: 0.8, z: 2.5}
+  m_Size: {x: 1.08, y: 0.8, z: 2.3}
   m_Center: {x: 0, y: 0.52, z: 0}
+--- !u!136 &9185397689266659032
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7620282853174049738}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2.4
+  m_Direction: 2
+  m_Center: {x: 0, y: 0.47, z: 0}
 --- !u!1001 &6096819688168721149
 PrefabInstance:
   m_ObjectHideFlags: 0

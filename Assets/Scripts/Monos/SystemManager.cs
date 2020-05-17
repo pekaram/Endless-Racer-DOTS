@@ -5,40 +5,82 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Reflection;
 using System.Collections.Generic;
+using System;
 
 public class SystemManager : MonoBehaviour 
 {
+    /// <summary>
+    /// The player's car
+    /// </summary>
     [SerializeField]
     private GameObject heroPrefab;
 
+    /// <summary>
+    /// Street cars that act as obstacles to avoid, currently they are only 1 type.
+    /// </summary>
     [SerializeField]
     private GameObject streetCarPrefab;
 
+    /// <summary>
+    /// A generation place on asphalt 
+    /// </summary>
     [SerializeField]
     private GameObject startSlotPrefab;
 
+    /// <summary>
+    /// The car speed UI
+    /// </summary>
     [SerializeField]
     private Text speedText;
 
+    /// <summary>
+    /// The street gameobjecgt
+    /// </summary>
     [SerializeField]
     private GameObject street;
-
+ 
+    /// <summary>
+    /// Reference to world's entity manager.
+    /// </summary>
     private EntityManager entityManager;
 
+    /// <summary>
+    /// Hero entity reference, used to easily pick it.
+    /// </summary>
     private Entity hero;
 
-    private Entity streetCar;
+    /// <summary>
+    /// Hero id used to indentify hero's car
+    /// </summary>
+    private Guid heroId = Guid.NewGuid();
+    
+    /// <summary>
+    /// Hero's car's box collider size.
+    /// </summary>
+    private Vector3 heroBoxColliderSize;
 
-    public Vector3 heroSize;
+    /// <summary>
+    /// Street car's box collider size.
+    /// </summary>
+    private Vector3 streetCarBoxColliderSize;
 
-    public Vector3 streetCarSize;
+    /// <summary>
+    /// The size of <see cref="streetCarPrefab"/>'s collider.
+    /// </summary>
+    private CapsuleColliderData streetCarCapsuleData;
 
+    /// <summary>
+    /// All street cars excluding hero's car
+    /// </summary>
     private List<Entity> streetCars = new List<Entity>();
+
+    public static int numberOfGenerationSlots = 5;
 
     private void Awake()
     {
-        this.heroSize = this.GetModelSizeFromCollider(this.heroPrefab);
-        this.streetCarSize = this.GetModelSizeFromCollider(this.streetCarPrefab);
+        this.heroBoxColliderSize = this.GetBoxColliderSize(this.heroPrefab);
+        this.streetCarBoxColliderSize = this.GetBoxColliderSize(this.streetCarPrefab);
+        this.streetCarCapsuleData = this.GetCapusleSize(this.streetCarPrefab);
     }
 
     private void Start()
@@ -49,7 +91,7 @@ public class SystemManager : MonoBehaviour
         this.CreateStartingSlots();
     }
 
-    private Vector3 GetModelSizeFromCollider(GameObject targetPrefab)
+    private Vector3 GetBoxColliderSize(GameObject targetPrefab)
     {
         var modelObject = Instantiate(targetPrefab);
         var collider = modelObject.GetComponent<BoxCollider>();
@@ -63,15 +105,28 @@ public class SystemManager : MonoBehaviour
         return size;
     }
 
+    private CapsuleColliderData GetCapusleSize(GameObject targetPrefab)
+    {
+        var modelObject = Instantiate(targetPrefab);
+        var collider = modelObject.GetComponent<CapsuleCollider>();
+        if (collider == null)
+        {
+            Debug.LogError("No capsule collider was found attached to this object");
+        }
+
+        Destroy(modelObject);
+        return new CapsuleColliderData { Height = collider.height, Radius = collider.radius };
+    }
+
     private void CreateStartingSlots()
     {
-        for (var i = 0; i < 4; i++)
+        for (var i = 0; i <= Settings.NumberOfGenerationSlots; i++)
         {
             var entity = this.CreateEntityFromPrefab(this.startSlotPrefab);
             var creationposition = this.entityManager.GetComponentData<Translation>(entity).Value;
-            var shiftedPosition = new Translation { Value = new float3(creationposition.x - i * 2, creationposition.y, creationposition.z) };
+            var shiftedPosition = new Translation { Value = new float3(creationposition.x - (i * 2), creationposition.y, creationposition.z) };
             this.entityManager.SetComponentData<Translation>(entity, shiftedPosition);
-            this.entityManager.AddComponentData(entity, new GenerationSlotComponent { ReadOnlyPosition = shiftedPosition });
+            this.entityManager.AddComponentData(entity, new GenerationSlotComponent { Position = shiftedPosition });
         }
     }
 
@@ -82,7 +137,7 @@ public class SystemManager : MonoBehaviour
         var carPosition = this.entityManager.GetComponentData<Translation>(this.hero);
         carPosition.Value.z -= 2;
         this.entityManager.SetComponentData<Translation>(this.hero, carPosition);
-        this.entityManager.AddComponentData(this.hero, new CarComponent() { modelSize = this.heroSize});        
+        this.entityManager.AddComponentData(this.hero, new CarComponent() { ID = this.heroId, CubeColliderSize = this.heroBoxColliderSize});        
     }
 
     private Entity CreateEntityFromPrefab(GameObject prefab)
@@ -96,16 +151,19 @@ public class SystemManager : MonoBehaviour
     {
         for(var i = 0; i < 2; i++)
         {
-            var carEntity = this.CreateEntityFromPrefab(streetCarPrefab);
+            var carEntity = this.CreateEntityFromPrefab(this.streetCarPrefab);
             var carPosition = this.entityManager.GetComponentData<Translation>(carEntity);
             this.streetCars.Add(carEntity);
             carPosition.Value.x -= 4f * i;
             carPosition.Value.z += 1;
             this.entityManager.SetComponentData<Translation>(carEntity, carPosition);
-            this.entityManager.AddComponentData(carEntity, new CarComponent { Speed = 20, modelSize = this.streetCarSize });
+            this.entityManager.AddComponentData(carEntity, new CarComponent { ID = Guid.NewGuid(), Speed = 20, CubeColliderSize = this.streetCarBoxColliderSize, CapsuleColliderData = this.streetCarCapsuleData });
         }
     }
 
+    /// <summary>
+    /// A generic add component
+    /// </summary>
     private void AddComponentGeneric(Entity entity, IComponentData component)
     {
         MethodInfo methodInfo = typeof(EntityManager).GetMethod("AddComponentData");
@@ -121,20 +179,13 @@ public class SystemManager : MonoBehaviour
         this.UpdateStreet();
     }
 
+    /// <summary>
+    /// Polling for game end
+    /// </summary>
     private void Update()
     {
-        // Improve this to be more straight forward.
-        var didEnd = false;
-        foreach(var car in this.streetCars)
-        {
-            if (this.entityManager.GetComponentData<CarComponent>(car).IsDestroyed)
-            {
-                didEnd = true;
-                break;
-            }
-        }
-
-        if(!didEnd)
+        var didEnd = this.entityManager.GetComponentData<CarComponent>(this.hero).IsCollided;   
+        if (!didEnd)
         {
             return;
         }
@@ -147,6 +198,9 @@ public class SystemManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Scrolls the street for moving world
+    /// </summary>
     private void UpdateStreet()
     {
         var data = this.entityManager.GetComponentData<CarComponent>(hero);

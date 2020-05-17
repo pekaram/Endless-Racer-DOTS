@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using Unity.Entities;
+﻿using Unity.Entities;
 using Unity.Transforms;
 using Unity.Jobs;
 using Unity.Mathematics;
@@ -9,26 +8,33 @@ using Unity.Physics.Systems;
 
 public class CarMovementSystem : FixedUpdateSystem
 {
-    BeginInitializationEntityCommandBufferSystem entityCommandBufferSystem;
-
+    /// <summary>
+    /// Reference to the hero, to pull speed data.
+    /// </summary>
     private Entity heroEntity;
 
     [BurstCompile]
     [ExcludeComponent(typeof(HeroComponent))]
     struct MovementJob : IJobForEach<CarComponent, Translation>
     {
+        /// <summary>
+        /// Currently hero speed to reflect that on cars.
+        /// </summary>
         public float HeroSpeed;
-
-        private const float Speed = 0.1f;
-
+        
+        /// <summary>
+        /// Translating speed in KM to units to translate on map
+        /// </summary>
         public const float KMToTranslationUnit = 1000;
-
-        public float MovingSpeed;
-
-        public EntityCommandBuffer.Concurrent EntityCommandBuffer;
-      
-        public void Execute(ref CarComponent carComponent,ref Translation translation)
+       
+        public void Execute(ref CarComponent carComponent, ref Translation translation)
         {
+            if (carComponent.IsCollided)
+            {
+                carComponent.Speed = 0;
+            }
+
+            // TODO: this value should be pulled from a visual gameobject that can easily select that.
             if (translation.Value.z > -9.5f)
             {
                 translation.Value.z -= (HeroSpeed - carComponent.Speed) / MovementJob.KMToTranslationUnit;
@@ -39,12 +45,7 @@ public class CarMovementSystem : FixedUpdateSystem
             }
         }
     }
-
-    protected override void OnCreate()
-    {
-        entityCommandBufferSystem = World.GetOrCreateSystem<BeginInitializationEntityCommandBufferSystem>();
-    }
-
+    
     protected override void OnStartRunning()
     {
         base.OnStartRunning();
@@ -56,7 +57,6 @@ public class CarMovementSystem : FixedUpdateSystem
         MovementJob movementJob = new MovementJob
         {
             HeroSpeed = this.World.EntityManager.GetComponentData<CarComponent>(heroEntity).Speed,
-            EntityCommandBuffer = entityCommandBufferSystem.CreateCommandBuffer().ToConcurrent(),
         };
 
         return movementJob.Schedule(this, inputDeps);
