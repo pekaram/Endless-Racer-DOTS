@@ -13,7 +13,7 @@ public class CollisionSystem : JobComponentSystem
 
     // [BurstCompile]
     // EntityCommandBuffer isn't supported in burst yet, enable when Unity adds support.
-    struct CollisionJob2 : IJobForEachWithEntity<CarComponent, Translation>
+    struct CollisionJob : IJobForEachWithEntity<CarComponent, Translation>
     {
         public EntityCommandBuffer.Concurrent EntityCommandBuffer;
         
@@ -109,7 +109,7 @@ public class CollisionSystem : JobComponentSystem
         var entityType = GetArchetypeChunkEntityType();
         var chunks = streetCarsGroup.CreateArchetypeChunkArray(Allocator.TempJob, out var handle);
 
-        CollisionJob2 collisionJob = new CollisionJob2
+        CollisionJob collisionJob = new CollisionJob
         {
             EntityCommandBuffer = entityCommandBufferSystem.CreateCommandBuffer().ToConcurrent(),
             CarComponentType = carComponentType,

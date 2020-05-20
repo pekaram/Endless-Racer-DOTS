@@ -187,7 +187,6 @@ GameObject:
   - component: {fileID: 361178514}
   - component: {fileID: 361178513}
   - component: {fileID: 361178512}
-  - component: {fileID: 361178511}
   m_Layer: 0
   m_Name: Ground (1)
   m_TagString: Untagged
@@ -195,20 +194,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!64 &361178511
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 361178510}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &361178512
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -657,7 +642,6 @@ GameObject:
   - component: {fileID: 1526056453}
   - component: {fileID: 1526056456}
   - component: {fileID: 1526056455}
-  - component: {fileID: 1526056454}
   m_Layer: 0
   m_Name: Ground (2)
   m_TagString: Untagged
@@ -679,20 +663,6 @@ Transform:
   m_Father: {fileID: 649690980}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &1526056454
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1526056452}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &1526056455
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -750,7 +720,6 @@ GameObject:
   - component: {fileID: 1565264686}
   - component: {fileID: 1565264685}
   - component: {fileID: 1565264684}
-  - component: {fileID: 1565264683}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
@@ -758,20 +727,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!64 &1565264683
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1565264682}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &1565264684
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -876,6 +831,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90087e2cd83f4354b98291e2178683c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  heroCarHirerachyIndex: {fileID: 3519571700453404293, guid: 984084b2dea711c42a8da30e23b30857,
+    type: 3}
   heroPrefab: {fileID: 4045974164429735739, guid: 984084b2dea711c42a8da30e23b30857,
     type: 3}
   streetCarPrefab: {fileID: 7620282853174049738, guid: 57ad34d35cd445144a4d9483e5eb3e55,

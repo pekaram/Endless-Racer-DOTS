@@ -62,18 +62,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\CapsuleColliderData.cs" />
     <Compile Include="Assets\Scripts\Components\CarComponent.cs" />
     <Compile Include="Assets\Scripts\Components\HeroComponent.cs" />
     <Compile Include="Assets\Scripts\Components\SlotComponent.cs" />
+    <Compile Include="Assets\Scripts\Components\WheelComponent.cs" />
+    <Compile Include="Assets\Scripts\Misc\CapsuleColliderData.cs" />
+    <Compile Include="Assets\Scripts\Misc\CarHirerachyIndex.cs" />
+    <Compile Include="Assets\Scripts\Misc\Settings.cs" />
     <Compile Include="Assets\Scripts\Monos\SystemManager.cs" />
-    <Compile Include="Assets\Scripts\Settings.cs" />
     <Compile Include="Assets\Scripts\Systems\CarMovementSystem.cs" />
     <Compile Include="Assets\Scripts\Systems\CarRotationSystem.cs" />
     <Compile Include="Assets\Scripts\Systems\CollisionSystem.cs" />
     <Compile Include="Assets\Scripts\Systems\ContinousSpawnSystem.cs" />
     <Compile Include="Assets\Scripts\Systems\FixedUpdateSystem.cs" />
     <Compile Include="Assets\Scripts\Systems\InputSystem.cs" />
+    <Compile Include="Assets\Scripts\Systems\WheelRotationSystem.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

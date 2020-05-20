@@ -10,11 +10,11 @@ using System;
 public class SystemManager : MonoBehaviour 
 {
     /// <summary>
-    /// The player's car
+    /// Reference to the hero prefab along with its children.
     /// </summary>
     [SerializeField]
-    private GameObject heroPrefab;
-
+    private CarHirerachyIndex heroCarHirerachyIndex;
+  
     /// <summary>
     /// Street cars that act as obstacles to avoid, currently they are only 1 type.
     /// </summary>
@@ -38,7 +38,7 @@ public class SystemManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private GameObject street;
- 
+    
     /// <summary>
     /// Reference to world's entity manager.
     /// </summary>
@@ -78,7 +78,7 @@ public class SystemManager : MonoBehaviour
 
     private void Awake()
     {
-        this.heroBoxColliderSize = this.GetBoxColliderSize(this.heroPrefab);
+        this.heroBoxColliderSize = this.GetBoxColliderSize(this.heroCarHirerachyIndex.gameObject);
         this.streetCarBoxColliderSize = this.GetBoxColliderSize(this.streetCarPrefab);
         this.streetCarCapsuleData = this.GetCapusleSize(this.streetCarPrefab);
     }
@@ -86,9 +86,9 @@ public class SystemManager : MonoBehaviour
     private void Start()
     {
         entityManager = World.Active.EntityManager;
-        this.AddHero();
         this.CreateStreetCars();
         this.CreateStartingSlots();
+        this.CreateHeroCar();
     }
 
     private Vector3 GetBoxColliderSize(GameObject targetPrefab)
@@ -130,21 +130,98 @@ public class SystemManager : MonoBehaviour
         }
     }
 
-    private void AddHero()
+    /// <summary>
+    /// Creates the hero car.
+    /// </summary>
+    private void CreateHeroCar()
     {
-        this.hero = this.CreateEntityFromPrefab(this.heroPrefab);
+        var carReferences = Instantiate(this.heroCarHirerachyIndex);
+        this.hero = this.CreateCarStructure(carReferences);
+        this.AddHeroCompnents();
+    }
+
+    /// <summary>
+    /// Creates a car entity and maintains its children hirerachy in DOTS while seperating children them into seperate entities  
+    /// </summary>
+    /// <param name="carHirerachyIndex"> to rip the data from </param>
+    /// <returns> the parent car </returns>
+    private Entity CreateCarStructure(CarHirerachyIndex carHirerachyIndex)
+    {
+        // Create a DOTS clone with the wheels removed, first seperate them into seperate entities and clone them to stick tags on them.
+        carHirerachyIndex.SwitchWheels(false);
+        var carEntity =  this.CreateEntityFromGameObject(carHirerachyIndex.ParentCar, false); 
+        var wheels = carHirerachyIndex.GetAllWheels();
+        foreach (var wheel in wheels)
+        {
+            var wheelEntity = this.CreateEntityFromGameObject(wheel);
+            this.entityManager.AddComponentData(wheelEntity, new WheelComponent { Parent = carEntity });
+            this.entityManager.AddComponentData(wheelEntity, new Parent { Value = carEntity });
+            this.entityManager.AddComponentData(wheelEntity, new LocalToParent { });
+            var buffer = this.entityManager.AddBuffer<LinkedEntityGroup>(carEntity);
+            buffer.Add(wheelEntity);
+            
+            Destroy(wheel);
+        }
+        
+        // Destroy parent's clone after ripping all children out and only leave the duplicate DOTS entity with its children in scene.
+        Destroy(carHirerachyIndex.ParentCar);
+
+        return carEntity;
+    }
+
+    /// <summary>
+    /// Assigns components for the hero car <see cref="hero"/>
+    /// </summary>
+    private void AddHeroCompnents()
+    {
         this.entityManager.AddComponentData(this.hero, new HeroComponent());
         var carPosition = this.entityManager.GetComponentData<Translation>(this.hero);
         carPosition.Value.z -= 2;
+        carPosition.Value.y -= 0.2f;
         this.entityManager.SetComponentData<Translation>(this.hero, carPosition);
         this.entityManager.AddComponentData(this.hero, new CarComponent() { ID = this.heroId, CubeColliderSize = this.heroBoxColliderSize});        
     }
 
-    private Entity CreateEntityFromPrefab(GameObject prefab)
+    /// <summary>
+    /// Creates entity from prefabs
+    /// </summary>
+    /// <param name="source"> to create from </param>
+    /// <returns> entity</returns>
+    private Entity CreateEntityFromPrefab(GameObject source)
     {
-        var convertedPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(prefab, World.Active);
-        var entity = entityManager.Instantiate(convertedPrefab);
-        return entity;
+        var convertedGameObject = GameObjectConversionUtility.ConvertGameObjectHierarchy(source, World.Active);
+        return entityManager.Instantiate(convertedGameObject);
+    }
+    
+    /// <summary>
+    /// Creates a duplicate ECS entity from a gameobject
+    /// </summary>
+    /// <param name="source"> to clone </param>
+    /// <param name="destroySource"> will destroy the original GameObject and leave the DOTS entity only </param>
+    /// <returns> the created entity </returns>
+    private Entity CreateEntityFromGameObject(GameObject source, bool destroySource = true)
+    {
+        if(this.IsGameObjectActive(source))
+        {
+            Debug.LogError("Use CreateEntityFromPrefab instead");
+        }
+
+        var convertedGameObject = GameObjectConversionUtility.ConvertGameObjectHierarchy(source, World.Active);
+        Destroy(source);
+        return convertedGameObject;
+    }
+
+    /// <summary>
+    /// A check for making sure objects are active before creating their DOTS entity
+    /// </summary>
+    /// <returns> true if active or could be activated </returns>
+    private bool IsGameObjectActive(GameObject target)
+    {
+        Debug.LogWarning("Target GameObject found in-active before cloning, trying to activate");
+        target.SetActive(true);
+        // SetActive won't have any effect on prefabs, unlike scene objects
+        // Any gameobject needs to be active before being passed to DOTS.
+        return !target.activeInHierarchy;
     }
 
     private void CreateStreetCars()

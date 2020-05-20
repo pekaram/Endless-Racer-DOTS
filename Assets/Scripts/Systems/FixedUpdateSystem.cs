@@ -10,6 +10,7 @@ using System;
 /// <summary>
 /// Inherit to allow fixed updating in systems, to ensure correct physics.
 /// TODO: for frequent updating faster than FPS this won't catch up.
+/// Not urgent with the current update rate though, can be improved later on.
 /// </summary>
 public abstract class FixedUpdateSystem : JobComponentSystem
 {

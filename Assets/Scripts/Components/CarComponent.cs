@@ -16,9 +16,9 @@ public struct CarComponent : IComponentData
     public float Speed;
 
     /// <summary>
-    /// Rotation angle, not implemented yet
+    /// Represents the current steering angle of the wheel, 0 means no rotation.
     /// </summary>
-    public float Angle;
+    public float SteeringIndex;
 
     /// <summary>
     /// Data for the box collider surrounding this object. 

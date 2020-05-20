@@ -72,6 +72,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: 2003eclipse
       objectReference: {fileID: 0}
+    - target: {fileID: 2037943541495100273, guid: c0557b61b1ada0a49922ffe2622057b8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: c0557b61b1ada0a49922ffe2622057b8,
         type: 3}
       propertyPath: m_LocalPosition.x
