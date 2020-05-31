@@ -1,6 +1,9 @@
 ﻿using Unity.Entities;
 using System;
 using UnityEngine;
+using Unity.Transforms;
+using Unity.Jobs;
+using Unity.Collections;
 
 [Serializable]
 public struct CarComponent : IComponentData
@@ -35,9 +38,11 @@ public struct CarComponent : IComponentData
     /// For cars that did hit other object on the road.
     /// </summary>
     public bool IsCollided;
-
+    
     /// <summary>
     /// Data for the capsule collider surrounding this car.
     /// </summary>
     public CapsuleColliderData CapsuleColliderData;
+
+    public Guid CarInCloseCall;
 }

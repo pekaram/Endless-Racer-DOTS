@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 /// <summary>
 /// The purpose is passing hirerachy to DOTS while converting each part to a seperate entity and child
 /// </summary>
 public class CarHirerachyIndex : MonoBehaviour
 {
+    public Guid CarID = Guid.NewGuid();
+
     public GameObject ParentCar;
 
     [SerializeField]

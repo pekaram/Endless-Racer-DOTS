@@ -9,6 +9,18 @@ using System;
 
 public class SystemManager : MonoBehaviour 
 {
+    [SerializeField]
+    private Camera mainCamera;
+
+    [SerializeField]
+    private Camera followCamera;
+
+    [SerializeField]
+    private Translation cameraUpLocation;
+
+    [SerializeField]
+    private Vector3 cameraFollowLocation;
+
     /// <summary>
     /// Reference to the hero prefab along with its children.
     /// </summary>
@@ -38,6 +50,23 @@ public class SystemManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private GameObject street;
+
+    [SerializeField]
+    private ExtendedButton acceleratorPedal;
+
+    [SerializeField]
+    private ExtendedButton rightButton;
+
+    [SerializeField]
+    private ExtendedButton leftButton;
+
+    [SerializeField]
+    private Animator closeCallTextAnimator;
+
+    /// <summary>
+    /// The purpose is to play animation once per close call
+    /// </summary>
+    private Guid carInCloseCallLastFrame;
     
     /// <summary>
     /// Reference to world's entity manager.
@@ -52,7 +81,7 @@ public class SystemManager : MonoBehaviour
     /// <summary>
     /// Hero id used to indentify hero's car
     /// </summary>
-    private Guid heroId = Guid.NewGuid();
+    private Guid heroId;
     
     /// <summary>
     /// Hero's car's box collider size.
@@ -68,27 +97,52 @@ public class SystemManager : MonoBehaviour
     /// The size of <see cref="streetCarPrefab"/>'s collider.
     /// </summary>
     private CapsuleColliderData streetCarCapsuleData;
-
+    
     /// <summary>
     /// All street cars excluding hero's car
     /// </summary>
     private List<Entity> streetCars = new List<Entity>();
-
-    public static int numberOfGenerationSlots = 5;
-
+    
     private void Awake()
     {
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
+        this.entityManager = World.Active.EntityManager;
         this.heroBoxColliderSize = this.GetBoxColliderSize(this.heroCarHirerachyIndex.gameObject);
         this.streetCarBoxColliderSize = this.GetBoxColliderSize(this.streetCarPrefab);
         this.streetCarCapsuleData = this.GetCapusleSize(this.streetCarPrefab);
     }
 
+    private void SetInputBasedOnPlatform()
+    {
+        IGameInput gameInput;
+#if UNITY_ANDROID
+        gameInput = new AndroidInput(this.acceleratorPedal, this.leftButton, this.rightButton);
+#endif
+
+#if UNITY_STANDALONE
+        gameInput = new PcInput();
+#endif
+        foreach (var system in this.entityManager.World.Systems)
+        {
+            if (system is InputSystem inputSystem)
+            {
+                inputSystem.GameInput = gameInput;
+            }
+        }
+    }
+
     private void Start()
     {
-        entityManager = World.Active.EntityManager;
+        this.SetInputBasedOnPlatform();
         this.CreateStreetCars();
         this.CreateStartingSlots();
-        this.CreateHeroCar();
+        this.CreateHeroCar();      
+    }
+
+    public void SwitchCamera()
+    {
+        this.followCamera.gameObject.SetActive(this.mainCamera.gameObject.activeInHierarchy);
+        this.mainCamera.gameObject.SetActive(!this.mainCamera.gameObject.activeInHierarchy);
     }
 
     private Vector3 GetBoxColliderSize(GameObject targetPrefab)
@@ -136,6 +190,7 @@ public class SystemManager : MonoBehaviour
     private void CreateHeroCar()
     {
         var carReferences = Instantiate(this.heroCarHirerachyIndex);
+        this.heroId = carReferences.CarID;
         this.hero = this.CreateCarStructure(carReferences);
         this.AddHeroCompnents();
     }
@@ -154,7 +209,7 @@ public class SystemManager : MonoBehaviour
         foreach (var wheel in wheels)
         {
             var wheelEntity = this.CreateEntityFromGameObject(wheel);
-            this.entityManager.AddComponentData(wheelEntity, new WheelComponent { Parent = carEntity });
+            this.entityManager.AddComponentData(wheelEntity, new WheelComponent { Parent = carEntity, ParentID = carHirerachyIndex.CarID });
             this.entityManager.AddComponentData(wheelEntity, new Parent { Value = carEntity });
             this.entityManager.AddComponentData(wheelEntity, new LocalToParent { });
             var buffer = this.entityManager.AddBuffer<LinkedEntityGroup>(carEntity);
@@ -179,7 +234,7 @@ public class SystemManager : MonoBehaviour
         carPosition.Value.z -= 2;
         carPosition.Value.y -= 0.2f;
         this.entityManager.SetComponentData<Translation>(this.hero, carPosition);
-        this.entityManager.AddComponentData(this.hero, new CarComponent() { ID = this.heroId, CubeColliderSize = this.heroBoxColliderSize});        
+        this.entityManager.AddComponentData(this.hero, new CarComponent() { ID = this.heroId, CubeColliderSize = this.heroBoxColliderSize, CapsuleColliderData = this.streetCarCapsuleData});        
     }
 
     /// <summary>
@@ -253,7 +308,14 @@ public class SystemManager : MonoBehaviour
     {
         var data = this.entityManager.GetComponentData<CarComponent>(hero);
         speedText.text = Mathf.RoundToInt(data.Speed).ToString();
+
         this.UpdateStreet();
+    }
+
+    private void OnCloseCall()
+    {
+        this.closeCallTextAnimator.gameObject.SetActive(true);
+        this.closeCallTextAnimator.SetTrigger("Reset");
     }
 
     /// <summary>
@@ -261,7 +323,25 @@ public class SystemManager : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        var didEnd = this.entityManager.GetComponentData<CarComponent>(this.hero).IsCollided;   
+        this.HandleCloseCalls();
+
+        this.EndGameIfCollided();
+    }
+
+    private void HandleCloseCalls()
+    {
+        var data = this.entityManager.GetComponentData<CarComponent>(hero);
+        var isInCloseCall = data.CarInCloseCall != Guid.Empty && this.carInCloseCallLastFrame != data.CarInCloseCall;
+        carInCloseCallLastFrame = data.CarInCloseCall;
+        if (isInCloseCall)
+        {
+            this.OnCloseCall();
+        }
+    }
+
+    private void EndGameIfCollided()
+    {
+        var didEnd = this.entityManager.GetComponentData<CarComponent>(this.hero).IsCollided;
         if (!didEnd)
         {
             return;
@@ -269,7 +349,7 @@ public class SystemManager : MonoBehaviour
 
         this.enabled = false;
 
-        foreach(var system in this.entityManager.World.Systems)
+        foreach (var system in this.entityManager.World.Systems)
         {
             system.Enabled = false;
         }

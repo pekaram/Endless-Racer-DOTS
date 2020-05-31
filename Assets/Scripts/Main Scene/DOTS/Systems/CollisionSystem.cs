@@ -4,6 +4,7 @@ using Unity.Transforms;
 using Unity.Jobs;
 using Unity.Collections;
 using Unity.Burst;
+using System;
 
 public class CollisionSystem : JobComponentSystem
 {
@@ -26,7 +27,9 @@ public class CollisionSystem : JobComponentSystem
 
         [ReadOnly] [DeallocateOnJobCompletion] public NativeArray<ArchetypeChunk> Chunks;
 
-        public void Execute(Entity entity, int index, [ReadOnly] ref CarComponent carComponent, [ReadOnly] ref Translation translation)
+        public CarComponent Hero;
+        
+        public void Execute(Entity entity, int index,[ReadOnly] ref CarComponent carComponent, [ReadOnly] ref Translation translation)
         {
             for (var i = 0; i < Chunks.Length; i++)
             {
@@ -35,34 +38,75 @@ public class CollisionSystem : JobComponentSystem
                 var entities = Chunks[i].GetNativeArray(this.EntityType);
                 for (var j = 0; j < cars.Length; j++)
                 {
-                    // Skip if same exact car.
-                    if(cars[j].ID == carComponent.ID)
+
+                    var isAlreadyCollision = cars[j].IsCollided && carComponent.IsCollided;
+                    var isSameCar = cars[j].ID == carComponent.ID;               
+                    // Skip if same exact car or Collision already, not need to re-enter this code
+                    if (isAlreadyCollision || isSameCar)
                     {
                         continue;
                     }
 
-                    // Collision already, not need to re-enter this code
-                    if(cars[j].IsCollided && carComponent.IsCollided)
-                    {
-                        continue;
-                    }
-                    
                     var xDelta = Mathf.Abs(translation.Value.x - positions[j].Value.x);
                     var zDelta = Mathf.Abs(translation.Value.z - positions[j].Value.z);
                     if (this.IsCapsuleCollision(xDelta, zDelta, carComponent))
                     {
-                        // If burst whines about this log message, remove it.
-                        Debug.Log("Collison for: " + cars[j].ID + " & " + carComponent.ID);
+                        this.OnCollision(index, entity, carComponent, entities[j], cars[j]);
 
-                        var chunkCarComponent = cars[j];
-                        chunkCarComponent.IsCollided = true;
-                        this.EntityCommandBuffer.SetComponent(index, entities[j], chunkCarComponent);
+                        continue;
+                    }
 
-                        carComponent.IsCollided = true;
-                        this.EntityCommandBuffer.SetComponent(index, entity, carComponent);
+                    //  close call only from hero perspective
+                    if (carComponent.ID != Hero.ID || carComponent.CarInCloseCall != Guid.Empty)
+                    {
+                        continue;
+                    }
+
+                    var isInCloseCall = this.IsCloseCall(xDelta, zDelta, carComponent);
+                    if (isInCloseCall)
+                    {
+                        this.OnCloseCall(index, entity, carComponent, entities[j], cars[j]);
+                        
+                        continue;
+                    }
+                    
+                    if (carComponent.CarInCloseCall == cars[j].ID)
+                    {
+                        this.OnCloseEnded(index, entity, carComponent, entities[j], cars[j]);
                     }
                 }
             }
+        }
+
+        private void OnCloseEnded(int jobIndex, Entity firstEntity, CarComponent firstCar, Entity secondEntity, CarComponent secondCar)
+        {
+            firstCar.CarInCloseCall = Guid.Empty;
+            this.EntityCommandBuffer.SetComponent(jobIndex, firstEntity, firstCar);
+
+            secondCar.CarInCloseCall = Guid.Empty;
+            this.EntityCommandBuffer.SetComponent(jobIndex, secondEntity, secondCar);
+        }
+
+        private void OnCloseCall(int jobIndex, Entity firstEntity, CarComponent firstCar, Entity secondEntity, CarComponent secondCar)
+        {
+            var chunkCarComponent = secondCar;
+            chunkCarComponent.CarInCloseCall = firstCar.ID;
+            this.EntityCommandBuffer.SetComponent(jobIndex, secondEntity, chunkCarComponent);
+
+            firstCar.CarInCloseCall = secondCar.ID;
+            this.EntityCommandBuffer.SetComponent(jobIndex, firstEntity, firstCar);
+        }
+
+        private void OnCollision(int jobIndex, Entity firstEntity, CarComponent firstCar, Entity secondEntity, CarComponent secondCar)
+        {
+            // If burst whines about this log message, remove it.
+            Debug.Log("Collision for: " + firstCar.ID + " & " + secondCar.ID);
+
+            secondCar.IsCollided = true;
+            this.EntityCommandBuffer.SetComponent(jobIndex, secondEntity, secondCar);
+
+            firstCar.IsCollided = true;
+            this.EntityCommandBuffer.SetComponent(jobIndex, firstEntity, firstCar);
         }
 
         /// <summary>
@@ -75,6 +119,11 @@ public class CollisionSystem : JobComponentSystem
         private bool IsBoxCollision(float xDelta, float zDelta, CarComponent carComponent)
         {
             return xDelta < carComponent.CubeColliderSize.x && zDelta < carComponent.CubeColliderSize.z;
+        }
+
+        private bool IsCloseCall(float xDelta, float zDelta, CarComponent carComponent)
+        {
+            return xDelta < (carComponent.CapsuleColliderData.Radius * 2) + 1 && zDelta < carComponent.CapsuleColliderData.Height + 1;
         }
 
         /// <summary>
@@ -101,24 +150,27 @@ public class CollisionSystem : JobComponentSystem
         // Get the ComponentGroup
         this.streetCarsGroup = GetEntityQuery(carsQuery);
     }
-
+    
     protected override JobHandle OnUpdate(JobHandle inputDeps)
     {
         var translationType = GetArchetypeChunkComponentType<Translation>(true);
         var carComponentType = GetArchetypeChunkComponentType<CarComponent>(true);
         var entityType = GetArchetypeChunkEntityType();
+        var hero = this.GetSingletonEntity<HeroComponent>();
+        var heroCarComponent = World.EntityManager.GetComponentData<CarComponent>(hero);
         var chunks = streetCarsGroup.CreateArchetypeChunkArray(Allocator.TempJob, out var handle);
-
         CollisionJob collisionJob = new CollisionJob
         {
             EntityCommandBuffer = entityCommandBufferSystem.CreateCommandBuffer().ToConcurrent(),
             CarComponentType = carComponentType,
             EntityType = entityType,
             Chunks = chunks,
-            TranslationType = translationType
+            TranslationType = translationType,
+            Hero = heroCarComponent
         };
 
-
-        return collisionJob.Schedule(this, JobHandle.CombineDependencies(handle, inputDeps));
+        var inputdeps = collisionJob.Schedule(this, JobHandle.CombineDependencies(handle, inputDeps));
+        entityCommandBufferSystem.AddJobHandleForProducer(inputdeps);
+        return inputdeps;
     }
 }

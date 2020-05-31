@@ -78,7 +78,7 @@ public class ContinousSpawnSystem : JobComponentSystem
                     // Distance should be enough to ensure two cara don't drop above each other
                     // TODO: for different vechile sizes a more robust solution might be needed.
                     // For now they are the same use first.
-                    if (distance < cars[0].CubeColliderSize.z)
+                    if (distance < cars[0].CubeColliderSize.z + 1)
                     {
                         slotComponent.IsOccupied = true;
                         // Slot done, continue

@@ -11,19 +11,18 @@ using Unity.Burst;
 /// </summary>
 public class InputSystem : FixedUpdateSystem
 {
+    /// <summary>
+    /// Injected in <see cref="SystemManager"/>
+    /// </summary>
+    public IGameInput GameInput { get; set; }
+
     [BurstCompile]
     [RequireComponentTag(typeof(HeroComponent))]
     struct MovementJob : IJobForEach<CarComponent, Rotation>
     {
-        /// <summary>
-        /// <see cref="Input.GetAxis(string)"/> injected from the system
-        /// </summary>
-        public float HorizontalInput;
+        public SteeringDirection CurrentSteeringDirection;
 
-        /// <summary>
-        /// <see cref="Input.GetAxis(string)"/> injected from the system
-        /// </summary>
-        public float VerticalInput;
+        public MoveDirection CurrentMoveDirection;
 
         /// <summary>
         /// Speed senstivity.
@@ -34,7 +33,7 @@ public class InputSystem : FixedUpdateSystem
         /// navigating sensitivity
         /// </summary>
         public float SteeringSenstivity;
-
+        
         public void Execute(ref CarComponent carComponent, ref Rotation rotation)
         {
             this.HandleVerticalSpeed(ref carComponent);
@@ -43,9 +42,13 @@ public class InputSystem : FixedUpdateSystem
 
         public void HandleSteering(ref CarComponent carComponent)
         {
-            if (HorizontalInput != 0)
+            if (this.CurrentSteeringDirection == SteeringDirection.Right)
             {
-                carComponent.SteeringIndex = HorizontalInput * SteeringSenstivity;
+                carComponent.SteeringIndex = this.SteeringSenstivity;
+            }
+            else if(this.CurrentSteeringDirection == SteeringDirection.Left)
+            {
+                carComponent.SteeringIndex = -this.SteeringSenstivity;
             }
             else
             {
@@ -58,15 +61,15 @@ public class InputSystem : FixedUpdateSystem
 
         private void HandleVerticalSpeed(ref CarComponent carComponent)
         {
-            if (VerticalInput > 0)
+            if (this.CurrentMoveDirection == MoveDirection.Forward)
             {
-                carComponent.Speed += SpeedPedalSenstivity;
+                carComponent.Speed += this.SpeedPedalSenstivity;
             }
-            else if (VerticalInput < 0)
+            else if (this.CurrentMoveDirection == MoveDirection.Backward)
             {
                 carComponent.Speed -= SpeedPedalSenstivity;
             }
-            else if (carComponent.Speed > 0)
+            else if(carComponent.Speed > 0)
             {
                 carComponent.Speed -= SpeedPedalSenstivity;
             }
@@ -77,12 +80,11 @@ public class InputSystem : FixedUpdateSystem
     {
         MovementJob movementJob = new MovementJob
         {
-            HorizontalInput = Input.GetAxis("Horizontal"),
-            VerticalInput = Input.GetAxis("Vertical"),
+            CurrentSteeringDirection = this.GameInput.CurrentSteeringDirection,
+            CurrentMoveDirection = this.GameInput.CurrentMoveDirection,
             SpeedPedalSenstivity = Settings.InputSpeedSenstivity,
-            SteeringSenstivity = Settings.SteeringSenstivity
+            SteeringSenstivity = Settings.SteeringSenstivity,
         };
-
         return movementJob.Schedule(this, inputDeps);
     }
 }

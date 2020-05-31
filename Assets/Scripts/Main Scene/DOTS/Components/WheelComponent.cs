@@ -7,5 +7,9 @@ using System;
 [Serializable]
 public struct WheelComponent : IComponentData
 {
+    public Guid ParentID;
+
     public Entity Parent;
+
+    public float Speed;
 }
