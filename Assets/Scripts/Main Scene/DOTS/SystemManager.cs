@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using System.Reflection;
 using System.Collections.Generic;
 using System;
+using UnityEngine.SceneManagement;
 
 public class SystemManager : MonoBehaviour 
 {
@@ -20,6 +21,19 @@ public class SystemManager : MonoBehaviour
 
     [SerializeField]
     private Vector3 cameraFollowLocation;
+
+    [SerializeField]
+    private Text totalTimeText;
+
+    [SerializeField]
+    private Text closeCallCountText;
+
+    [SerializeField]
+    private GameObject lossPanel;
+
+    private int closeCallCount = 0;
+
+    private float sceneStartTimestamp;
 
     /// <summary>
     /// Reference to the hero prefab along with its children.
@@ -53,6 +67,9 @@ public class SystemManager : MonoBehaviour
 
     [SerializeField]
     private ExtendedButton acceleratorPedal;
+
+    [SerializeField]
+    private ExtendedButton brakePedal;
 
     [SerializeField]
     private ExtendedButton rightButton;
@@ -105,7 +122,6 @@ public class SystemManager : MonoBehaviour
     
     private void Awake()
     {
-        Screen.orientation = ScreenOrientation.LandscapeLeft;
         this.entityManager = World.Active.EntityManager;
         this.heroBoxColliderSize = this.GetBoxColliderSize(this.heroCarHirerachyIndex.gameObject);
         this.streetCarBoxColliderSize = this.GetBoxColliderSize(this.streetCarPrefab);
@@ -116,19 +132,14 @@ public class SystemManager : MonoBehaviour
     {
         IGameInput gameInput;
 #if UNITY_ANDROID
-        gameInput = new AndroidInput(this.acceleratorPedal, this.leftButton, this.rightButton);
+        gameInput = new AndroidInput(this.acceleratorPedal, this.brakePedal, this.leftButton, this.rightButton);
 #endif
-
 #if UNITY_STANDALONE
         gameInput = new PcInput();
 #endif
-        foreach (var system in this.entityManager.World.Systems)
-        {
-            if (system is InputSystem inputSystem)
-            {
-                inputSystem.GameInput = gameInput;
-            }
-        }
+
+        var inputSystem = (InputSystem)this.entityManager.World.GetExistingSystem(typeof(InputSystem));
+        inputSystem.GameInput = gameInput;
     }
 
     private void Start()
@@ -136,7 +147,9 @@ public class SystemManager : MonoBehaviour
         this.SetInputBasedOnPlatform();
         this.CreateStreetCars();
         this.CreateStartingSlots();
-        this.CreateHeroCar();      
+        this.CreateHeroCar();
+        World.Active.QuitUpdate = false;
+        this.sceneStartTimestamp = Time.realtimeSinceStartup;
     }
 
     public void SwitchCamera()
@@ -308,12 +321,14 @@ public class SystemManager : MonoBehaviour
     {
         var data = this.entityManager.GetComponentData<CarComponent>(hero);
         speedText.text = Mathf.RoundToInt(data.Speed).ToString();
-
+      
         this.UpdateStreet();
     }
-
+    
     private void OnCloseCall()
     {
+        this.closeCallCount += 1;
+        this.closeCallCountText.text = string.Format("Safa7 X{0}", this.closeCallCount);
         this.closeCallTextAnimator.gameObject.SetActive(true);
         this.closeCallTextAnimator.SetTrigger("Reset");
     }
@@ -323,9 +338,35 @@ public class SystemManager : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        if (followCamera.gameObject.activeInHierarchy)
+        {
+            this.UpdateFollowCamera();
+        }
+
+        this.UpdateTotalTime();
+
+        this.UpdateFollowCamera();
+        
         this.HandleCloseCalls();
 
         this.EndGameIfCollided();
+    }
+    
+    private void UpdateTotalTime()
+    {
+        var time = TimeSpan.FromSeconds(Time.realtimeSinceStartup - this.sceneStartTimestamp);
+        this.totalTimeText.text = time.Minutes + " : " + time.Seconds;
+    }
+
+    private void UpdateFollowCamera()
+    {
+        var data = this.entityManager.GetComponentData<CarComponent>(hero);
+        var translation = this.entityManager.GetComponentData<Translation>(hero);
+        var xDiff = followCamera.transform.position.x - translation.Value.x;
+        translation.Value.y = followCamera.transform.position.y;
+        translation.Value.z = followCamera.transform.position.z;
+
+        followCamera.transform.position = Vector3.Lerp(followCamera.transform.position, translation.Value, 3f * Time.deltaTime);
     }
 
     private void HandleCloseCalls()
@@ -347,12 +388,17 @@ public class SystemManager : MonoBehaviour
             return;
         }
 
-        this.enabled = false;
+        this.enabled = false;        
+        World.Active.QuitUpdate = true;
+        this.lossPanel.SetActive(true); 
+    }
 
-        foreach (var system in this.entityManager.World.Systems)
-        {
-            system.Enabled = false;
-        }
+    public void RestartGame()
+    {
+        this.lossPanel.SetActive(false);
+        this.entityManager.DestroyEntity(this.entityManager.UniversalQuery);
+        World.Active.QuitUpdate = false;
+        SceneManager.LoadScene(1);
     }
 
     /// <summary>

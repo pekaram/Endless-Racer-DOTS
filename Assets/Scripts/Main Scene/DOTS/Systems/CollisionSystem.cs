@@ -57,7 +57,7 @@ public class CollisionSystem : JobComponentSystem
                     }
 
                     //  close call only from hero perspective
-                    if (carComponent.ID != Hero.ID || carComponent.CarInCloseCall != Guid.Empty)
+                    if (carComponent.ID != Hero.ID)
                     {
                         continue;
                     }
@@ -65,6 +65,10 @@ public class CollisionSystem : JobComponentSystem
                     var isInCloseCall = this.IsCloseCall(xDelta, zDelta, carComponent);
                     if (isInCloseCall)
                     {
+                        if(carComponent.CarInCloseCall != Guid.Empty)
+                        {
+                            continue;
+                        }
                         this.OnCloseCall(index, entity, carComponent, entities[j], cars[j]);
                         
                         continue;

@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class AndroidInput : IGameInput
 {
-    public AndroidInput(ExtendedButton acceleratorPedal, ExtendedButton left, ExtendedButton right)
+    public AndroidInput(ExtendedButton acceleratorPedal, ExtendedButton brakePedal, ExtendedButton left, ExtendedButton right)
     {
         acceleratorPedal.gameObject.SetActive(true);
         left.gameObject.SetActive(true);
         right.gameObject.SetActive(true);
+        brakePedal.gameObject.SetActive(true);
 
         acceleratorPedal.OnButtonUp += this.OnAcceleratorPedalButtonUp;
         acceleratorPedal.OnButtonDown += this.OnAcceleratorPedalButtonDown;
+
+        brakePedal.OnButtonDown += this.OnBrakePedalButtonDown;
+        brakePedal.OnButtonUp += this.OnBrakePedalButtonUp;
 
         left.OnButtonDown += this.OnLeftButtonDown;
         left.OnButtonUp += this.OnLeftButtonUp;
@@ -53,6 +57,16 @@ public class AndroidInput : IGameInput
     }
 
     private void OnAcceleratorPedalButtonUp()
+    {
+        this.CurrentMoveDirection = MoveDirection.Idle;
+    }
+
+    private void OnBrakePedalButtonDown()
+    {
+        this.CurrentMoveDirection = MoveDirection.Backward;
+    }
+
+    private void OnBrakePedalButtonUp()
     {
         this.CurrentMoveDirection = MoveDirection.Idle;
     }

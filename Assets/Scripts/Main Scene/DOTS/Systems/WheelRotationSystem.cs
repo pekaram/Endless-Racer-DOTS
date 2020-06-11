@@ -9,7 +9,7 @@ using Unity.Burst;
 /// <summary>
 /// Handles wheel rotation.
 /// </summary>
-public class WheelRotationSystem : FixedUpdateSystem
+public class WheelRotationSystem : JobComponentSystem
 {
     private BeginInitializationEntityCommandBufferSystem entityCommandBufferSystem;
 
@@ -53,7 +53,7 @@ public class WheelRotationSystem : FixedUpdateSystem
         this.streetCarsGroup = GetEntityQuery(carsQuery);
     }
 
-    protected override JobHandle OnFixedUpdate(JobHandle inputDeps)
+    protected override JobHandle OnUpdate(JobHandle inputDeps)
     {
         var carComponentType = GetArchetypeChunkComponentType<CarComponent>(true);
         var entityType = GetArchetypeChunkEntityType();

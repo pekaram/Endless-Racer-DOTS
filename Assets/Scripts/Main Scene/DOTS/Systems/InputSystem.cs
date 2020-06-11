@@ -9,12 +9,14 @@ using Unity.Burst;
 /// <summary>
 /// Input handling for <see cref="HeroComponent"/>'s car
 /// </summary>
-public class InputSystem : FixedUpdateSystem
+public class InputSystem : JobComponentSystem
 {
     /// <summary>
     /// Injected in <see cref="SystemManager"/>
     /// </summary>
     public IGameInput GameInput { get; set; }
+
+    public bool hasEnded { get; set; }
 
     [BurstCompile]
     [RequireComponentTag(typeof(HeroComponent))]
@@ -33,7 +35,18 @@ public class InputSystem : FixedUpdateSystem
         /// navigating sensitivity
         /// </summary>
         public float SteeringSenstivity;
-        
+
+        public float BrakePedalSenstivity;
+
+        public float IdleSpeedLoss;
+
+        /// <summary>
+        /// car's top speed
+        /// </summary>
+        public float MaxSpeed;
+
+        public float DeltaTime;
+
         public void Execute(ref CarComponent carComponent, ref Rotation rotation)
         {
             this.HandleVerticalSpeed(ref carComponent);
@@ -61,29 +74,41 @@ public class InputSystem : FixedUpdateSystem
 
         private void HandleVerticalSpeed(ref CarComponent carComponent)
         {
+            var totalSpeed = this.SpeedPedalSenstivity * this.DeltaTime;
             if (this.CurrentMoveDirection == MoveDirection.Forward)
             {
-                carComponent.Speed += this.SpeedPedalSenstivity;
+                carComponent.Speed += totalSpeed - (totalSpeed * (carComponent.Speed / MaxSpeed));
+                return;
             }
-            else if (this.CurrentMoveDirection == MoveDirection.Backward)
+
+            if (carComponent.Speed <= 0)
             {
-                carComponent.Speed -= SpeedPedalSenstivity;
+                carComponent.Speed = 0;
+                return;
             }
-            else if(carComponent.Speed > 0)
+
+            if (this.CurrentMoveDirection == MoveDirection.Backward)
             {
-                carComponent.Speed -= SpeedPedalSenstivity;
+                carComponent.Speed -= BrakePedalSenstivity * this.DeltaTime;
+                return;
             }
+
+            carComponent.Speed -= IdleSpeedLoss * this.DeltaTime;
         }
     }
   
-    protected override JobHandle OnFixedUpdate(JobHandle inputDeps)
+    protected override JobHandle OnUpdate(JobHandle inputDeps)
     {
         MovementJob movementJob = new MovementJob
         {
             CurrentSteeringDirection = this.GameInput.CurrentSteeringDirection,
             CurrentMoveDirection = this.GameInput.CurrentMoveDirection,
-            SpeedPedalSenstivity = Settings.InputSpeedSenstivity,
-            SteeringSenstivity = Settings.SteeringSenstivity,
+            SpeedPedalSenstivity = Settings.InputSpeedSenstivityPerSecond,
+            SteeringSenstivity = Settings.MaxSteeringSenstivity,
+            MaxSpeed = Settings.MaxCarSpeed,
+            BrakePedalSenstivity = Settings.InputBrakeSenstivityPerSecond,
+            IdleSpeedLoss = Settings.IdleSpeedLostPerSecond,
+            DeltaTime = Time.deltaTime
         };
         return movementJob.Schedule(this, inputDeps);
     }

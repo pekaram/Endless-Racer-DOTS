@@ -9,7 +9,7 @@ using Unity.Burst;
 /// <summary>
 /// Not fully implemented, doesn't do much yet.
 /// </summary>
-public class CarRotationSystem : FixedUpdateSystem
+public class CarRotationSystem : JobComponentSystem
 {
     [BurstCompile]
     struct RotationJob : IJobForEach<CarComponent, Translation, Rotation>
@@ -18,24 +18,28 @@ public class CarRotationSystem : FixedUpdateSystem
 
         public float AllowedHorizontalWidth;
 
+        public float MaxSteeringPerSecond;
+
         public void Execute(ref CarComponent carComponent, ref Translation translation, ref Rotation rotation)
         {
-            var isInSteeringArea = math.abs(translation.Value.x + carComponent.SteeringIndex) < AllowedHorizontalWidth / 2;
+            var translationValue = carComponent.SteeringIndex * (MaxSteeringPerSecond * DeltaTime);
+            var isInSteeringArea = math.abs(translationValue + translation.Value.x) < AllowedHorizontalWidth / 2;
             if (carComponent.SteeringIndex != 0 && isInSteeringArea)
             {
-                translation.Value.x += carComponent.SteeringIndex;
+                translation.Value.x += translationValue;
             }
 
             //rotation.Value = math.mul(math.normalize(rotation.Value), quaternion.AxisAngle(new float3(1,0,0), 5 * DeltaTime));
         }       
     }
 
-    protected override JobHandle OnFixedUpdate(JobHandle inputDeps)
+    protected override JobHandle OnUpdate(JobHandle inputDeps)
     {
         RotationJob rotationJob = new RotationJob
         {
             AllowedHorizontalWidth = Settings.RoadWidth,
-            DeltaTime = Time.deltaTime
+            DeltaTime = Time.deltaTime,
+            MaxSteeringPerSecond = Settings.MaxHoriznontalMovePerSecond
         };
 
         return rotationJob.Schedule(this, inputDeps);
