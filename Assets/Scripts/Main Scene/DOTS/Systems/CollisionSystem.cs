@@ -104,7 +104,7 @@ public class CollisionSystem : JobComponentSystem
         private void OnCollision(int jobIndex, Entity firstEntity, CarComponent firstCar, Entity secondEntity, CarComponent secondCar)
         {
             // If burst whines about this log message, remove it.
-            Debug.Log("Collision for: " + firstCar.ID + " & " + secondCar.ID);
+            //Debug.Log("Collision for: " + firstCar.ID + " & " + secondCar.ID);
 
             secondCar.IsCollided = true;
             this.EntityCommandBuffer.SetComponent(jobIndex, secondEntity, secondCar);
