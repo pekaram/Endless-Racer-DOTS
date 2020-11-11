@@ -31,6 +31,11 @@ public class CollisionSystem : JobComponentSystem
         
         public void Execute(Entity entity, int index,[ReadOnly] ref CarComponent carComponent, [ReadOnly] ref Translation translation)
         {
+            if(carComponent.IsDisabled)
+            {
+                return;
+            }
+
             for (var i = 0; i < Chunks.Length; i++)
             {
                 var cars = Chunks[i].GetNativeArray(this.CarComponentType);
@@ -42,7 +47,7 @@ public class CollisionSystem : JobComponentSystem
                     var isAlreadyCollision = cars[j].IsCollided && carComponent.IsCollided;
                     var isSameCar = cars[j].ID == carComponent.ID;               
                     // Skip if same exact car or Collision already, not need to re-enter this code
-                    if (isAlreadyCollision || isSameCar)
+                    if (isAlreadyCollision || isSameCar || cars[j].IsDisabled)
                     {
                         continue;
                     }
@@ -57,7 +62,7 @@ public class CollisionSystem : JobComponentSystem
                     }
 
                     //  close call only from hero perspective
-                    if (carComponent.ID != Hero.ID)
+                    if (carComponent.ID != Hero.ID || carComponent.CarInCloseCall != Guid.Empty)
                     {
                         continue;
                     }
@@ -65,10 +70,6 @@ public class CollisionSystem : JobComponentSystem
                     var isInCloseCall = this.IsCloseCall(xDelta, zDelta, carComponent);
                     if (isInCloseCall)
                     {
-                        if(carComponent.CarInCloseCall != Guid.Empty)
-                        {
-                            continue;
-                        }
                         this.OnCloseCall(index, entity, carComponent, entities[j], cars[j]);
                         
                         continue;
@@ -104,7 +105,7 @@ public class CollisionSystem : JobComponentSystem
         private void OnCollision(int jobIndex, Entity firstEntity, CarComponent firstCar, Entity secondEntity, CarComponent secondCar)
         {
             // If burst whines about this log message, remove it.
-            //Debug.Log("Collision for: " + firstCar.ID + " & " + secondCar.ID);
+            Debug.Log("Collision for: " + firstCar.ID + " & " + secondCar.ID);
 
             secondCar.IsCollided = true;
             this.EntityCommandBuffer.SetComponent(jobIndex, secondEntity, secondCar);

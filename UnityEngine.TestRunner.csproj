@@ -243,7 +243,7 @@
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
+      <HintPath>E:/My Hub/RevertedDOTSProject/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2019.3.14f1\Editor\Data\NetStandard\ref\2.0.0\netstandard.dll</HintPath>
@@ -606,9 +606,7 @@
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\Assertions\UnhandledLogMessageException.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\Assertions\UnityTestTimeoutException.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\ActionDelegator.cs" />
-    <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Attributes\ConditionalIgnoreAttribute.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs" />
-    <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestMustExpectAllLogsAttribute.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Attributes\UnityCombinatorialStrategy.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Attributes\UnityPlatformAttribute.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Attributes\UnitySetUpAttribute.cs" />
@@ -618,8 +616,6 @@
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Commands\BeforeAfterTestCommandBase.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Commands\BeforeAfterTestCommandState.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Commands\EnumerableApplyChangesToContextCommand.cs" />
-    <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Commands\EnumerableRepeatedTestCommand.cs" />
-    <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Commands\EnumerableRetryTestCommand.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Commands\EnumerableSetUpTearDownCommand.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Commands\EnumerableTestMethodCommand.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Commands\ImmediateEnumerableCommand.cs" />
@@ -630,7 +626,6 @@
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\ConstructDelegator.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Filters\AssemblyNameFilter.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Filters\CategoryFilterExtended.cs" />
-    <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\IAsyncTestAssemblyBuilder.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\IStateSerializer.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Runner\CompositeWorkItem.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Runner\CoroutineTestWorkItem.cs" />
@@ -639,7 +634,6 @@
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Runner\IEnumerableTestMethodCommand.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Runner\PlaymodeWorkItemFactory.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Runner\RestoreTestContextAfterDomainReload.cs" />
-    <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Runner\TestCommandBuilder.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Runner\UnityLogCheckDelegatingCommand.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Runner\UnityTestAssemblyRunner.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\Runner\UnityTestExecutionContext.cs" />
@@ -650,7 +644,6 @@
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\TestResultExtensions.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\NUnitExtensions\UnityTestAssemblyBuilder.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\TestRunner\Callbacks\PlayModeRunnerCallback.cs" />
-    <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\TestRunner\Callbacks\PlayerQuitHandler.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\TestRunner\Callbacks\RemoteTestResultSender.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\TestRunner\Callbacks\TestResultRenderer.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\TestRunner\Callbacks\TestResultRendererCallback.cs" />
@@ -664,7 +657,6 @@
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\TestRunner\RemoteHelpers\RemoteTestResultData.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\TestRunner\RemoteHelpers\RemoteTestResultDataFactory.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\TestRunner\RemoteHelpers\RemoteTestResultDataWithTestData.cs" />
-    <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\TestRunner\SynchronousFilter.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\TestRunner\TestEnumeratorWrapper.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\TestRunner\TestListenerWrapper.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\TestRunner\TestPlatform.cs" />
@@ -684,15 +676,12 @@
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\Utils\IOuterUnityTestAction.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\Utils\IPostBuildCleanup.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\Utils\IPrebuildSceneSetup.cs" />
-    <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\Utils\ITestRunCallback.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\Utils\MonoBehaviourTest\IMonoBehaviourTest.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\Utils\MonoBehaviourTest\MonoBehaviourTest.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\Utils\PostBuildCleanupAttribute.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\Utils\PrebuildSceneSetupAttribute.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\Utils\QuaternionEqualityComparer.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\Utils\StacktraceFilter.cs" />
-    <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\Utils\TestRunCallbackAttribute.cs" />
-    <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\Utils\TestRunCallbackListener.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\Utils\Utils.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\Utils\Vector2ComparerWithEqualsOperator.cs" />
     <Compile Include="Packages\com.unity.test-framework\UnityEngine.TestRunner\Utils\Vector2EqualityComparer.cs" />
@@ -709,14 +698,9 @@
     <None Include="Packages\com.unity.2d.sprite\Tests\Editor\Unity.2D.Sprite.Package.EditorTests.asmdef" />
     <None Include="Packages\com.unity.2d.tilemap\Editor\Unity.2D.Tilemap.Editor.asmdef" />
     <None Include="Packages\com.unity.2d.tilemap\Tests\Editor\Unity.2D.Tilemap.EditorTests.asmdef" />
-    <None Include="Packages\com.unity.ads\Runtime\Advertisement\UnityEngine.Advertisements.asmdef" />
-    <None Include="Packages\com.unity.ads\Runtime\Monetization\UnityEngine.Monetization.asmdef" />
-    <None Include="Packages\com.unity.ads\Tests\Editor\Advertisement\UnityEngine.Advertisements.Editor.Tests.asmdef" />
-    <None Include="Packages\com.unity.ads\Tests\Editor\Monetization\UnityEngine.Monetization.Editor.Tests.asmdef" />
-    <None Include="Packages\com.unity.ads\Tests\Runtime\Advertisement\UnityEngine.Advertisements.Tests.asmdef" />
     <None Include="Packages\com.unity.analytics\DataPrivacy\Unity.Analytics.DataPrivacy.asmdef" />
-    <None Include="Packages\com.unity.analytics\Tests\Editor\Unity.Analytics.StandardEvents.EditorTests.asmdef" />
-    <None Include="Packages\com.unity.analytics\Tests\Runtime\Unity.Analytics.DataPrivacy.Tests.asmdef" />
+    <None Include="Packages\com.unity.analytics\Tests\Editor\Unity.Analytics.StandardEvents\Unity.Analytics.StandardEvents.EditorTests.asmdef" />
+    <None Include="Packages\com.unity.analytics\Tests\Runtime\DataPrivacy\Unity.Analytics.DataPrivacy.Tests.asmdef" />
     <None Include="Packages\com.unity.burst\Editor\Unity.Burst.Editor.asmdef" />
     <None Include="Packages\com.unity.burst\Runtime\Unity.Burst.asmdef" />
     <None Include="Packages\com.unity.burst\Tests\Tests.asmdef" />
@@ -771,13 +755,6 @@
     <None Include="Packages\com.unity.physics\Unity.Physics.Editor\Unity.Physics.Editor.asmdef" />
     <None Include="Packages\com.unity.physics\Unity.Physics.Hybrid\Unity.Physics.Hybrid.asmdef" />
     <None Include="Packages\com.unity.physics\Unity.Physics\Unity.Physics.asmdef" />
-    <None Include="Packages\com.unity.platforms.android\Editor\Unity.Platforms.Android\Unity.Platforms.Android.asmdef" />
-    <None Include="Packages\com.unity.platforms.android\Runtime\Unity.Tiny.Android\Android.asmdef" />
-    <None Include="Packages\com.unity.platforms.android\Runtime\Unity.Tiny.EntryPointAndroid\Unity.Tiny.EntryPointAndroid.asmref" />
-    <None Include="Packages\com.unity.platforms.android\Runtime\Unity.Tiny.InputAndroid\Unity.Tiny.InputAndroid.asmdef" />
-    <None Include="Packages\com.unity.platforms.android\Tests\Editor\Unity.Platforms.Android.EditorTests.asmdef" />
-    <None Include="Packages\com.unity.platforms\Editor\Unity.Platforms\Unity.Platforms.asmdef" />
-    <None Include="Packages\com.unity.platforms\Tests\Editor\Unity.Platforms.EditorTests.asmdef" />
     <None Include="Packages\com.unity.properties\Runtime\Unity.Properties\Unity.Properties.asmdef" />
     <None Include="Packages\com.unity.properties\Tests\Runtime\Unity.Properties.PerformanceTests\Unity.Properties.PerformanceTests.asmdef" />
     <None Include="Packages\com.unity.properties\Tests\Runtime\Unity.Properties.Tests\Unity.Properties.Tests.asmdef" />
@@ -796,13 +773,6 @@
     <None Include="Packages\com.unity.textmeshpro\Scripts\Runtime\Unity.TextMeshPro.asmdef" />
     <None Include="Packages\com.unity.textmeshpro\Tests\Editor\Unity.TextMeshPro.Editor.Tests.asmdef" />
     <None Include="Packages\com.unity.textmeshpro\Tests\Runtime\Unity.TextMeshPro.Tests.asmdef" />
-    <None Include="Packages\com.unity.timeline\Editor\StyleSheets\Extensions\common.uss" />
-    <None Include="Packages\com.unity.timeline\Editor\StyleSheets\Extensions\dark.uss" />
-    <None Include="Packages\com.unity.timeline\Editor\StyleSheets\Extensions\light.uss" />
-    <None Include="Packages\com.unity.timeline\Editor\StyleSheets\res\Timeline_DarkSkin.txt" />
-    <None Include="Packages\com.unity.timeline\Editor\StyleSheets\res\Timeline_LightSkin.txt" />
-    <None Include="Packages\com.unity.timeline\Editor\Unity.Timeline.Editor.asmdef" />
-    <None Include="Packages\com.unity.timeline\Runtime\Unity.Timeline.asmdef" />
     <None Include="Packages\com.unity.ugui\Editor\UnityEditor.UI.asmdef" />
     <None Include="Packages\com.unity.ugui\Runtime\UnityEngine.UI.asmdef" />
     <None Include="Packages\com.unity.ugui\Tests\Editor\UnityEditor.UI.EditorTests.asmdef" />

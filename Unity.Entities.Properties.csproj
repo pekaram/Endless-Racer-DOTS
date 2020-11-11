@@ -249,25 +249,25 @@
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Advertisements">
-      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/PackageCache/com.unity.ads@3.4.5/Editor/UnityEditor.Advertisements.dll</HintPath>
+      <HintPath>E:/My Hub/RevertedDOTSProject/Library/PackageCache/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Editor">
-      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/PackageCache/com.unity.analytics@3.3.5/Unity.Analytics.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Analytics.Tracker">
-      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/PackageCache/com.unity.analytics@3.3.5/Unity.Analytics.Tracker.dll</HintPath>
+      <HintPath>E:/My Hub/RevertedDOTSProject/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
-      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/PackageCache/com.unity.analytics@3.3.5/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
+      <HintPath>E:/My Hub/RevertedDOTSProject/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.StandardEvents.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Analytics.Tracker">
+      <HintPath>E:/My Hub/RevertedDOTSProject/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Tracker.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Unsafe">
-      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/PackageCache/com.unity.burst@1.1.2/Unity.Burst.Unsafe.dll</HintPath>
+      <HintPath>E:/My Hub/RevertedDOTSProject/Library/PackageCache/com.unity.burst@1.1.2/Unity.Burst.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe">
-      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/PackageCache/com.unity.collections@0.1.1-preview/System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+      <HintPath>E:/My Hub/RevertedDOTSProject/Library/PackageCache/com.unity.collections@0.1.1-preview/System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Purchasing">
-      <HintPath>E:/My Hub/Top view racer_Pure ECS/Library/PackageCache/com.unity.purchasing@2.0.6/Editor/UnityEditor.Purchasing.dll</HintPath>
+      <HintPath>E:/My Hub/RevertedDOTSProject/Library/PackageCache/com.unity.purchasing@2.0.6/Editor/UnityEditor.Purchasing.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2019.3.14f1\Editor\Data\NetStandard\ref\2.0.0\netstandard.dll</HintPath>
@@ -649,14 +649,9 @@
     <None Include="Packages\com.unity.2d.sprite\Tests\Editor\Unity.2D.Sprite.Package.EditorTests.asmdef" />
     <None Include="Packages\com.unity.2d.tilemap\Editor\Unity.2D.Tilemap.Editor.asmdef" />
     <None Include="Packages\com.unity.2d.tilemap\Tests\Editor\Unity.2D.Tilemap.EditorTests.asmdef" />
-    <None Include="Packages\com.unity.ads\Runtime\Advertisement\UnityEngine.Advertisements.asmdef" />
-    <None Include="Packages\com.unity.ads\Runtime\Monetization\UnityEngine.Monetization.asmdef" />
-    <None Include="Packages\com.unity.ads\Tests\Editor\Advertisement\UnityEngine.Advertisements.Editor.Tests.asmdef" />
-    <None Include="Packages\com.unity.ads\Tests\Editor\Monetization\UnityEngine.Monetization.Editor.Tests.asmdef" />
-    <None Include="Packages\com.unity.ads\Tests\Runtime\Advertisement\UnityEngine.Advertisements.Tests.asmdef" />
     <None Include="Packages\com.unity.analytics\DataPrivacy\Unity.Analytics.DataPrivacy.asmdef" />
-    <None Include="Packages\com.unity.analytics\Tests\Editor\Unity.Analytics.StandardEvents.EditorTests.asmdef" />
-    <None Include="Packages\com.unity.analytics\Tests\Runtime\Unity.Analytics.DataPrivacy.Tests.asmdef" />
+    <None Include="Packages\com.unity.analytics\Tests\Editor\Unity.Analytics.StandardEvents\Unity.Analytics.StandardEvents.EditorTests.asmdef" />
+    <None Include="Packages\com.unity.analytics\Tests\Runtime\DataPrivacy\Unity.Analytics.DataPrivacy.Tests.asmdef" />
     <None Include="Packages\com.unity.burst\Editor\Unity.Burst.Editor.asmdef" />
     <None Include="Packages\com.unity.burst\Runtime\Unity.Burst.asmdef" />
     <None Include="Packages\com.unity.burst\Tests\Tests.asmdef" />
@@ -711,13 +706,6 @@
     <None Include="Packages\com.unity.physics\Unity.Physics.Editor\Unity.Physics.Editor.asmdef" />
     <None Include="Packages\com.unity.physics\Unity.Physics.Hybrid\Unity.Physics.Hybrid.asmdef" />
     <None Include="Packages\com.unity.physics\Unity.Physics\Unity.Physics.asmdef" />
-    <None Include="Packages\com.unity.platforms.android\Editor\Unity.Platforms.Android\Unity.Platforms.Android.asmdef" />
-    <None Include="Packages\com.unity.platforms.android\Runtime\Unity.Tiny.Android\Android.asmdef" />
-    <None Include="Packages\com.unity.platforms.android\Runtime\Unity.Tiny.EntryPointAndroid\Unity.Tiny.EntryPointAndroid.asmref" />
-    <None Include="Packages\com.unity.platforms.android\Runtime\Unity.Tiny.InputAndroid\Unity.Tiny.InputAndroid.asmdef" />
-    <None Include="Packages\com.unity.platforms.android\Tests\Editor\Unity.Platforms.Android.EditorTests.asmdef" />
-    <None Include="Packages\com.unity.platforms\Editor\Unity.Platforms\Unity.Platforms.asmdef" />
-    <None Include="Packages\com.unity.platforms\Tests\Editor\Unity.Platforms.EditorTests.asmdef" />
     <None Include="Packages\com.unity.properties\Runtime\Unity.Properties\Unity.Properties.asmdef" />
     <None Include="Packages\com.unity.properties\Tests\Runtime\Unity.Properties.PerformanceTests\Unity.Properties.PerformanceTests.asmdef" />
     <None Include="Packages\com.unity.properties\Tests\Runtime\Unity.Properties.Tests\Unity.Properties.Tests.asmdef" />
@@ -736,13 +724,6 @@
     <None Include="Packages\com.unity.textmeshpro\Scripts\Runtime\Unity.TextMeshPro.asmdef" />
     <None Include="Packages\com.unity.textmeshpro\Tests\Editor\Unity.TextMeshPro.Editor.Tests.asmdef" />
     <None Include="Packages\com.unity.textmeshpro\Tests\Runtime\Unity.TextMeshPro.Tests.asmdef" />
-    <None Include="Packages\com.unity.timeline\Editor\StyleSheets\Extensions\common.uss" />
-    <None Include="Packages\com.unity.timeline\Editor\StyleSheets\Extensions\dark.uss" />
-    <None Include="Packages\com.unity.timeline\Editor\StyleSheets\Extensions\light.uss" />
-    <None Include="Packages\com.unity.timeline\Editor\StyleSheets\res\Timeline_DarkSkin.txt" />
-    <None Include="Packages\com.unity.timeline\Editor\StyleSheets\res\Timeline_LightSkin.txt" />
-    <None Include="Packages\com.unity.timeline\Editor\Unity.Timeline.Editor.asmdef" />
-    <None Include="Packages\com.unity.timeline\Runtime\Unity.Timeline.asmdef" />
     <None Include="Packages\com.unity.ugui\Editor\UnityEditor.UI.asmdef" />
     <None Include="Packages\com.unity.ugui\Runtime\UnityEngine.UI.asmdef" />
     <None Include="Packages\com.unity.ugui\Tests\Editor\UnityEditor.UI.EditorTests.asmdef" />

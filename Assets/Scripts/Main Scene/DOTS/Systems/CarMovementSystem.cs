@@ -4,9 +4,9 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Collections;
 using Unity.Burst;
-using Unity.Physics.Systems;
+using System;
 
-public class CarMovementSystem : JobComponentSystem
+public class CarMovementSystem : FixedUpdateSystem
 {
     /// <summary>
     /// Reference to the hero, to pull speed data.
@@ -17,8 +17,6 @@ public class CarMovementSystem : JobComponentSystem
     [ExcludeComponent(typeof(HeroComponent))]
     struct MovementJob : IJobForEach<CarComponent, Translation>
     {
-        public float deltaTime;
-
         /// <summary>
         /// Currently hero speed to reflect that on cars.
         /// </summary>
@@ -27,8 +25,10 @@ public class CarMovementSystem : JobComponentSystem
         /// <summary>
         /// Translating speed in KM to units to translate on map
         /// </summary>
-        public const float KMPerSecondToTranslationUnit = 20;
-       
+        public const float KMToTranslationUnit = 1000;
+
+        public float DeltaTime;
+        
         public void Execute(ref CarComponent carComponent, ref Translation translation)
         {
             if (carComponent.IsCollided)
@@ -39,9 +39,8 @@ public class CarMovementSystem : JobComponentSystem
             // TODO: this value should be pulled from a visual gameobject that can easily select that.
             if (translation.Value.z > -9.5f)
             {
-                var heroSpeedPerSecond = HeroSpeed * deltaTime;
-                var streetCarSpeedPerSecond = carComponent.Speed * deltaTime;
-                translation.Value.z += (-heroSpeedPerSecond + streetCarSpeedPerSecond) / KMPerSecondToTranslationUnit;
+                 translation.Value.z -= (((HeroSpeed - carComponent.Speed)- HeroSpeed/150) / 60) * DeltaTime;
+                //translation.Value.z -= ((HeroSpeed - carComponent.Speed) / MovementJob.KMToTranslationUnit) * DeltaTime;
             }
             else
             {
@@ -56,12 +55,12 @@ public class CarMovementSystem : JobComponentSystem
         this.heroEntity = this.GetSingletonEntity<HeroComponent>();
     }
 
-    protected override JobHandle OnUpdate(JobHandle inputDeps)
+    protected override JobHandle OnFixedUpdate(JobHandle inputDeps)
     {
         MovementJob movementJob = new MovementJob
         {
             HeroSpeed = this.World.EntityManager.GetComponentData<CarComponent>(heroEntity).Speed,
-            deltaTime = UnityEngine.Time.deltaTime
+            DeltaTime = (float)this.timeSinceLastUpdate.TotalSeconds,
         };
 
         return movementJob.Schedule(this, inputDeps);

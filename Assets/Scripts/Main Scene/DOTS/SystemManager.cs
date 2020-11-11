@@ -22,19 +22,6 @@ public class SystemManager : MonoBehaviour
     [SerializeField]
     private Vector3 cameraFollowLocation;
 
-    [SerializeField]
-    private Text totalTimeText;
-
-    [SerializeField]
-    private Text closeCallCountText;
-
-    [SerializeField]
-    private GameObject lossPanel;
-
-    private int closeCallCount = 0;
-
-    private float sceneStartTimestamp;
-
     /// <summary>
     /// Reference to the hero prefab along with its children.
     /// </summary>
@@ -69,16 +56,28 @@ public class SystemManager : MonoBehaviour
     private ExtendedButton acceleratorPedal;
 
     [SerializeField]
-    private ExtendedButton brakePedal;
-
-    [SerializeField]
     private ExtendedButton rightButton;
 
     [SerializeField]
     private ExtendedButton leftButton;
 
     [SerializeField]
+    private ExtendedButton brakeButton;
+
+    [SerializeField]
     private Animator closeCallTextAnimator;
+
+    [SerializeField]
+    private Text fPSText;
+
+    [SerializeField]
+    private Text timeText;
+
+    [SerializeField]
+    private GameObject lossPanel;
+
+    [SerializeField]
+    private CarHirerachyIndex streetCarHirerachy;
 
     /// <summary>
     /// The purpose is to play animation once per close call
@@ -119,27 +118,52 @@ public class SystemManager : MonoBehaviour
     /// All street cars excluding hero's car
     /// </summary>
     private List<Entity> streetCars = new List<Entity>();
-    
+
+    private int fPS;
+
     private void Awake()
     {
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
         this.entityManager = World.Active.EntityManager;
         this.heroBoxColliderSize = this.GetBoxColliderSize(this.heroCarHirerachyIndex.gameObject);
         this.streetCarBoxColliderSize = this.GetBoxColliderSize(this.streetCarPrefab);
         this.streetCarCapsuleData = this.GetCapusleSize(this.streetCarPrefab);
+        World.Active.QuitUpdate = false;
     }
 
     private void SetInputBasedOnPlatform()
     {
         IGameInput gameInput;
 #if UNITY_ANDROID
-        gameInput = new AndroidInput(this.acceleratorPedal, this.brakePedal, this.leftButton, this.rightButton);
+        gameInput = new AndroidInput(this.acceleratorPedal, this.leftButton, this.rightButton, this.brakeButton);
 #endif
+
 #if UNITY_STANDALONE
         gameInput = new PcInput();
 #endif
 
-        var inputSystem = (InputSystem)this.entityManager.World.GetExistingSystem(typeof(InputSystem));
-        inputSystem.GameInput = gameInput;
+#if UNITY_EDITOR
+        gameInput = new PcInput();
+#endif
+        foreach (var system in this.entityManager.World.Systems)
+        {
+            if (system is InputSystem inputSystem)
+            {
+                inputSystem.GameInput = gameInput;
+            }
+        }
+    }
+
+    private void SlowUpdate()
+    {
+        this.fPSText.text = this.fPS.ToString();
+        this.fPS = 0;
+
+
+        var data = this.entityManager.GetComponentData<CarComponent>(hero);
+        speedText.text = Mathf.RoundToInt(data.Speed).ToString();
+
+        //this.timeText.text = ((int)Time.timeSinceLevelLoad).ToString();
     }
 
     private void Start()
@@ -148,8 +172,7 @@ public class SystemManager : MonoBehaviour
         this.CreateStreetCars();
         this.CreateStartingSlots();
         this.CreateHeroCar();
-        World.Active.QuitUpdate = false;
-        this.sceneStartTimestamp = Time.realtimeSinceStartup;
+        this.InvokeRepeating(nameof(this.SlowUpdate), 0, 1);
     }
 
     public void SwitchCamera()
@@ -224,15 +247,15 @@ public class SystemManager : MonoBehaviour
             var wheelEntity = this.CreateEntityFromGameObject(wheel);
             this.entityManager.AddComponentData(wheelEntity, new WheelComponent { Parent = carEntity, ParentID = carHirerachyIndex.CarID });
             this.entityManager.AddComponentData(wheelEntity, new Parent { Value = carEntity });
-            this.entityManager.AddComponentData(wheelEntity, new LocalToParent { });
+            this.entityManager.AddComponentData(wheelEntity, new LocalToParent());
             var buffer = this.entityManager.AddBuffer<LinkedEntityGroup>(carEntity);
             buffer.Add(wheelEntity);
             
-            Destroy(wheel);
+            //Destroy(wheel);
         }
         
         // Destroy parent's clone after ripping all children out and only leave the duplicate DOTS entity with its children in scene.
-        Destroy(carHirerachyIndex.ParentCar);
+        //Destroy(carHirerachyIndex.ParentCar);
 
         return carEntity;
     }
@@ -292,17 +315,32 @@ public class SystemManager : MonoBehaviour
         return !target.activeInHierarchy;
     }
 
+    //private void CreateStreetCars()
+    //{
+    //    for(var i = 0; i < 7; i++)
+    //    {
+    //        var carEntity = this.CreateEntityFromPrefab(this.streetCarPrefab);
+    //        var carPosition = this.entityManager.GetComponentData<Translation>(carEntity);
+    //        this.streetCars.Add(carEntity);
+    //        carPosition.Value.x -= 4f;
+    //        carPosition.Value.z += 3*i;
+    //        this.entityManager.SetComponentData<Translation>(carEntity, carPosition);
+    //        this.entityManager.AddComponentData(carEntity, new CarComponent { ID = Guid.NewGuid(), Speed = 20, CubeColliderSize = this.streetCarBoxColliderSize, CapsuleColliderData = this.streetCarCapsuleData });
+    //    }
+    //}
+
     private void CreateStreetCars()
     {
-        for(var i = 0; i < 2; i++)
+        for (var i = 0; i < 7; i++)
         {
-            var carEntity = this.CreateEntityFromPrefab(this.streetCarPrefab);
+            this.streetCarHirerachy.CarID = Guid.NewGuid();
+            var carEntity = this.CreateCarStructure(this.streetCarHirerachy);
             var carPosition = this.entityManager.GetComponentData<Translation>(carEntity);
             this.streetCars.Add(carEntity);
-            carPosition.Value.x -= 4f * i;
-            carPosition.Value.z += 1;
+            carPosition.Value.x -= 4f;
+            carPosition.Value.z += 3 * i;
             this.entityManager.SetComponentData<Translation>(carEntity, carPosition);
-            this.entityManager.AddComponentData(carEntity, new CarComponent { ID = Guid.NewGuid(), Speed = 20, CubeColliderSize = this.streetCarBoxColliderSize, CapsuleColliderData = this.streetCarCapsuleData });
+            this.entityManager.AddComponentData(carEntity, new CarComponent { ID = this.streetCarHirerachy.CarID, Speed = 20, CubeColliderSize = this.streetCarBoxColliderSize, CapsuleColliderData = this.streetCarCapsuleData });
         }
     }
 
@@ -319,16 +357,11 @@ public class SystemManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        var data = this.entityManager.GetComponentData<CarComponent>(hero);
-        speedText.text = Mathf.RoundToInt(data.Speed).ToString();
-      
         this.UpdateStreet();
     }
-    
+
     private void OnCloseCall()
     {
-        this.closeCallCount += 1;
-        this.closeCallCountText.text = string.Format("Safa7 X{0}", this.closeCallCount);
         this.closeCallTextAnimator.gameObject.SetActive(true);
         this.closeCallTextAnimator.SetTrigger("Reset");
     }
@@ -338,24 +371,15 @@ public class SystemManager : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (followCamera.gameObject.activeInHierarchy)
+        if(this.followCamera.gameObject.activeInHierarchy)
         {
             this.UpdateFollowCamera();
         }
-
-        this.UpdateTotalTime();
-
-        this.UpdateFollowCamera();
+        this.fPS++;
         
         this.HandleCloseCalls();
 
         this.EndGameIfCollided();
-    }
-    
-    private void UpdateTotalTime()
-    {
-        var time = TimeSpan.FromSeconds(Time.realtimeSinceStartup - this.sceneStartTimestamp);
-        this.totalTimeText.text = time.Minutes + " : " + time.Seconds;
     }
 
     private void UpdateFollowCamera()
@@ -366,8 +390,9 @@ public class SystemManager : MonoBehaviour
         translation.Value.y = followCamera.transform.position.y;
         translation.Value.z = followCamera.transform.position.z;
 
-        followCamera.transform.position = Vector3.Lerp(followCamera.transform.position, translation.Value, 3f * Time.deltaTime);
+        followCamera.transform.position = Vector3.Lerp(followCamera.transform.position, translation.Value, 10f * Time.deltaTime);
     }
+
 
     private void HandleCloseCalls()
     {
@@ -388,17 +413,23 @@ public class SystemManager : MonoBehaviour
             return;
         }
 
-        this.enabled = false;        
-        World.Active.QuitUpdate = true;
-        this.lossPanel.SetActive(true); 
+        this.enabled = false;
+
+        foreach (var system in this.entityManager.World.Systems)
+        {
+            system.Enabled = false;
+        }
+
+        this.lossPanel.SetActive(true);
     }
+
 
     public void RestartGame()
     {
         this.lossPanel.SetActive(false);
         this.entityManager.DestroyEntity(this.entityManager.UniversalQuery);
         World.Active.QuitUpdate = false;
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     /// <summary>
@@ -407,11 +438,11 @@ public class SystemManager : MonoBehaviour
     private void UpdateStreet()
     {
         var data = this.entityManager.GetComponentData<CarComponent>(hero);
-        speedText.text = Mathf.RoundToInt(data.Speed).ToString();
+        //speedText.text = Mathf.RoundToInt(data.Speed).ToString();
 
         if (street.transform.position.z > -12)
         {
-            street.transform.Translate(0, 0, -data.Speed/100);
+            street.transform.Translate(0, 0, -data.Speed/150);
         }
         else
         {

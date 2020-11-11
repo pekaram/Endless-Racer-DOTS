@@ -9,7 +9,7 @@ using Unity.Burst;
 /// <summary>
 /// Handles wheel rotation.
 /// </summary>
-public class WheelRotationSystem : JobComponentSystem
+public class WheelRotationSystem : FixedUpdateSystem
 {
     private BeginInitializationEntityCommandBufferSystem entityCommandBufferSystem;
 
@@ -37,7 +37,7 @@ public class WheelRotationSystem : JobComponentSystem
                 }
             }
             // Fixed value for now, update based on car speed.
-            rotation.Value = math.mul(math.normalize(rotation.Value), quaternion.AxisAngle(new float3(Vector3.right), wheelComponent.Speed));
+            rotation.Value = math.mul(math.normalize(rotation.Value), quaternion.AxisAngle(new float3(Vector3.left), wheelComponent.Speed));
         }
     }
 
@@ -53,7 +53,7 @@ public class WheelRotationSystem : JobComponentSystem
         this.streetCarsGroup = GetEntityQuery(carsQuery);
     }
 
-    protected override JobHandle OnUpdate(JobHandle inputDeps)
+    protected override JobHandle OnFixedUpdate(JobHandle inputDeps)
     {
         var carComponentType = GetArchetypeChunkComponentType<CarComponent>(true);
         var entityType = GetArchetypeChunkEntityType();
