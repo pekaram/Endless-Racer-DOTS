@@ -100,11 +100,21 @@ public class InputSystem : JobComponentSystem
             CurrentMoveDirection = this.GameInput.CurrentMoveDirection,
             SpeedPedalSenstivity = Settings.InputSpeedSenstivity,
             SteeringSenstivity = Settings.SteeringSenstivity,
-            TimeDelta = Time.deltaTime,
+            TimeDelta = Time.DeltaTime,
             MaxSpeed = Settings.MaxSpeed,
             IdleSpeedLoss = Settings.IdleSpeedLoss,
             BrakePedalSenstivity = Settings.BrakeSenstivity
         };
+
         return movementJob.Schedule(this, inputDeps);
+
+        // Change to Entities to avoid obsolete methods
+        //return Entities
+        //    .ForEach((ref CarComponent carComponent,
+        //              ref Rotation rotation, in HeroComponent heroComponent) =>
+        //    {
+        //        movementJob.Execute(ref carComponent, ref rotation);
+        //    }).Schedule(inputDeps);
+
     }
 }

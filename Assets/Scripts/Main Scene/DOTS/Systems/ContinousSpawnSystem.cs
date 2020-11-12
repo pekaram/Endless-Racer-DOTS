@@ -23,7 +23,7 @@ public class ContinousSpawnSystem : JobComponentSystem
         /// <summary>
         /// <see cref="Time.unscaledDeltaTime"/> unjected from the system.
         /// </summary>
-        public float Time;
+        public double Time;
 
         /// <summary>
         /// Delta between generation time
@@ -123,14 +123,14 @@ public class ContinousSpawnSystem : JobComponentSystem
     }
 
     protected override JobHandle OnUpdate(JobHandle inputDeps)
-    {
+    {        
         var translationType = GetArchetypeChunkComponentType<Translation>(false);
         var carComponentType = GetArchetypeChunkComponentType<CarComponent>(false);
         var entityType = GetArchetypeChunkEntityType();
-        var chunks = streetCarsGroup.CreateArchetypeChunkArray(Allocator.TempJob, out var handle);
+        var chunks = streetCarsGroup.CreateArchetypeChunkArray(Allocator.TempJob);
         SpawnJob spwanJob = new SpawnJob
         {
-            Time = Time.unscaledTime,
+            Time = Time.ElapsedTime,
             TimeBetweenBatches = 0.2f,
             TranslationType = translationType,
             CarComponentType = carComponentType,
@@ -140,6 +140,6 @@ public class ContinousSpawnSystem : JobComponentSystem
             NumberOfGenerationSlots = Settings.NumberOfGenerationSlots
         };
 
-        return spwanJob.Schedule(this, JobHandle.CombineDependencies(handle, inputDeps));
+        return spwanJob.Schedule(this, inputDeps);
     }
 }

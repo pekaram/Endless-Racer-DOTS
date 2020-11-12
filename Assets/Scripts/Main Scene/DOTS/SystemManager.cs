@@ -124,11 +124,11 @@ public class SystemManager : MonoBehaviour
     private void Awake()
     {
         Screen.orientation = ScreenOrientation.LandscapeLeft;
-        this.entityManager = World.Active.EntityManager;
+        this.entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         this.heroBoxColliderSize = this.GetBoxColliderSize(this.heroCarHirerachyIndex.gameObject);
         this.streetCarBoxColliderSize = this.GetBoxColliderSize(this.streetCarPrefab);
         this.streetCarCapsuleData = this.GetCapusleSize(this.streetCarPrefab);
-        World.Active.QuitUpdate = false;
+        World.DefaultGameObjectInjectionWorld.QuitUpdate = false;
     }
 
     private void SetInputBasedOnPlatform()
@@ -280,7 +280,7 @@ public class SystemManager : MonoBehaviour
     /// <returns> entity</returns>
     private Entity CreateEntityFromPrefab(GameObject source)
     {
-        var convertedGameObject = GameObjectConversionUtility.ConvertGameObjectHierarchy(source, World.Active);
+        var convertedGameObject = GameObjectConversionUtility.ConvertGameObjectHierarchy(source, new GameObjectConversionSettings(World.DefaultGameObjectInjectionWorld, GameObjectConversionUtility.ConversionFlags.GameViewLiveLink));
         return entityManager.Instantiate(convertedGameObject);
     }
     
@@ -297,7 +297,7 @@ public class SystemManager : MonoBehaviour
             Debug.LogError("Use CreateEntityFromPrefab instead");
         }
 
-        var convertedGameObject = GameObjectConversionUtility.ConvertGameObjectHierarchy(source, World.Active);
+        var convertedGameObject = GameObjectConversionUtility.ConvertGameObjectHierarchy(source, new GameObjectConversionSettings(World.DefaultGameObjectInjectionWorld, GameObjectConversionUtility.ConversionFlags.GameViewLiveLink));
         Destroy(source);
         return convertedGameObject;
     }
@@ -428,7 +428,7 @@ public class SystemManager : MonoBehaviour
     {
         this.lossPanel.SetActive(false);
         this.entityManager.DestroyEntity(this.entityManager.UniversalQuery);
-        World.Active.QuitUpdate = false;
+        World.DefaultGameObjectInjectionWorld.QuitUpdate = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 

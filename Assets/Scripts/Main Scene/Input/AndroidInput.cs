@@ -33,12 +33,12 @@ public class AndroidInput : IGameInput
 
     private void OnBrakeUp()
     {
-        this.CurrentMoveDirection = MoveDirection.Backward;
+        this.CurrentMoveDirection = MoveDirection.Idle;
     }
 
     private void OnBrakeDown()
     {
-        this.CurrentMoveDirection = MoveDirection.Idle;
+        this.CurrentMoveDirection = MoveDirection.Backward;
     }
 
     private void OnRightButtonUp()

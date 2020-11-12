@@ -43,7 +43,7 @@ public class CarRotationSystem : JobComponentSystem
         RotationJob rotationJob = new RotationJob
         {
             AllowedHorizontalWidth = Settings.RoadWidth,
-            DeltaTime = Time.deltaTime
+            DeltaTime = Time.DeltaTime
         };
 
         return rotationJob.Schedule(this, inputDeps);

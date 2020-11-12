@@ -163,7 +163,7 @@ public class CollisionSystem : JobComponentSystem
         var entityType = GetArchetypeChunkEntityType();
         var hero = this.GetSingletonEntity<HeroComponent>();
         var heroCarComponent = World.EntityManager.GetComponentData<CarComponent>(hero);
-        var chunks = streetCarsGroup.CreateArchetypeChunkArray(Allocator.TempJob, out var handle);
+        var chunks = streetCarsGroup.CreateArchetypeChunkArray(Allocator.TempJob);
         CollisionJob collisionJob = new CollisionJob
         {
             EntityCommandBuffer = entityCommandBufferSystem.CreateCommandBuffer().ToConcurrent(),
@@ -174,7 +174,7 @@ public class CollisionSystem : JobComponentSystem
             Hero = heroCarComponent
         };
 
-        var inputdeps = collisionJob.Schedule(this, JobHandle.CombineDependencies(handle, inputDeps));
+        var inputdeps = collisionJob.Schedule(this, inputDeps);
         entityCommandBufferSystem.AddJobHandleForProducer(inputdeps);
         return inputdeps;
     }

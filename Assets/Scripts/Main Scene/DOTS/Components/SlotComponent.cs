@@ -9,7 +9,7 @@ public struct GenerationSlotComponent : IComponentData
     /// <summary>
     /// Last time this slot got a reset
     /// </summary>
-    public float LastGenerationTimeStamp;
+    public double LastGenerationTimeStamp;
 
     /// <summary>
     /// If this slot is currently hosting a car.
