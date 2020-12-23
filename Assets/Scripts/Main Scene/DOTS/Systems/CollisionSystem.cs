@@ -12,8 +12,7 @@ public class CollisionSystem : JobComponentSystem
 
     private EntityQuery streetCarsGroup;
 
-    // [BurstCompile]
-    // EntityCommandBuffer isn't supported in burst yet, enable when Unity adds support.
+    [BurstCompile]
     struct CollisionJob : IJobForEachWithEntity<CarComponent, Translation>
     {
         public EntityCommandBuffer.Concurrent EntityCommandBuffer;
@@ -62,7 +61,7 @@ public class CollisionSystem : JobComponentSystem
                     }
 
                     //  close call only from hero perspective
-                    if (carComponent.ID != Hero.ID || carComponent.CarInCloseCall != Guid.Empty)
+                    if (carComponent.ID != Hero.ID || carComponent.CarInCloseCall != -1)
                     {
                         continue;
                     }
@@ -85,10 +84,10 @@ public class CollisionSystem : JobComponentSystem
 
         private void OnCloseEnded(int jobIndex, Entity firstEntity, CarComponent firstCar, Entity secondEntity, CarComponent secondCar)
         {
-            firstCar.CarInCloseCall = Guid.Empty;
+            firstCar.CarInCloseCall = -1;
             this.EntityCommandBuffer.SetComponent(jobIndex, firstEntity, firstCar);
 
-            secondCar.CarInCloseCall = Guid.Empty;
+            secondCar.CarInCloseCall = -1;
             this.EntityCommandBuffer.SetComponent(jobIndex, secondEntity, secondCar);
         }
 
@@ -104,9 +103,6 @@ public class CollisionSystem : JobComponentSystem
 
         private void OnCollision(int jobIndex, Entity firstEntity, CarComponent firstCar, Entity secondEntity, CarComponent secondCar)
         {
-            // If burst whines about this log message, remove it.
-            Debug.Log("Collision for: " + firstCar.ID + " & " + secondCar.ID);
-
             secondCar.IsCollided = true;
             this.EntityCommandBuffer.SetComponent(jobIndex, secondEntity, secondCar);
 

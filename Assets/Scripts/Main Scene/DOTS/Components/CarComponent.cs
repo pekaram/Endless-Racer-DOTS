@@ -11,7 +11,7 @@ public struct CarComponent : IComponentData
     /// <summary>
     /// Indentification id that always stays on this car 
     /// </summary>
-    public Guid ID;
+    public int ID;
 
     /// <summary>
     /// Car speed, subtracted from player's speed for reflecting current player speed
@@ -44,5 +44,8 @@ public struct CarComponent : IComponentData
     /// </summary>
     public CapsuleColliderData CapsuleColliderData;
 
-    public Guid CarInCloseCall;
+    /// <summary>
+    /// <see cref="ID"/> of <see cref="CarComponent"/> in close call
+    /// </summary>
+    public int CarInCloseCall;
 }

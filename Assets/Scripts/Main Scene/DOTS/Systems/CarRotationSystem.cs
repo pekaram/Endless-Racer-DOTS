@@ -20,21 +20,12 @@ public class CarRotationSystem : JobComponentSystem
 
         public void Execute(ref CarComponent carComponent, ref Translation translation, ref Rotation rotation)
         {
-            //var isInSteeringArea = math.abs(translation.Value.x + carComponent.SteeringIndex) < AllowedHorizontalWidth / 2;
-            //if (carComponent.SteeringIndex != 0 && isInSteeringArea)
-            //{
-            //    translation.Value.x += carComponent.SteeringIndex;
-            //}
-
-            //rotation.Value = math.mul(math.normalize(rotation.Value), quaternion.AxisAngle(new float3(1,0,0), 5 * DeltaTime));
-
             var translationValue = carComponent.SteeringIndex * (20 * DeltaTime);
             var isInSteeringArea = math.abs(translationValue + translation.Value.x) < AllowedHorizontalWidth / 2;
             if (carComponent.SteeringIndex != 0 && isInSteeringArea)
             {
                 translation.Value.x += translationValue;
             }
-
         }
     }
 

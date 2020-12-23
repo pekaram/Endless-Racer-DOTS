@@ -23,9 +23,13 @@ public class Settings
     /// </summary>
     public static float RoadWidth = 9;
 
+    public static float KMToTranslationUnit = 5;
+
     public static int MaxSpeed = 300;
 
-    public static float BrakeSenstivity = 30;
+    public static float BrakeSenstivity = 70;
 
     public static float IdleSpeedLoss = 5;
+
+    public static float FollowCameraTurn = 3;
 }

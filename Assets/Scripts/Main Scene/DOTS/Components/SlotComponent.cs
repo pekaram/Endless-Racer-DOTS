@@ -1,23 +1,12 @@
-﻿using Unity.Entities;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Unity.Entities;
 using Unity.Transforms;
 
-/// <summary>
-/// A slot used for reseting cars 
-/// </summary>
-public struct GenerationSlotComponent : IComponentData
+public class SlotComponent : IComponentData
 {
-    /// <summary>
-    /// Last time this slot got a reset
-    /// </summary>
-    public double LastGenerationTimeStamp;
-
-    /// <summary>
-    /// If this slot is currently hosting a car.
-    /// </summary>
-    public bool IsOccupied;
-
-    /// <summary>
-    /// This slot's position
-    /// </summary>
     public Translation Position;
+
+    public int Speed;
 }

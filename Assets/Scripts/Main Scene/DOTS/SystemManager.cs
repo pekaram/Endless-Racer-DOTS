@@ -79,10 +79,13 @@ public class SystemManager : MonoBehaviour
     [SerializeField]
     private CarHirerachyIndex streetCarHirerachy;
 
+    [SerializeField]
+    private List<Transform> streetParts;
+
     /// <summary>
     /// The purpose is to play animation once per close call
     /// </summary>
-    private Guid carInCloseCallLastFrame;
+    private int carInCloseCallLastFrame;
     
     /// <summary>
     /// Reference to world's entity manager.
@@ -97,7 +100,7 @@ public class SystemManager : MonoBehaviour
     /// <summary>
     /// Hero id used to indentify hero's car
     /// </summary>
-    private Guid heroId;
+    private int heroId = 0;
     
     /// <summary>
     /// Hero's car's box collider size.
@@ -123,6 +126,7 @@ public class SystemManager : MonoBehaviour
 
     private void Awake()
     {
+        Application.targetFrameRate = -1;
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         this.entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         this.heroBoxColliderSize = this.GetBoxColliderSize(this.heroCarHirerachyIndex.gameObject);
@@ -226,7 +230,7 @@ public class SystemManager : MonoBehaviour
     private void CreateHeroCar()
     {
         var carReferences = Instantiate(this.heroCarHirerachyIndex);
-        this.heroId = carReferences.CarID;
+        this.heroId = 0;
         this.hero = this.CreateCarStructure(carReferences);
         this.AddHeroCompnents();
     }
@@ -270,7 +274,7 @@ public class SystemManager : MonoBehaviour
         carPosition.Value.z -= 2;
         carPosition.Value.y -= 0.2f;
         this.entityManager.SetComponentData<Translation>(this.hero, carPosition);
-        this.entityManager.AddComponentData(this.hero, new CarComponent() { ID = this.heroId, CubeColliderSize = this.heroBoxColliderSize, CapsuleColliderData = this.streetCarCapsuleData});        
+        this.entityManager.AddComponentData(this.hero, new CarComponent() { ID = this.heroId, CubeColliderSize = this.heroBoxColliderSize, CapsuleColliderData = this.streetCarCapsuleData, CarInCloseCall = -1});        
     }
 
     /// <summary>
@@ -308,39 +312,24 @@ public class SystemManager : MonoBehaviour
     /// <returns> true if active or could be activated </returns>
     private bool IsGameObjectActive(GameObject target)
     {
-        Debug.LogWarning("Target GameObject found in-active before cloning, trying to activate");
         target.SetActive(true);
         // SetActive won't have any effect on prefabs, unlike scene objects
         // Any gameobject needs to be active before being passed to DOTS.
         return !target.activeInHierarchy;
     }
 
-    //private void CreateStreetCars()
-    //{
-    //    for(var i = 0; i < 7; i++)
-    //    {
-    //        var carEntity = this.CreateEntityFromPrefab(this.streetCarPrefab);
-    //        var carPosition = this.entityManager.GetComponentData<Translation>(carEntity);
-    //        this.streetCars.Add(carEntity);
-    //        carPosition.Value.x -= 4f;
-    //        carPosition.Value.z += 3*i;
-    //        this.entityManager.SetComponentData<Translation>(carEntity, carPosition);
-    //        this.entityManager.AddComponentData(carEntity, new CarComponent { ID = Guid.NewGuid(), Speed = 20, CubeColliderSize = this.streetCarBoxColliderSize, CapsuleColliderData = this.streetCarCapsuleData });
-    //    }
-    //}
-
     private void CreateStreetCars()
     {
         for (var i = 0; i < 7; i++)
         {
-            this.streetCarHirerachy.CarID = Guid.NewGuid();
+            this.streetCarHirerachy.CarID = i + 1;
             var carEntity = this.CreateCarStructure(this.streetCarHirerachy);
             var carPosition = this.entityManager.GetComponentData<Translation>(carEntity);
             this.streetCars.Add(carEntity);
             carPosition.Value.x -= 4f;
             carPosition.Value.z += 3 * i;
             this.entityManager.SetComponentData<Translation>(carEntity, carPosition);
-            this.entityManager.AddComponentData(carEntity, new CarComponent { ID = this.streetCarHirerachy.CarID, Speed = 20, CubeColliderSize = this.streetCarBoxColliderSize, CapsuleColliderData = this.streetCarCapsuleData });
+            this.entityManager.AddComponentData(carEntity, new CarComponent { ID = i + 1, Speed = 1, CubeColliderSize = this.streetCarBoxColliderSize, CapsuleColliderData = this.streetCarCapsuleData, CarInCloseCall = -1 });
         }
     }
 
@@ -355,11 +344,6 @@ public class SystemManager : MonoBehaviour
         object componentData = genericMethodInfo.Invoke(this.entityManager, parameters);
     }
 
-    private void FixedUpdate()
-    {
-        this.UpdateStreet();
-    }
-
     private void OnCloseCall()
     {
         this.closeCallTextAnimator.gameObject.SetActive(true);
@@ -371,33 +355,38 @@ public class SystemManager : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if(this.followCamera.gameObject.activeInHierarchy)
-        {
-            this.UpdateFollowCamera();
-        }
+        var heroData = this.entityManager.GetComponentData<CarComponent>(hero);
+        var heroTranslation = this.entityManager.GetComponentData<Translation>(hero);
+
+        this.UpdateFollowCamera(heroData, heroTranslation);
+        this.UpdateTopViewCamera(heroData);
+
+        this.ExtendStreet(heroTranslation);
+
+        this.HandleCloseCalls(heroData);
+
+        this.EndGameIfCollided(heroData);
+
         this.fPS++;
-        
-        this.HandleCloseCalls();
-
-        this.EndGameIfCollided();
     }
 
-    private void UpdateFollowCamera()
+    private void UpdateFollowCamera(CarComponent carData, Translation translationToFollow)
     {
-        var data = this.entityManager.GetComponentData<CarComponent>(hero);
-        var translation = this.entityManager.GetComponentData<Translation>(hero);
-        var xDiff = followCamera.transform.position.x - translation.Value.x;
-        translation.Value.y = followCamera.transform.position.y;
-        translation.Value.z = followCamera.transform.position.z;
+        var translatedZ = this.followCamera.transform.position.z + ((carData.Speed / Settings.KMToTranslationUnit) * Time.deltaTime);
+        var translatedX = Mathf.Lerp(this.followCamera.transform.position.x, translationToFollow.Value.x, Settings.FollowCameraTurn * Time.deltaTime);
+        this.followCamera.transform.position = new Vector3(translatedX, this.followCamera.transform.position.y, translatedZ);
+    }
 
-        followCamera.transform.position = Vector3.Lerp(followCamera.transform.position, translation.Value, 10f * Time.deltaTime);
+    private void UpdateTopViewCamera(CarComponent carData)
+    {
+        var translatedZ = this.mainCamera.transform.position.z + ((carData.Speed / Settings.KMToTranslationUnit) * Time.deltaTime);
+        this.mainCamera.transform.position = new Vector3(this.mainCamera.transform.position.x, this.mainCamera.transform.position.y, translatedZ);
     }
 
 
-    private void HandleCloseCalls()
+    private void HandleCloseCalls(CarComponent data)
     {
-        var data = this.entityManager.GetComponentData<CarComponent>(hero);
-        var isInCloseCall = data.CarInCloseCall != Guid.Empty && this.carInCloseCallLastFrame != data.CarInCloseCall;
+        var isInCloseCall = data.CarInCloseCall != -1 && this.carInCloseCallLastFrame != data.CarInCloseCall;
         carInCloseCallLastFrame = data.CarInCloseCall;
         if (isInCloseCall)
         {
@@ -405,9 +394,9 @@ public class SystemManager : MonoBehaviour
         }
     }
 
-    private void EndGameIfCollided()
+    private void EndGameIfCollided(CarComponent heroCar)
     {
-        var didEnd = this.entityManager.GetComponentData<CarComponent>(this.hero).IsCollided;
+        var didEnd = heroCar.IsCollided;
         if (!didEnd)
         {
             return;
@@ -415,14 +404,10 @@ public class SystemManager : MonoBehaviour
 
         this.enabled = false;
 
-        foreach (var system in this.entityManager.World.Systems)
-        {
-            system.Enabled = false;
-        }
+        World.DefaultGameObjectInjectionWorld.QuitUpdate = true;
 
         this.lossPanel.SetActive(true);
     }
-
 
     public void RestartGame()
     {
@@ -435,18 +420,14 @@ public class SystemManager : MonoBehaviour
     /// <summary>
     /// Scrolls the street for moving world
     /// </summary>
-    private void UpdateStreet()
+    private void ExtendStreet(Translation heroPosition)
     {
-        var data = this.entityManager.GetComponentData<CarComponent>(hero);
-        //speedText.text = Mathf.RoundToInt(data.Speed).ToString();
-
-        if (street.transform.position.z > -12)
+        if (this.streetParts[this.streetParts.Count-1].transform.position.z - heroPosition.Value.z < 24) 
         {
-            street.transform.Translate(0, 0, -data.Speed/150);
-        }
-        else
-        {
-            street.transform.position = new Vector3(0, 0, 0);
+            var firstPart = this.streetParts[0];
+            this.streetParts.RemoveAt(0);
+            this.streetParts.Add(firstPart);
+            firstPart.Translate(0, 0, 72);
         }
     }
 }

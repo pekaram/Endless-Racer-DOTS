@@ -115,6 +115,5 @@ public class InputSystem : JobComponentSystem
         //    {
         //        movementJob.Execute(ref carComponent, ref rotation);
         //    }).Schedule(inputDeps);
-
     }
 }

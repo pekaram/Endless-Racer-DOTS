@@ -8,7 +8,7 @@ using System;
 /// </summary>
 public class CarHirerachyIndex : MonoBehaviour
 {
-    public Guid CarID = Guid.NewGuid();
+    public int CarID { get; set; }
 
     public GameObject ParentCar;
 

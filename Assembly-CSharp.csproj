@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Main Scene\DOTS\Components\CarComponent.cs" />
+    <Compile Include="Assets\Scripts\Main Scene\DOTS\Components\GenerationSlotComponent.cs" />
     <Compile Include="Assets\Scripts\Main Scene\DOTS\Components\HeroComponent.cs" />
     <Compile Include="Assets\Scripts\Main Scene\DOTS\Components\SlotComponent.cs" />
     <Compile Include="Assets\Scripts\Main Scene\DOTS\Components\Treadmill.cs" />

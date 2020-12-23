@@ -17,9 +17,18 @@ public class ContinousSpawnSystem : JobComponentSystem
     /// </summary>
     private EntityQuery streetCarsGroup;
 
+    /// <summary>
+    /// Reference to the hero, to pull speed data.
+    /// </summary>
+    private Entity heroEntity;
+
+
     [BurstCompile]
     struct SpawnJob : IJobForEachWithEntity<GenerationSlotComponent>
     {
+
+        public float HeroZ;
+
         /// <summary>
         /// <see cref="Time.unscaledDeltaTime"/> unjected from the system.
         /// </summary>
@@ -96,9 +105,12 @@ public class ContinousSpawnSystem : JobComponentSystem
                         var componentData = cars[j];
                         componentData.IsDisabled = false;
                         componentData.IsCollided = false;
-                        componentData.Speed = 100;// random.NextInt(5, 100);
+                        componentData.Speed = random.NextInt(50, 70);
                         cars[j] = componentData;
-                        positions[j] = slotComponent.Position;
+                        var shiftedSlotPosition = slotComponent.Position;
+                        shiftedSlotPosition.Value.z += this.HeroZ + 12;
+
+                        positions[j] = shiftedSlotPosition;
                         slotComponent.IsOccupied = true;
                         slotComponent.LastGenerationTimeStamp = this.Time;
                         // Slot done, continue
@@ -122,8 +134,18 @@ public class ContinousSpawnSystem : JobComponentSystem
         streetCarsGroup = GetEntityQuery(carsQuery);
     }
 
+
+    protected override void OnStartRunning()
+    {
+        base.OnStartRunning();
+        this.heroEntity = this.GetSingletonEntity<HeroComponent>();
+    }
+
+
     protected override JobHandle OnUpdate(JobHandle inputDeps)
-    {        
+    {
+        var heroTranslation = World.EntityManager.GetComponentData<Translation>(this.heroEntity);
+
         var translationType = GetArchetypeChunkComponentType<Translation>(false);
         var carComponentType = GetArchetypeChunkComponentType<CarComponent>(false);
         var entityType = GetArchetypeChunkEntityType();
@@ -137,7 +159,8 @@ public class ContinousSpawnSystem : JobComponentSystem
             EntityType = entityType,
             Chunks = chunks,
             RandomObject = DateTime.Now.Ticks,
-            NumberOfGenerationSlots = Settings.NumberOfGenerationSlots
+            NumberOfGenerationSlots = Settings.NumberOfGenerationSlots,
+            HeroZ = heroTranslation.Value.z
         };
 
         return spwanJob.Schedule(this, inputDeps);
