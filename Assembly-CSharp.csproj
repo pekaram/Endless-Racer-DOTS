@@ -82,7 +82,6 @@
     <Compile Include="Assets\Scripts\Main Scene\Misc\ExtendedButton.cs" />
     <Compile Include="Assets\Scripts\Main Scene\Misc\Settings.cs" />
     <Compile Include="Assets\Scripts\Main Scene\Prefabs Identifications\CapsuleColliderData.cs" />
-    <Compile Include="Assets\Scripts\Main Scene\Prefabs Identifications\CarHirerachyIndex.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

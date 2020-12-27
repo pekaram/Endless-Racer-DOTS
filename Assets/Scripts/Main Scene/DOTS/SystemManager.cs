@@ -26,7 +26,7 @@ public class SystemManager : MonoBehaviour
     /// Reference to the hero prefab along with its children.
     /// </summary>
     [SerializeField]
-    private CarHirerachyIndex heroCarHirerachyIndex;
+    private GameObject heroCarPrefab;
   
     /// <summary>
     /// Street cars that act as obstacles to avoid, currently they are only 1 type.
@@ -75,10 +75,7 @@ public class SystemManager : MonoBehaviour
 
     [SerializeField]
     private GameObject lossPanel;
-
-    [SerializeField]
-    private CarHirerachyIndex streetCarHirerachy;
-
+    
     [SerializeField]
     private List<Transform> streetParts;
 
@@ -129,7 +126,7 @@ public class SystemManager : MonoBehaviour
         Application.targetFrameRate = -1;
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         this.entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-        this.heroBoxColliderSize = this.GetBoxColliderSize(this.heroCarHirerachyIndex.gameObject);
+        this.heroBoxColliderSize = this.GetBoxColliderSize(this.heroCarPrefab);
         this.streetCarBoxColliderSize = this.GetBoxColliderSize(this.streetCarPrefab);
         this.streetCarCapsuleData = this.GetCapusleSize(this.streetCarPrefab);
         World.DefaultGameObjectInjectionWorld.QuitUpdate = false;
@@ -229,9 +226,9 @@ public class SystemManager : MonoBehaviour
     /// </summary>
     private void CreateHeroCar()
     {
-        var carReferences = Instantiate(this.heroCarHirerachyIndex);
+        var carReferences = Instantiate(this.heroCarPrefab);
         this.heroId = 0;
-        this.hero = this.CreateCarStructure(carReferences);
+        this.hero = this.CreateCarStructure(carReferences, this.heroId);
         this.AddHeroCompnents();
     }
 
@@ -240,17 +237,19 @@ public class SystemManager : MonoBehaviour
     /// </summary>
     /// <param name="carHirerachyIndex"> to rip the data from </param>
     /// <returns> the parent car </returns>
-    private Entity CreateCarStructure(CarHirerachyIndex carHirerachyIndex)
+    private Entity CreateCarStructure(GameObject car, int id)
     {
-        var carEntity =  this.CreateEntityFromGameObject(carHirerachyIndex.ParentCar, false);
+        var carEntity =  this.CreateEntityFromGameObject(car, false);
         
-        // Simple but weak solution to access car wheels and attack their wheel component.
-        foreach (var index in carHirerachyIndex.WheelIndexesInParent)
+        var parts = this.entityManager.GetBuffer<LinkedEntityGroup>(carEntity);
+        for (var i = 0; i < parts.Length; i++)
         {
-            var buffer = this.entityManager.AddBuffer<LinkedEntityGroup>(carEntity);
-            this.entityManager.AddComponentData(buffer[index].Value, new WheelComponent { Parent = carEntity, ParentID = carHirerachyIndex.CarID });
+            if(this.entityManager.HasComponent<WheelComponent>(parts[i].Value))
+            {
+                this.entityManager.SetComponentData(parts[i].Value, new WheelComponent { Parent = carEntity, ParentID = id });
+            }
         }
-        
+
         return carEntity;
     }
 
@@ -312,8 +311,7 @@ public class SystemManager : MonoBehaviour
     {
         for (var i = 0; i < 7; i++)
         {
-            this.streetCarHirerachy.CarID = i + 1;
-            var carEntity = this.CreateCarStructure(this.streetCarHirerachy);
+            var carEntity = this.CreateCarStructure(this.streetCarPrefab, i);
             var carPosition = this.entityManager.GetComponentData<Translation>(carEntity);
             this.streetCars.Add(carEntity);
             carPosition.Value.x -= 4f;

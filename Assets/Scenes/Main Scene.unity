@@ -3327,10 +3327,9 @@ MonoBehaviour:
       y: 0
       z: 0
   cameraFollowLocation: {x: 0, y: 0, z: 0}
-  heroCarHirerachyIndex: {fileID: 3519571700453404293, guid: 984084b2dea711c42a8da30e23b30857,
+  heroCarPrefab: {fileID: 4045974164429735739, guid: 984084b2dea711c42a8da30e23b30857,
     type: 3}
-  streetCarPrefab: {fileID: 1958048378834934013, guid: a8a0ec010f4d2f045becb62aca70c43e,
-    type: 3}
+  streetCarPrefab: {fileID: 1958048379450337124}
   startSlotPrefab: {fileID: 6930115966686513858, guid: 5e433d4f80f570d4789b9d8370301e41,
     type: 3}
   speedText: {fileID: 1113242875}
@@ -3343,7 +3342,7 @@ MonoBehaviour:
   fPSText: {fileID: 783383301}
   timeText: {fileID: 968674062}
   lossPanel: {fileID: 844770869}
-  streetCarHirerachy: {fileID: 4714075951885754839}
+  streetCarHirerachy: {fileID: 0}
   streetParts:
   - {fileID: 1565264686}
   - {fileID: 361178514}
@@ -4372,7 +4371,6 @@ GameObject:
   - component: {fileID: 3276152642962478455}
   - component: {fileID: 8216390364036025919}
   - component: {fileID: 5022640225454134148}
-  - component: {fileID: 4714075951885754839}
   m_Layer: 0
   m_Name: Elantra_LowPoly
   m_TagString: Untagged
@@ -4967,6 +4965,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 733415077111341910}
+  - component: {fileID: 3761296627669114901}
   m_Layer: 0
   m_Name: FLWheel
   m_TagString: Untagged
@@ -4974,6 +4973,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &3761296627669114901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3761296627669114900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e7660a2d20024840be6229af54b306d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ParentID: 0
+  Parent: {fileID: 0}
+  Speed: 0
 --- !u!23 &3789663908644248251
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5168,25 +5182,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3438264763827047702}
   m_Mesh: {fileID: -5247383871061919173, guid: 9a614e3e963b740468a032feaefd1711, type: 3}
---- !u!114 &4714075951885754839
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1958048379450337124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba2ee39268dc96e47a02b07470cf1dd2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ParentCar: {fileID: 1958048379450337124}
-  wheels:
-  - {fileID: 3761296627669114900}
-  - {fileID: 7093486347714390283}
-  - {fileID: 5890613665284987870}
-  - {fileID: 6859414103211476393}
-  WheelIndexesInParent: 0e000000120000001a0000001e000000
 --- !u!1 &4772272519477346120
 GameObject:
   m_ObjectHideFlags: 0
@@ -5441,6 +5436,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7802426056922862443}
+  - component: {fileID: 5890613665284987871}
   m_Layer: 0
   m_Name: RLWheel
   m_TagString: Untagged
@@ -5448,6 +5444,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &5890613665284987871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5890613665284987870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e7660a2d20024840be6229af54b306d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ParentID: 0
+  Parent: {fileID: 0}
+  Speed: 0
 --- !u!33 &5901069527508590522
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -5692,6 +5703,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8412142777265029004}
+  - component: {fileID: 6859414103211476394}
   m_Layer: 0
   m_Name: RR_Wheel
   m_TagString: Untagged
@@ -5699,6 +5711,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &6859414103211476394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6859414103211476393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e7660a2d20024840be6229af54b306d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ParentID: 0
+  Parent: {fileID: 0}
+  Speed: 0
 --- !u!23 &6908886664349622635
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5779,6 +5806,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4901277956098342960}
+  - component: {fileID: 7093486347714390284}
   m_Layer: 0
   m_Name: FR_Wheel_
   m_TagString: Untagged
@@ -5786,6 +5814,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &7093486347714390284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7093486347714390283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e7660a2d20024840be6229af54b306d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ParentID: 0
+  Parent: {fileID: 1958048379450337124}
+  Speed: 0
 --- !u!23 &7137482849260558237
 MeshRenderer:
   m_ObjectHideFlags: 0
