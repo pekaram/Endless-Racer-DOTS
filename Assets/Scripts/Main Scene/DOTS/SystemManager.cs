@@ -242,25 +242,15 @@ public class SystemManager : MonoBehaviour
     /// <returns> the parent car </returns>
     private Entity CreateCarStructure(CarHirerachyIndex carHirerachyIndex)
     {
-        // Create a DOTS clone with the wheels removed, first seperate them into seperate entities and clone them to stick tags on them.
-        carHirerachyIndex.SwitchWheels(false);
-        var carEntity =  this.CreateEntityFromGameObject(carHirerachyIndex.ParentCar, false); 
-        var wheels = carHirerachyIndex.GetAllWheels();
-        foreach (var wheel in wheels)
+        var carEntity =  this.CreateEntityFromGameObject(carHirerachyIndex.ParentCar, false);
+        
+        // Simple but weak solution to access car wheels and attack their wheel component.
+        foreach (var index in carHirerachyIndex.WheelIndexesInParent)
         {
-            var wheelEntity = this.CreateEntityFromGameObject(wheel);
-            this.entityManager.AddComponentData(wheelEntity, new WheelComponent { Parent = carEntity, ParentID = carHirerachyIndex.CarID });
-            this.entityManager.AddComponentData(wheelEntity, new Parent { Value = carEntity });
-            this.entityManager.AddComponentData(wheelEntity, new LocalToParent());
             var buffer = this.entityManager.AddBuffer<LinkedEntityGroup>(carEntity);
-            buffer.Add(wheelEntity);
-            
-            //Destroy(wheel);
+            this.entityManager.AddComponentData(buffer[index].Value, new WheelComponent { Parent = carEntity, ParentID = carHirerachyIndex.CarID });
         }
         
-        // Destroy parent's clone after ripping all children out and only leave the duplicate DOTS entity with its children in scene.
-        //Destroy(carHirerachyIndex.ParentCar);
-
         return carEntity;
     }
 

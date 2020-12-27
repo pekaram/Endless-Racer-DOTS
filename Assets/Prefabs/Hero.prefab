@@ -79,6 +79,7 @@ MonoBehaviour:
   - {fileID: 1976599248255568664}
   - {fileID: 6775623979611880067}
   - {fileID: 280327161749662339}
+  WheelIndexesInParent: 05000000060000000700000008000000
 --- !u!1001 &1317220494407176561
 PrefabInstance:
   m_ObjectHideFlags: 0

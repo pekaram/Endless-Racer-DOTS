@@ -15,14 +15,26 @@ public class CarHirerachyIndex : MonoBehaviour
     [SerializeField]
     private List<GameObject> wheels;
 
-    public void SwitchWheels(bool isOn)
+    [SerializeField]
+    public List<int> WheelIndexesInParent;
+
+    private void Awake()
     {
-        foreach(var wheel in this.GetAllWheels())
+        foreach (var wheel in this.GetAllWheels())
         {
-            wheel.SetActive(isOn);
+            Debug.LogError(wheel.transform.GetSiblingIndex());
         }
     }
 
+    public void SwitchWheels(bool isOn)
+    {
+        foreach (var wheel in this.GetAllWheels())
+        {
+            wheel.SetActive(isOn);
+            Debug.LogError(wheel.transform.GetSiblingIndex());
+        }
+    }
+    
     public IEnumerable<GameObject> GetAllWheels()
     {
         return this.wheels;
