@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.SceneManagement;
 
-public class SystemManager : MonoBehaviour 
+public class SystemManager : MonoBehaviour
 {
     [SerializeField]
     private Camera mainCamera;
@@ -16,23 +16,20 @@ public class SystemManager : MonoBehaviour
     [SerializeField]
     private Camera followCamera;
 
-    [SerializeField]
-    private Translation cameraUpLocation;
-
-    [SerializeField]
-    private Vector3 cameraFollowLocation;
-
     /// <summary>
     /// Reference to the hero prefab along with its children.
     /// </summary>
     [SerializeField]
     private GameObject heroCarPrefab;
-  
+
     /// <summary>
     /// Street cars that act as obstacles to avoid, currently they are only 1 type.
     /// </summary>
     [SerializeField]
     private GameObject streetCarPrefab;
+    
+    [SerializeField]
+    private List<GameObject> streetCarsPrefabs;
 
     /// <summary>
     /// A generation place on asphalt 
@@ -173,7 +170,24 @@ public class SystemManager : MonoBehaviour
         this.CreateStreetCars();
         this.CreateStartingSlots();
         this.CreateHeroCar();
+        this.CreateStreetCarCatalogue();
         this.InvokeRepeating(nameof(this.SlowUpdate), 0, 1);
+    }
+
+    private void CreateStreetCarCatalogue()
+    {
+        var bufferList = this.entityManager.CreateEntity(typeof(StreetCarPrefabsBuffer));
+        this.entityManager.AddBuffer<LinkedEntityGroup>(bufferList);
+
+        for (var i = 0; i < this.streetCarsPrefabs.Count; i++)
+        {
+            var entity = this.CreateEntityFromGameObject(this.streetCarsPrefabs[i]);
+            this.entityManager.AddComponent<Disabled>(entity);
+            
+            var buffer = this.entityManager.GetBuffer<LinkedEntityGroup>(bufferList);
+            buffer.Add(entity);
+
+        }
     }
 
     public void SwitchCamera()
@@ -204,7 +218,7 @@ public class SystemManager : MonoBehaviour
         {
             Debug.LogError("No capsule collider was found attached to this object");
         }
-
+        
         Destroy(modelObject);
         return new CapsuleColliderData { Height = collider.height, Radius = collider.radius };
     }
@@ -239,7 +253,7 @@ public class SystemManager : MonoBehaviour
     /// <returns> the parent car </returns>
     private Entity CreateCarStructure(GameObject car, int id)
     {
-        var carEntity =  this.CreateEntityFromGameObject(car, false);
+        var carEntity =  this.CreateEntityFromGameObject(car);
         
         var parts = this.entityManager.GetBuffer<LinkedEntityGroup>(carEntity);
         for (var i = 0; i < parts.Length; i++)

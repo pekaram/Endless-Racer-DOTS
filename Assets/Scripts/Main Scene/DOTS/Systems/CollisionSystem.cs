@@ -52,7 +52,7 @@ public class CollisionSystem : JobComponentSystem
                     }
 
                     var xDelta = Mathf.Abs(translation.Value.x - positions[j].Value.x);
-                    var zDelta = Mathf.Abs(translation.Value.z - positions[j].Value.z);
+                    var zDelta = Mathf.Abs(translation.Value.z - positions[j].Value.z);                   
                     if (this.IsCapsuleCollision(xDelta, zDelta, carComponent))
                     {
                         this.OnCollision(index, entity, carComponent, entities[j], cars[j]);
@@ -136,6 +136,11 @@ public class CollisionSystem : JobComponentSystem
         /// <returns> true on collision </returns>
         private bool IsCapsuleCollision(float xDelta, float zDelta, CarComponent carComponent)
         {
+            var verticalDistanceToCircleCenter = carComponent.CapsuleColliderData.Height - zDelta;
+            if (verticalDistanceToCircleCenter < carComponent.CapsuleColliderData.Radius)
+            {
+                xDelta += carComponent.CapsuleColliderData.Radius - verticalDistanceToCircleCenter;
+            }
             return xDelta < (carComponent.CapsuleColliderData.Radius * 2) && zDelta < carComponent.CapsuleColliderData.Height;
         }
     }

@@ -43,7 +43,7 @@ public struct CarComponent : IComponentData
     /// Data for the capsule collider surrounding this car.
     /// </summary>
     public CapsuleColliderData CapsuleColliderData;
-
+    
     /// <summary>
     /// <see cref="ID"/> of <see cref="CarComponent"/> in close call
     /// </summary>
