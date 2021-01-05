@@ -32,4 +32,10 @@ public class Settings
     public static float IdleSpeedLoss = 5;
 
     public static float FollowCameraTurn = 3;
+
+    public static float SpawningDistanceAheadOfHero = 12;
+
+    public static int StreetCarMinSpawnSpeed = 30;
+
+    public static int StreetCarMaxSpawnSpeed = 70;
 }

@@ -30,6 +30,8 @@ public class CollisionSystem : JobComponentSystem
         
         public void Execute(Entity entity, int index,[ReadOnly] ref CarComponent carComponent, [ReadOnly] ref Translation translation)
         {
+            //TODO: huge and ugly consider refactoring
+
             if(carComponent.IsDisabled)
             {
                 return;
@@ -44,7 +46,7 @@ public class CollisionSystem : JobComponentSystem
                 {
 
                     var isAlreadyCollision = cars[j].IsCollided && carComponent.IsCollided;
-                    var isSameCar = cars[j].ID == carComponent.ID;               
+                    var isSameCar = cars[j].ID == carComponent.ID;
                     // Skip if same exact car or Collision already, not need to re-enter this code
                     if (isAlreadyCollision || isSameCar || cars[j].IsDisabled)
                     {
@@ -52,7 +54,7 @@ public class CollisionSystem : JobComponentSystem
                     }
 
                     var xDelta = Mathf.Abs(translation.Value.x - positions[j].Value.x);
-                    var zDelta = Mathf.Abs(translation.Value.z - positions[j].Value.z);                   
+                    var zDelta = Mathf.Abs(translation.Value.z - positions[j].Value.z);
                     if (this.IsCapsuleCollision(xDelta, zDelta, carComponent))
                     {
                         this.OnCollision(index, entity, carComponent, entities[j], cars[j]);
@@ -60,24 +62,31 @@ public class CollisionSystem : JobComponentSystem
                         continue;
                     }
 
+
                     //  close call only from hero perspective
-                    if (carComponent.ID != Hero.ID || carComponent.CarInCloseCall != -1)
+                    if (carComponent.ID != Hero.ID)
                     {
                         continue;
                     }
 
                     var isInCloseCall = this.IsCloseCall(xDelta, zDelta, carComponent);
-                    if (isInCloseCall)
-                    {
-                        this.OnCloseCall(index, entity, carComponent, entities[j], cars[j]);
-                        
-                        continue;
-                    }
-                    
-                    if (carComponent.CarInCloseCall == cars[j].ID)
+                    if (!isInCloseCall && carComponent.CarInCloseCall != -1)
                     {
                         this.OnCloseEnded(index, entity, carComponent, entities[j], cars[j]);
+                        continue;
                     }
+
+                    if(!isInCloseCall)
+                    {
+                        continue;
+                    }
+
+                    if (carComponent.CarInCloseCall != -1 && carComponent.CarInCloseCall == cars[j].CarInCloseCall)
+                    {
+                        continue;
+                    }
+
+                    this.OnCloseCall(index, entity, carComponent, entities[j], cars[j]);
                 }
             }
         }

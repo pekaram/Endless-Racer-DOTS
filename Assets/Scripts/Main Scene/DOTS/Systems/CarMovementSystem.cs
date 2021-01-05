@@ -8,6 +8,8 @@ using System;
 
 public class CarMovementSystem : JobComponentSystem
 {
+    private BeginInitializationEntityCommandBufferSystem entityCommandBufferSystem;
+
     /// <summary>
     /// Reference to the hero, to pull speed data.
     /// </summary>
@@ -17,8 +19,10 @@ public class CarMovementSystem : JobComponentSystem
 
     [BurstCompile]
     //[ExcludeComponent(typeof(HeroComponent))]
-    struct MovementJob : IJobForEach<CarComponent, Translation>
+    struct MovementJob : IJobForEachWithEntity<CarComponent, Translation>
     {
+        public EntityCommandBuffer.Concurrent EntityCommandBuffer;
+
         /// <summary>
         /// Currently hero speed to reflect that on cars.
         /// </summary>
@@ -35,7 +39,7 @@ public class CarMovementSystem : JobComponentSystem
 
         public int HeroId;
 
-        public void Execute(ref CarComponent carComponent, ref Translation translation)
+        public void Execute(Entity entity, int index, ref CarComponent carComponent, ref Translation translation)
         {
             // TODO: Could be improved 
             if (carComponent.IsCollided)
@@ -52,11 +56,18 @@ public class CarMovementSystem : JobComponentSystem
 
             if(translation.Value.z - HeroZ < -10)
             {
+                this.EntityCommandBuffer.DestroyEntity(index, entity);
                 carComponent.IsDisabled = true;
             }
         }
     }
-    
+
+    protected override void OnCreate()
+    {
+        this.entityCommandBufferSystem = World.GetOrCreateSystem<BeginInitializationEntityCommandBufferSystem>();
+    }
+
+
     protected override void OnStartRunning()
     {
         base.OnStartRunning();
@@ -74,7 +85,8 @@ public class CarMovementSystem : JobComponentSystem
             DeltaTime = Time.DeltaTime,
             HeroZ = heroTranslation.Value.z,
             HeroId = this.heroID,
-            KMToTranslationUnit = Settings.KMToTranslationUnit
+            KMToTranslationUnit = Settings.KMToTranslationUnit,
+            EntityCommandBuffer = entityCommandBufferSystem.CreateCommandBuffer().ToConcurrent(),
         };
 
         return movementJob.Schedule(this, inputDeps);

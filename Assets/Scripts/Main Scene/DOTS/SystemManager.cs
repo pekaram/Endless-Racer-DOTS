@@ -118,6 +118,11 @@ public class SystemManager : MonoBehaviour
 
     private int fPS;
 
+    private int closeCallCount;
+    
+    [SerializeField]
+    private Text closeCallCountText;
+
     private void Awake()
     {
         Application.targetFrameRate = -1;
@@ -331,7 +336,7 @@ public class SystemManager : MonoBehaviour
             carPosition.Value.x -= 4f;
             carPosition.Value.z += 3 * i;
             this.entityManager.SetComponentData<Translation>(carEntity, carPosition);
-            this.entityManager.AddComponentData(carEntity, new CarComponent { ID = i + 1, Speed = 1, CubeColliderSize = this.streetCarBoxColliderSize, CapsuleColliderData = this.streetCarCapsuleData, CarInCloseCall = -1 });
+            this.entityManager.AddComponentData(carEntity, new CarComponent { ID = i + 1, Speed = 0, CubeColliderSize = this.streetCarBoxColliderSize, CapsuleColliderData = this.streetCarCapsuleData, CarInCloseCall = -1 });
         }
     }
 
@@ -348,8 +353,12 @@ public class SystemManager : MonoBehaviour
 
     private void OnCloseCall()
     {
-        this.closeCallTextAnimator.gameObject.SetActive(true);
-        this.closeCallTextAnimator.SetTrigger("Reset");
+        this.closeCallCount++;
+
+        // De-activated to avoid GC spikes while doing ToString() over and over
+        //this.closeCallTextAnimator.gameObject.SetActive(true);
+        //this.closeCallTextAnimator.SetTrigger("Reset");
+        //this.closeCallCountText.text = this.closeCallCount.ToString();
     }
 
     /// <summary>
@@ -389,9 +398,9 @@ public class SystemManager : MonoBehaviour
     private void HandleCloseCalls(CarComponent data)
     {
         var isInCloseCall = data.CarInCloseCall != -1 && this.carInCloseCallLastFrame != data.CarInCloseCall;
-        carInCloseCallLastFrame = data.CarInCloseCall;
         if (isInCloseCall)
         {
+            carInCloseCallLastFrame = data.CarInCloseCall;
             this.OnCloseCall();
         }
     }
@@ -409,6 +418,9 @@ public class SystemManager : MonoBehaviour
         World.DefaultGameObjectInjectionWorld.QuitUpdate = true;
 
         this.lossPanel.SetActive(true);
+
+        this.closeCallCountText.transform.parent.gameObject.SetActive(true);
+        this.closeCallCountText.text = this.closeCallCount.ToString();
     }
 
     public void RestartGame()

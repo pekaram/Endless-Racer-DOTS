@@ -6,6 +6,7 @@ using Unity.Jobs;
 using Unity.Collections;
 
 [Serializable]
+[GenerateAuthoringComponent]
 public struct CarComponent : IComponentData
 {
     /// <summary>
