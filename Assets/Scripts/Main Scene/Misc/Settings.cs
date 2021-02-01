@@ -16,12 +16,12 @@ public class Settings
     /// <summary>
     /// Used by <see cref="InputSystem"/> for navigating senstivity
     /// </summary>
-    public static float SteeringSenstivity = 0.15f;
+    public static float SteeringSenstivity = 0.150f;
 
     /// <summary>
     /// Total allowed play width. Currently car won't steer further
     /// </summary>
-    public static float RoadWidth = 9;
+    public static float RoadWidth = 8.95f;
 
     public static float KMToTranslationUnit = 5;
 

@@ -130,7 +130,7 @@ public class SystemManager : MonoBehaviour
         this.entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         this.heroBoxColliderSize = this.GetBoxColliderSize(this.heroCarPrefab);
         this.streetCarBoxColliderSize = this.GetBoxColliderSize(this.streetCarPrefab);
-        this.streetCarCapsuleData = this.GetCapusleSize(this.streetCarPrefab);
+        this.streetCarCapsuleData = this.GetCapusleSize(this.heroCarPrefab);
         World.DefaultGameObjectInjectionWorld.QuitUpdate = false;
     }
 
@@ -234,7 +234,7 @@ public class SystemManager : MonoBehaviour
         {
             var entity = this.CreateEntityFromPrefab(this.startSlotPrefab);
             var creationposition = this.entityManager.GetComponentData<Translation>(entity).Value;
-            var shiftedPosition = new Translation { Value = new float3(creationposition.x - (i * 2), creationposition.y, creationposition.z) };
+            var shiftedPosition = new Translation { Value = new float3(creationposition.x - (i * 1.7f), creationposition.y, creationposition.z) };
             this.entityManager.SetComponentData<Translation>(entity, shiftedPosition);
             this.entityManager.AddComponentData(entity, new GenerationSlotComponent { Position = shiftedPosition });
         }

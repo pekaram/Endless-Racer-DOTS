@@ -24,7 +24,6 @@ public class ContinousSpawnSystem : JobComponentSystem
     /// </summary>
     private Entity heroEntity;
 
-
     [BurstCompile]
     struct SpawnJob : IJobForEachWithEntity<GenerationSlotComponent>
     {
@@ -82,7 +81,6 @@ public class ContinousSpawnSystem : JobComponentSystem
                 slotComponent.IsOccupied = false;
             }
             
-
             var random = new Unity.Mathematics.Random((uint)RandomObject);
             var slot = random.NextInt(0, 5);
             var randomIndex = random.NextInt(0, this.NumberOfGenerationSlots);
@@ -97,7 +95,9 @@ public class ContinousSpawnSystem : JobComponentSystem
 
         public void GenerateCar(int ActiveCarCount, ref GenerationSlotComponent slotComponent, int index, Unity.Mathematics.Random random)
         {
-            var component = this.CarDataFromEntity[this.CarModels[0].Value];
+            var carModelByIndex = random.NextInt(0, this.CarModels.Length);
+
+            var component = this.CarDataFromEntity[this.CarModels[carModelByIndex].Value];
             // With 7 active cars the probability for a collision is almost impossible
             component.ID = random.NextInt(0, int.MaxValue);
             component.Speed = random.NextInt(MinSpeed, MaxSpeed);
@@ -108,12 +108,11 @@ public class ContinousSpawnSystem : JobComponentSystem
             slotComponent.IsOccupied = true;
             slotComponent.LastGenerationTimeStamp = this.Time;
 
-            var carModelByIndex = random.NextInt(0, this.CarModels.Length);
             var newCar = this.EntityCommandBuffer.Instantiate(index, this.CarModels[carModelByIndex].Value);
 
             this.EntityCommandBuffer.RemoveComponent<Disabled>(index, newCar);
             this.EntityCommandBuffer.SetComponent<Translation>(index, newCar, shiftedSlotPosition);
-
+            //
             this.EntityCommandBuffer.AddComponent<CarComponent>(index, newCar, component);
         }
     }

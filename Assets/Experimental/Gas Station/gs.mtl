@@ -1,0 +1,538 @@
+# Wavefront MTL file
+# Creator: Ultimate Unwrap3D v2.50.14
+# URL: http://www.unwrap3d.com
+# Time: Sat Aug 27 01:25:21 2011
+# num_materials: 59
+
+newmtl priceSignB_jpg
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd priceSignB.jpg
+
+newmtl priceSignA_jpg
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd priceSignA.jpg
+
+newmtl brushedMetal_jpg
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd brushedMetal.jpg
+
+newmtl concreteSlabBlock_jpg
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd concreteSlabBlock.jpg
+
+newmtl fuelPumpF_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd fuelPumpF.bmp
+
+newmtl fuelPumpE_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd fuelPumpE.bmp
+
+newmtl fuelPumpD_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd fuelPumpD.bmp
+
+newmtl fuelPumpB_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd fuelPumpB.bmp
+
+newmtl fuelPumpC_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd fuelPumpC.bmp
+
+newmtl fuelPumpAB_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd fuelPumpAB.bmp
+
+newmtl bareMetal_jpg
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd bareMetal.jpg
+
+newmtl shingles2_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd shingles2.bmp
+
+newmtl cashRegisterB_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd cashRegisterB.bmp
+
+newmtl cashRegisterA_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd cashRegisterA.bmp
+
+newmtl cashRegisterD_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd cashRegisterD.bmp
+
+newmtl cashRegisterC_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd cashRegisterC.bmp
+
+newmtl cashRegisterE_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd cashRegisterE.bmp
+
+newmtl cashRegisterF_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd cashRegisterF.bmp
+
+newmtl productF_jpg
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd productF.jpg
+
+newmtl lowResWoodGrain_jpg
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd lowResWoodGrain.jpg
+
+newmtl interiorWalls_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd interiorWalls.bmp
+
+newmtl windowMount_jpg
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd windowMount.jpg
+
+newmtl napkinDispenserA_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd napkinDispenserA.bmp
+
+newmtl napkinDispenserB_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd napkinDispenserB.bmp
+
+newmtl windowGlass_tga
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd windowGlass.tga
+
+newmtl icedCoffeeB_jpg
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd icedCoffeeB.jpg
+
+newmtl cappuccinoA_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd cappuccinoA.bmp
+
+newmtl icedCoffeeA_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd icedCoffeeA.bmp
+
+newmtl slushMachineB_jpg
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd slushMachineB.jpg
+
+newmtl slushMachineTop_jpg
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd slushMachineTop.jpg
+
+newmtl productD_jpg
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd productD.jpg
+
+newmtl productC_jpg
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd productC.jpg
+
+newmtl productB_jpg
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd productB.jpg
+
+newmtl productA_jpg
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd productA.jpg
+
+newmtl productE_jpg
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd productE.jpg
+
+newmtl strawsA_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd strawsA.bmp
+
+newmtl strawsB_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd strawsB.bmp
+
+newmtl utensilsA_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd utensilsA.bmp
+
+newmtl utensilsB_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd utensilsB.bmp
+
+newmtl coffeePotB_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd coffeePotB.bmp
+
+newmtl coffeePotA_jpg
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd coffeePotA.jpg
+
+newmtl slushMachineA_jpg
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd slushMachineA.jpg
+
+newmtl bakeryA_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd bakeryA.bmp
+
+newmtl bakeryB_jpg
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd bakeryB.jpg
+
+newmtl microwaveB_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd microwaveB.bmp
+
+newmtl microwaveA_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd microwaveA.bmp
+
+newmtl microwaveC_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd microwaveC.bmp
+
+newmtl displayHoles_jpg
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd displayHoles.jpg
+
+newmtl displayShelf_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd displayShelf.bmp
+
+newmtl sodaMachineFinal_jpg
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd sodaMachineFinal.jpg
+
+newmtl coolerDoors_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd coolerDoors.bmp
+
+newmtl smokingDisplayB_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd smokingDisplayB.bmp
+
+newmtl smokingDisplayA_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd smokingDisplayA.bmp
+
+newmtl smokingDisplayC_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd smokingDisplayC.bmp
+
+newmtl ceilingLights_jpg
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd ceilingLights.jpg
+
+newmtl wallSiding2_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd wallSiding2.bmp
+
+newmtl brick_jpg
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd brick.jpg
+
+newmtl lowResTile_jpg
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd lowResTile.jpg
+
+newmtl wallSiding_bmp
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 0.088388
+map_Kd wallSiding.bmp
+
+# num_materials: 59
