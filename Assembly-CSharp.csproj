@@ -62,6 +62,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Lobby Scene\LobbyUiCallbacks.cs" />
+    <Compile Include="Assets\Scripts\Main Scene\DOTS\Components\BrakeLightTag.cs" />
     <Compile Include="Assets\Scripts\Main Scene\DOTS\Components\CarComponent.cs" />
     <Compile Include="Assets\Scripts\Main Scene\DOTS\Components\GenerationSlotComponent.cs" />
     <Compile Include="Assets\Scripts\Main Scene\DOTS\Components\HeroComponent.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="Assets\Scripts\Main Scene\DOTS\Components\Treadmill.cs" />
     <Compile Include="Assets\Scripts\Main Scene\DOTS\Components\WheelComponent.cs" />
     <Compile Include="Assets\Scripts\Main Scene\DOTS\SystemManager.cs" />
+    <Compile Include="Assets\Scripts\Main Scene\DOTS\Systems\BrakeLightSystem.cs" />
     <Compile Include="Assets\Scripts\Main Scene\DOTS\Systems\CarMovementSystem.cs" />
     <Compile Include="Assets\Scripts\Main Scene\DOTS\Systems\CarRotationSystem.cs" />
     <Compile Include="Assets\Scripts\Main Scene\DOTS\Systems\CollisionSystem.cs" />
@@ -77,12 +80,15 @@
     <Compile Include="Assets\Scripts\Main Scene\DOTS\Systems\FixedUpdateSystem.cs" />
     <Compile Include="Assets\Scripts\Main Scene\DOTS\Systems\InputSystem.cs" />
     <Compile Include="Assets\Scripts\Main Scene\DOTS\Systems\WheelRotationSystem.cs" />
+    <Compile Include="Assets\Scripts\Main Scene\Input\AccelerometerInput.cs" />
     <Compile Include="Assets\Scripts\Main Scene\Input\AndroidInput.cs" />
     <Compile Include="Assets\Scripts\Main Scene\Input\IGameInput.cs" />
     <Compile Include="Assets\Scripts\Main Scene\Input\PcInput.cs" />
+    <Compile Include="Assets\Scripts\Main Scene\Misc\AdBillboard.cs" />
     <Compile Include="Assets\Scripts\Main Scene\Misc\ExtendedButton.cs" />
     <Compile Include="Assets\Scripts\Main Scene\Misc\Settings.cs" />
     <Compile Include="Assets\Scripts\Main Scene\Prefabs Identifications\CapsuleColliderData.cs" />
+    <Compile Include="Assets\UpperBillboard.cs" />
     <None Include="Assets\Experimental\Gas Station\readme to use.txt" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>

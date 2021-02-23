@@ -44,12 +44,18 @@ public class InputSystem : JobComponentSystem
 
         public void Execute(ref CarComponent carComponent, ref Rotation rotation)
         {
-            this.HandleVerticalSpeed(ref carComponent);
-            this.HandleSteering(ref carComponent);
+            this.HandleVerticalSpeed(ref carComponent, ref rotation);
+            this.HandleSteering(ref carComponent, ref rotation);
         }
 
-        public void HandleSteering(ref CarComponent carComponent)
+        public void HandleSteering(ref CarComponent carComponent, ref Rotation rotation)
         {
+            if (carComponent.Speed < 0.1)
+            {
+                this.CurrentSteeringDirection = SteeringDirection.Straight;
+            }
+
+            var tiltingAngle = (carComponent.Speed / MaxSpeed) * 0.1f;
             if (this.CurrentSteeringDirection == SteeringDirection.Right)
             {
                 carComponent.SteeringIndex = this.SteeringSenstivity;
@@ -62,14 +68,13 @@ public class InputSystem : JobComponentSystem
             {
                 carComponent.SteeringIndex = 0;
             }
-
-            // Rotation is currently not implemented yet
-            //rotation.Value = rotation.Value * Quaternion.Euler(Vector3.up * 0.1f);
         }
 
-        private void HandleVerticalSpeed(ref CarComponent carComponent)
+        private void HandleVerticalSpeed(ref CarComponent carComponent, ref Rotation rotation)
         {
             var totalSpeed = this.SpeedPedalSenstivity * this.TimeDelta;
+            carComponent.IsBraking = false;
+
             if (this.CurrentMoveDirection == MoveDirection.Forward)
             {
                 carComponent.Speed += totalSpeed - (totalSpeed * (carComponent.Speed / MaxSpeed));
@@ -85,8 +90,10 @@ public class InputSystem : JobComponentSystem
             if (this.CurrentMoveDirection == MoveDirection.Backward)
             {
                 carComponent.Speed -= BrakePedalSenstivity * this.TimeDelta;
+                carComponent.IsBraking = true;
                 return;
             }
+
 
             carComponent.Speed -= IdleSpeedLoss * this.TimeDelta;
         }
@@ -103,17 +110,16 @@ public class InputSystem : JobComponentSystem
             TimeDelta = Time.DeltaTime,
             MaxSpeed = Settings.MaxSpeed,
             IdleSpeedLoss = Settings.IdleSpeedLoss,
-            BrakePedalSenstivity = Settings.BrakeSenstivity
+            BrakePedalSenstivity = Settings.BrakeSenstivity,
         };
+        
+        Entities
+            .ForEach((ref CarComponent carComponent, ref Rotation rotation,
+                      in HeroComponent heroComponent) =>
+            {
+                movementJob.Execute(ref carComponent, ref rotation);
+            }).Run();
 
-        return movementJob.Schedule(this, inputDeps);
-
-        // Change to Entities to avoid obsolete methods
-        //return Entities
-        //    .ForEach((ref CarComponent carComponent,
-        //              ref Rotation rotation, in HeroComponent heroComponent) =>
-        //    {
-        //        movementJob.Execute(ref carComponent, ref rotation);
-        //    }).Schedule(inputDeps);
+        return default;
     }
 }

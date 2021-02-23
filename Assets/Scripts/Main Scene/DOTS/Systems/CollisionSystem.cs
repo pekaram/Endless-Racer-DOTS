@@ -55,7 +55,8 @@ public class CollisionSystem : JobComponentSystem
 
                     var xDelta = Mathf.Abs(translation.Value.x - positions[j].Value.x);
                     var zDelta = Mathf.Abs(translation.Value.z - positions[j].Value.z);
-                    if (this.IsCapsuleCollision(xDelta, zDelta, carComponent))
+                    this.IsCapusleColliderExperimental(xDelta, zDelta, carComponent, cars[j]);
+                    if (this.IsCapusleColliderExperimental(xDelta, zDelta, carComponent, cars[j]))
                     {
                         this.OnCollision(index, entity, carComponent, entities[j], cars[j]);
 
@@ -90,6 +91,7 @@ public class CollisionSystem : JobComponentSystem
                 }
             }
         }
+
 
         private void OnCloseEnded(int jobIndex, Entity firstEntity, CarComponent firstCar, Entity secondEntity, CarComponent secondCar)
         {
@@ -152,7 +154,31 @@ public class CollisionSystem : JobComponentSystem
             }
             return xDelta < (carComponent.CapsuleColliderData.Radius * 2) && zDelta < carComponent.CapsuleColliderData.Height;
         }
+
+        private bool IsCapusleColliderExperimental(float xDelta, float zDelta, CarComponent carComponent, CarComponent secondCar)
+        {
+            var minDistance = (carComponent.CapsuleColliderData.Height / 2) + (secondCar.CapsuleColliderData.Height / 2);
+          
+            float first  = carComponent.CapsuleColliderData.Radius;
+            float second = secondCar.CapsuleColliderData.Radius;
+            var verticalDistanceToCircleCenter = carComponent.CapsuleColliderData.Height - zDelta;
+            if (verticalDistanceToCircleCenter < carComponent.CapsuleColliderData.Radius)
+            {
+                first = carComponent.CapsuleColliderData.Radius - Math.Abs(verticalDistanceToCircleCenter)/2;
+            }
+
+            verticalDistanceToCircleCenter = secondCar.CapsuleColliderData.Height - zDelta;
+            if (verticalDistanceToCircleCenter < secondCar.CapsuleColliderData.Radius)
+            {
+                second = secondCar.CapsuleColliderData.Radius - Math.Abs(verticalDistanceToCircleCenter) / 2;
+            }
+            
+
+            return zDelta < minDistance && xDelta < (first + second);
+        }
     }
+
+    
 
     protected override void OnCreate()
     {

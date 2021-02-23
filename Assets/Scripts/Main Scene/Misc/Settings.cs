@@ -21,7 +21,7 @@ public class Settings
     /// <summary>
     /// Total allowed play width. Currently car won't steer further
     /// </summary>
-    public static float RoadWidth = 8.95f;
+    public static float RoadWidth = 8f;
 
     public static float KMToTranslationUnit = 5;
 
@@ -31,11 +31,15 @@ public class Settings
 
     public static float IdleSpeedLoss = 5;
 
-    public static float FollowCameraTurn = 3;
+    public static float FollowCameraTurn = 5;
 
     public static float SpawningDistanceAheadOfHero = 12;
 
     public static int StreetCarMinSpawnSpeed = 30;
 
     public static int StreetCarMaxSpawnSpeed = 70;
+
+    public static int TotalRoadDistanceInKM = 230;
+
+    public static int TrafficCount = 8;
 }

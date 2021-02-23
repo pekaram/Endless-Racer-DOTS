@@ -8,8 +8,24 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Originally for creating DOTS components and start/stop systems when game ends
+/// TODO: class grew big and now handles UI related and some visuals, consider refactoring out unrelated things.
+/// </summary>
 public class SystemManager : MonoBehaviour
 {
+    [SerializeField]
+    private AudioSource carSound;
+
+    [SerializeField]
+    private AudioSource crashSound;
+
+    [SerializeField]
+    public UpperBillboard upperBillboard;
+
+    [SerializeField]
+    private UpperBillboard adBillboard;
+    
     [SerializeField]
     private Camera mainCamera;
 
@@ -123,6 +139,12 @@ public class SystemManager : MonoBehaviour
     [SerializeField]
     private Text closeCallCountText;
 
+    [SerializeField]
+    private Text totalDistanceText;
+
+    private int distanceCovered;
+    private int distanceCoveredKM;
+
     private void Awake()
     {
         Application.targetFrameRate = -1;
@@ -162,11 +184,18 @@ public class SystemManager : MonoBehaviour
         this.fPSText.text = this.fPS.ToString();
         this.fPS = 0;
 
-
         var data = this.entityManager.GetComponentData<CarComponent>(hero);
-        speedText.text = Mathf.RoundToInt(data.Speed).ToString();
+        var heroTranslation = this.entityManager.GetComponentData<Translation>(hero);
 
-        //this.timeText.text = ((int)Time.timeSinceLevelLoad).ToString();
+        var roundedSpeed = Mathf.RoundToInt(data.Speed);
+        speedText.text = roundedSpeed.ToString();
+
+        var distanceScaler = 10000;
+        this.distanceCovered += ((roundedSpeed * distanceScaler) / 60 / 60);
+        this.distanceCoveredKM = this.distanceCovered / 1000;
+
+        this.upperBillboard.SpawnIfReady(this.distanceCoveredKM, heroTranslation.Value.z);
+        this.adBillboard.SpawnIfReady(this.distanceCoveredKM, heroTranslation.Value.z);
     }
 
     private void Start()
@@ -246,8 +275,10 @@ public class SystemManager : MonoBehaviour
     private void CreateHeroCar()
     {
         var carReferences = Instantiate(this.heroCarPrefab);
+        
         this.heroId = 0;
         this.hero = this.CreateCarStructure(carReferences, this.heroId);
+        
         this.AddHeroCompnents();
     }
 
@@ -271,7 +302,7 @@ public class SystemManager : MonoBehaviour
 
         return carEntity;
     }
-
+    
     /// <summary>
     /// Assigns components for the hero car <see cref="hero"/>
     /// </summary>
@@ -335,6 +366,7 @@ public class SystemManager : MonoBehaviour
             this.streetCars.Add(carEntity);
             carPosition.Value.x -= 4f;
             carPosition.Value.z += 3 * i;
+            
             this.entityManager.SetComponentData<Translation>(carEntity, carPosition);
             this.entityManager.AddComponentData(carEntity, new CarComponent { ID = i + 1, Speed = 0, CubeColliderSize = this.streetCarBoxColliderSize, CapsuleColliderData = this.streetCarCapsuleData, CarInCloseCall = -1 });
         }
@@ -378,6 +410,9 @@ public class SystemManager : MonoBehaviour
 
         this.EndGameIfCollided(heroData);
 
+        this.carSound.transform.position = heroTranslation.Value;
+        this.carSound.pitch = 1 + (heroData.Speed / Settings.MaxSpeed) * 3;
+
         this.fPS++;
     }
 
@@ -413,14 +448,27 @@ public class SystemManager : MonoBehaviour
             return;
         }
 
+        this.carSound.Stop();
+        this.crashSound.Play();
+
+        this.CancelInvoke();
         this.enabled = false;
 
         World.DefaultGameObjectInjectionWorld.QuitUpdate = true;
 
         this.lossPanel.SetActive(true);
 
-        this.closeCallCountText.transform.parent.gameObject.SetActive(true);
+        this.closeCallCountText.transform.parent.parent.gameObject.SetActive(true);
         this.closeCallCountText.text = this.closeCallCount.ToString();
+
+        this.UpdateDistanceText();
+    }
+
+    private void UpdateDistanceText()
+    {
+        int value = this.distanceCoveredKM;
+        int decimalLength = value.ToString("D").Length + (4 - value.ToString().Length);
+        this.totalDistanceText.text = value.ToString("D" + decimalLength.ToString());
     }
 
     public void RestartGame()
@@ -436,12 +484,12 @@ public class SystemManager : MonoBehaviour
     /// </summary>
     private void ExtendStreet(Translation heroPosition)
     {
-        if (this.streetParts[this.streetParts.Count-1].transform.position.z - heroPosition.Value.z < 24) 
+        if (this.streetParts[this.streetParts.Count-1].transform.position.z - heroPosition.Value.z < 84) 
         {
             var firstPart = this.streetParts[0];
             this.streetParts.RemoveAt(0);
             this.streetParts.Add(firstPart);
-            firstPart.Translate(0, 0, 72);
+            firstPart.Translate(0, 0, 144);
         }
     }
 }

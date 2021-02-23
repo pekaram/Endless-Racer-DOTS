@@ -26,7 +26,7 @@ public class AndroidInput : IGameInput
         this.CurrentSteeringDirection = SteeringDirection.Straight;
     }
 
-    public SteeringDirection CurrentSteeringDirection { get; set; }
+    public virtual SteeringDirection CurrentSteeringDirection { get; set; }
 
     public MoveDirection CurrentMoveDirection { get; set; }
 

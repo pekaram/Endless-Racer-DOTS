@@ -1035,8 +1035,7 @@ Transform:
   m_Children:
   - {fileID: 305434523028386582}
   - {fileID: 2483865823615290976}
-  - {fileID: 3091212870549682753}
-  - {fileID: 5139505373951426239}
+  - {fileID: 5734295030405188514}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1064,7 +1063,7 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 0
   m_Radius: 0.4
-  m_Height: 2.1
+  m_Height: 2.4
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4271313841350570326
@@ -1111,12 +1110,12 @@ GameObject:
   - component: {fileID: 6182615484580854790}
   - component: {fileID: 1190905465879960917}
   m_Layer: 0
-  m_Name: Plane (2)
+  m_Name: Brakes Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5139505373951426239
 Transform:
   m_ObjectHideFlags: 0
@@ -1124,12 +1123,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4421399852312374909}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0.7071068, w: 0}
-  m_LocalPosition: {x: 0.27, y: 0.57, z: -1.11}
-  m_LocalScale: {x: 0.015, y: 0.01, z: 0.0078}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: 0.7071068, w: 0}
+  m_LocalPosition: {x: 0.27, y: 0.565, z: -1.11}
+  m_LocalScale: {x: 0.016, y: 0.009999999, z: 0.0084}
   m_Children: []
-  m_Father: {fileID: 138194066973068063}
-  m_RootOrder: 3
+  m_Father: {fileID: 5734295030405188514}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 90, y: -180, z: 0}
 --- !u!33 &2706962372543096294
 MeshFilter:
@@ -1157,7 +1156,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 10dc774e895b3054cb384b9973c841b7, type: 2}
+  - {fileID: 2100000, guid: d26d33a87b5ef014fbcc3429c49043fd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1333,6 +1332,52 @@ Transform:
   m_Father: {fileID: 6372293047379365335}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5921572052750144164
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5734295030405188514}
+  - component: {fileID: 6509305343210809728}
+  m_Layer: 0
+  m_Name: Brakes Lights
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5734295030405188514
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5921572052750144164}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 3091212870549682753}
+  - {fileID: 5139505373951426239}
+  m_Father: {fileID: 138194066973068063}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6509305343210809728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5921572052750144164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7376d267ef059ed44911c12208bbc537, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsOn: 1
 --- !u!1 &5959590224133538584
 GameObject:
   m_ObjectHideFlags: 0
@@ -1346,12 +1391,12 @@ GameObject:
   - component: {fileID: 344559306091746487}
   - component: {fileID: 24312778459118627}
   m_Layer: 0
-  m_Name: Plane (1)
+  m_Name: Brakes Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3091212870549682753
 Transform:
   m_ObjectHideFlags: 0
@@ -1359,12 +1404,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5959590224133538584}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0.7071068, w: 0}
-  m_LocalPosition: {x: -0.27, y: 0.57, z: -1.11}
-  m_LocalScale: {x: 0.015, y: 0.01, z: 0.0078}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: 0.7071068, w: 0}
+  m_LocalPosition: {x: -0.27, y: 0.565, z: -1.11}
+  m_LocalScale: {x: 0.016, y: 0.009999999, z: 0.0084}
   m_Children: []
-  m_Father: {fileID: 138194066973068063}
-  m_RootOrder: 2
+  m_Father: {fileID: 5734295030405188514}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: -180, z: 0}
 --- !u!33 &2721536274949769073
 MeshFilter:
@@ -1392,7 +1437,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 10dc774e895b3054cb384b9973c841b7, type: 2}
+  - {fileID: 2100000, guid: d26d33a87b5ef014fbcc3429c49043fd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1676,7 +1721,7 @@ GameObject:
   - component: {fileID: 7827479931144858108}
   - component: {fileID: 3746984439344923156}
   m_Layer: 0
-  m_Name: Plane
+  m_Name: Back Vinyl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

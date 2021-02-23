@@ -62,10 +62,12 @@ public class ContinousSpawnSystem : JobComponentSystem
         public int MaxSpeed;
 
         [ReadOnly] public DynamicBuffer<LinkedEntityGroup> CarModels;
+
+        public int CarCount;
         
         public void Execute(Entity entity, int index, ref GenerationSlotComponent slotComponent)
         {
-            if (ActiveCars > 6)
+            if (ActiveCars > CarCount)
             {
                 return;
             }
@@ -164,7 +166,8 @@ public class ContinousSpawnSystem : JobComponentSystem
             ActiveCars = activeCars,
             SpawningDistance = Settings.SpawningDistanceAheadOfHero,
             MaxSpeed = Settings.StreetCarMaxSpawnSpeed,
-            MinSpeed = Settings.StreetCarMinSpawnSpeed
+            MinSpeed = Settings.StreetCarMinSpawnSpeed,
+            CarCount = Settings.TrafficCount
         };
 
         return spwanJob.Schedule(this, inputDeps);        
