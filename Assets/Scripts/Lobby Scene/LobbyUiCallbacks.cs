@@ -62,7 +62,7 @@ public class LobbyUiCallbacks : MonoBehaviourPunCallbacks
 
     private IEnumerator WaitForTime()
     {
-        yield return new WaitUntil(()=> PhotonNetwork.CurrentRoom.PlayerCount > 2 &&  PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey("Time"));
+        yield return new WaitUntil(()=> PhotonNetwork.CurrentRoom.PlayerCount > 1 &&  PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey("Time"));
         this.OnPlayClicked();
     }   
 }
