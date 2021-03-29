@@ -51,4 +51,7 @@ public struct CarComponent : IComponentData
     /// <see cref="ID"/> of <see cref="CarComponent"/> in close call
     /// </summary>
     public int CarInCloseCall;
+
+
+    public MoveDirection CarDirection;
 }

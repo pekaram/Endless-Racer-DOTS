@@ -11,7 +11,7 @@ public class Settings
     /// <summary>
     /// Used by <see cref="InputSystem"/> for speed.
     /// </summary>
-    public static float InputSpeedSenstivity = 15;
+    public static float InputSpeedSenstivity = 7.5f;
 
     /// <summary>
     /// Used by <see cref="InputSystem"/> for navigating senstivity
@@ -25,7 +25,7 @@ public class Settings
 
     public static float KMToTranslationUnit = 5;
 
-    public static int MaxSpeed = 300;
+    public static int MaxSpeed = 150;
 
     public static float BrakeSenstivity = 70;
 

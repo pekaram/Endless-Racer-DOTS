@@ -178,8 +178,6 @@ public class CollisionSystem : JobComponentSystem
         }
     }
 
-    
-
     protected override void OnCreate()
     {
         this.entityCommandBufferSystem = World.GetOrCreateSystem<BeginInitializationEntityCommandBufferSystem>();

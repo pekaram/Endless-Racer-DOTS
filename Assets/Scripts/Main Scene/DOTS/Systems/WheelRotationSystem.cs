@@ -58,7 +58,6 @@ public class WheelRotationSystem : FixedUpdateSystem
         var carComponentType = GetArchetypeChunkComponentType<CarComponent>(true);
         var entityType = GetArchetypeChunkEntityType();
         var chunks = streetCarsGroup.CreateArchetypeChunkArray(Allocator.TempJob);
-
         WheelRotationJob rotationJob = new WheelRotationJob
         {
             DeltaTime = Time.DeltaTime,

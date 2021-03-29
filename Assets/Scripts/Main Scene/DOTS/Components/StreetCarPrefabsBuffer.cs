@@ -1,6 +1,11 @@
 ﻿using Unity.Entities;
 
 [GenerateAuthoringComponent]
-public class StreetCarPrefabsBuffer : IComponentData
+public struct StreetCarPrefabsBuffer : IComponentData
+{
+}
+
+
+public struct UnspawnedCarBuffer : IComponentData
 {
 }

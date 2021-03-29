@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using System;
 using UnityEngine.SceneManagement;
+using System.Threading;
 
 /// <summary>
 /// Originally for creating DOTS components and start/stop systems when game ends
@@ -105,7 +106,7 @@ public class SystemManager : MonoBehaviour
     /// <summary>
     /// Hero entity reference, used to easily pick it.
     /// </summary>
-    private Entity hero;
+    public Entity Hero { get; private set; }
 
     /// <summary>
     /// Hero id used to indentify hero's car
@@ -144,18 +145,22 @@ public class SystemManager : MonoBehaviour
 
     private int distanceCovered;
     private int distanceCoveredKM;
+    
+    public InputSnapshots InputSnapshots { get; private set; }
 
     private void Awake()
     {
-        Application.targetFrameRate = -1;
+        Application.targetFrameRate = 60;
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         this.entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         this.heroBoxColliderSize = this.GetBoxColliderSize(this.heroCarPrefab);
         this.streetCarBoxColliderSize = this.GetBoxColliderSize(this.streetCarPrefab);
         this.streetCarCapsuleData = this.GetCapusleSize(this.heroCarPrefab);
         World.DefaultGameObjectInjectionWorld.QuitUpdate = false;
-    }
 
+        this.CreateHeroCar();
+    }
+ 
     private void SetInputBasedOnPlatform()
     {
         IGameInput gameInput;
@@ -175,6 +180,7 @@ public class SystemManager : MonoBehaviour
             if (system is InputSystem inputSystem)
             {
                 inputSystem.GameInput = gameInput;
+                inputSystem.InputSnapshots = this.InputSnapshots = new InputSnapshots();
             }
         }
     }
@@ -184,8 +190,8 @@ public class SystemManager : MonoBehaviour
         this.fPSText.text = this.fPS.ToString();
         this.fPS = 0;
 
-        var data = this.entityManager.GetComponentData<CarComponent>(hero);
-        var heroTranslation = this.entityManager.GetComponentData<Translation>(hero);
+        var data = this.entityManager.GetComponentData<CarComponent>(Hero);
+        var heroTranslation = this.entityManager.GetComponentData<Translation>(Hero);
 
         var roundedSpeed = Mathf.RoundToInt(data.Speed);
         speedText.text = roundedSpeed.ToString();
@@ -198,12 +204,12 @@ public class SystemManager : MonoBehaviour
         this.adBillboard.SpawnIfReady(this.distanceCoveredKM, heroTranslation.Value.z);
     }
 
+    private Entity unspawnedBufferlist;
     private void Start()
     {
         this.SetInputBasedOnPlatform();
         this.CreateStreetCars();
         this.CreateStartingSlots();
-        this.CreateHeroCar();
         this.CreateStreetCarCatalogue();
         this.InvokeRepeating(nameof(this.SlowUpdate), 0, 1);
     }
@@ -277,7 +283,7 @@ public class SystemManager : MonoBehaviour
         var carReferences = Instantiate(this.heroCarPrefab);
         
         this.heroId = 0;
-        this.hero = this.CreateCarStructure(carReferences, this.heroId);
+        this.Hero = this.CreateCarStructure(carReferences, this.heroId);
         
         this.AddHeroCompnents();
     }
@@ -304,16 +310,16 @@ public class SystemManager : MonoBehaviour
     }
     
     /// <summary>
-    /// Assigns components for the hero car <see cref="hero"/>
+    /// Assigns components for the hero car <see cref="Hero"/>
     /// </summary>
     private void AddHeroCompnents()
     {
-        this.entityManager.AddComponentData(this.hero, new HeroComponent());
-        var carPosition = this.entityManager.GetComponentData<Translation>(this.hero);
+        this.entityManager.AddComponentData(this.Hero, new HeroComponent());
+        var carPosition = this.entityManager.GetComponentData<Translation>(this.Hero);
         carPosition.Value.z -= 2;
         carPosition.Value.y -= 0.2f;
-        this.entityManager.SetComponentData<Translation>(this.hero, carPosition);
-        this.entityManager.AddComponentData(this.hero, new CarComponent() { ID = this.heroId, CubeColliderSize = this.heroBoxColliderSize, CapsuleColliderData = this.streetCarCapsuleData, CarInCloseCall = -1});        
+        this.entityManager.SetComponentData<Translation>(this.Hero, carPosition);
+        this.entityManager.AddComponentData(this.Hero, new CarComponent() { ID = this.heroId, CubeColliderSize = this.heroBoxColliderSize, CapsuleColliderData = this.streetCarCapsuleData, CarInCloseCall = -1});        
     }
 
     /// <summary>
@@ -359,17 +365,9 @@ public class SystemManager : MonoBehaviour
 
     private void CreateStreetCars()
     {
-        for (var i = 0; i < 7; i++)
-        {
-            var carEntity = this.CreateCarStructure(this.streetCarPrefab, i);
-            var carPosition = this.entityManager.GetComponentData<Translation>(carEntity);
-            this.streetCars.Add(carEntity);
-            carPosition.Value.x -= 4f;
-            carPosition.Value.z += 3 * i;
-            
-            this.entityManager.SetComponentData<Translation>(carEntity, carPosition);
-            this.entityManager.AddComponentData(carEntity, new CarComponent { ID = i + 1, Speed = 0, CubeColliderSize = this.streetCarBoxColliderSize, CapsuleColliderData = this.streetCarCapsuleData, CarInCloseCall = -1 });
-        }
+        var random = new System.Random(2345);
+
+        this.entityManager.CreateEntity(typeof(CarComponent));       
     }
 
     /// <summary>
@@ -398,8 +396,8 @@ public class SystemManager : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        var heroData = this.entityManager.GetComponentData<CarComponent>(hero);
-        var heroTranslation = this.entityManager.GetComponentData<Translation>(hero);
+        var heroData = this.entityManager.GetComponentData<CarComponent>(Hero);
+        var heroTranslation = this.entityManager.GetComponentData<Translation>(Hero);
 
         this.UpdateFollowCamera(heroData, heroTranslation);
         this.UpdateTopViewCamera(heroData);
@@ -428,7 +426,6 @@ public class SystemManager : MonoBehaviour
         var translatedZ = this.mainCamera.transform.position.z + ((carData.Speed / Settings.KMToTranslationUnit) * Time.deltaTime);
         this.mainCamera.transform.position = new Vector3(this.mainCamera.transform.position.x, this.mainCamera.transform.position.y, translatedZ);
     }
-
 
     private void HandleCloseCalls(CarComponent data)
     {

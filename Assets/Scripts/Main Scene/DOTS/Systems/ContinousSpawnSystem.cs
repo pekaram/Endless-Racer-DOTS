@@ -13,24 +13,19 @@ using System;
 public class ContinousSpawnSystem : JobComponentSystem
 {
     private BeginInitializationEntityCommandBufferSystem entityCommandBufferSystem;
-
-    /// <summary>
-    /// Quering all street cars. Hero Excluded
-    /// </summary>
-    private EntityQuery streetCarsGroup;
-
+    
     /// <summary>
     /// Reference to the hero, to pull speed data.
     /// </summary>
     private Entity heroEntity;
 
     [BurstCompile]
-    struct SpawnJob : IJobForEachWithEntity<GenerationSlotComponent>
+    struct SpawnJob : IJobForEachWithEntity<UnrenderedCarComponent>
     {
         [ReadOnly] public int ActiveCars;
 
         [ReadOnly] public ComponentDataFromEntity<CarComponent> CarDataFromEntity;
-
+        
         public EntityCommandBuffer.Concurrent EntityCommandBuffer;
 
         public float HeroZ;
@@ -49,7 +44,7 @@ public class ContinousSpawnSystem : JobComponentSystem
         /// Number of generation slots, injected from <see cref="Settings.NumberOfGenerationSlots"/>
         /// </summary>
         public int NumberOfGenerationSlots;
-        
+
         /// <summary>
         /// Random object injected from system for random spawns and speeds.
         /// </summary>
@@ -62,58 +57,28 @@ public class ContinousSpawnSystem : JobComponentSystem
         public int MaxSpeed;
 
         [ReadOnly] public DynamicBuffer<LinkedEntityGroup> CarModels;
-
-        public int CarCount;
         
-        public void Execute(Entity entity, int index, ref GenerationSlotComponent slotComponent)
+        public int CarCount;
+
+        public void Execute(Entity entity, int index, ref UnrenderedCarComponent unrenderedCar)
         {
-            if (ActiveCars > CarCount)
-            {
-                return;
-            }
-            
-            if (this.Time - slotComponent.LastGenerationTimeStamp < this.TimeBetweenBatches)
-            {
-                slotComponent.IsOccupied = true;
-
-                return;
-            }
-            else
-            {
-                slotComponent.IsOccupied = false;
-            }
-            
-            var random = new Unity.Mathematics.Random((uint)RandomObject);
-            var slot = random.NextInt(0, 5);
-            var randomIndex = random.NextInt(0, this.NumberOfGenerationSlots);
-
-            if(slot != index)
-            {
-                return;
-            }
-
-            this.GenerateCar(this.ActiveCars, ref slotComponent, index, random);
+            var rand = new Unity.Mathematics.Random((uint)RandomObject);
+            this.GenerateCar(index, 5, 1, 33, unrenderedCar);
+            this.EntityCommandBuffer.DestroyEntity(index, entity);
         }
 
-        public void GenerateCar(int ActiveCarCount, ref GenerationSlotComponent slotComponent, int index, Unity.Mathematics.Random random)
+        public void GenerateCar(int index,int ActiveCarCount, int carModel, int id, UnrenderedCarComponent unrenderedCar)
         {
-            var carModelByIndex = random.NextInt(0, this.CarModels.Length);
+            var component = this.CarDataFromEntity[this.CarModels[carModel].Value];
 
-            var component = this.CarDataFromEntity[this.CarModels[carModelByIndex].Value];
-            // With 7 active cars the probability for a collision is almost impossible
-            component.ID = random.NextInt(0, int.MaxValue);
-            component.Speed = random.NextInt(MinSpeed, MaxSpeed);
+            component.ID = id;
+            component.Speed = 20;
             component.IsCollided = false;
-            var shiftedSlotPosition = slotComponent.Position;
-            shiftedSlotPosition.Value.z += this.HeroZ + this.SpawningDistance;
-
-            slotComponent.IsOccupied = true;
-            slotComponent.LastGenerationTimeStamp = this.Time;
-
-            var newCar = this.EntityCommandBuffer.Instantiate(index, this.CarModels[carModelByIndex].Value);
-
+            var shiftedSlotPosition = unrenderedCar;
+            
+            var newCar = this.EntityCommandBuffer.Instantiate(index, this.CarModels[carModel].Value);
             this.EntityCommandBuffer.RemoveComponent<Disabled>(index, newCar);
-            this.EntityCommandBuffer.SetComponent<Translation>(index, newCar, shiftedSlotPosition);
+            this.EntityCommandBuffer.SetComponent<Translation>(index, newCar, shiftedSlotPosition.translation);
             //
             this.EntityCommandBuffer.AddComponent<CarComponent>(index, newCar, component);
         }
@@ -122,19 +87,8 @@ public class ContinousSpawnSystem : JobComponentSystem
 
     protected override void OnCreate()
     {
-        this.entityCommandBufferSystem = World.GetOrCreateSystem<BeginInitializationEntityCommandBufferSystem>();
-
-        // Query for cars with following components
-        EntityQueryDesc carsQuery = new EntityQueryDesc
-        {
-            All = new ComponentType[] { typeof(CarComponent), typeof(Translation) },
-            None = new ComponentType[] { typeof(HeroComponent) }
-        };
-
-        // Get the ComponentGroup
-        streetCarsGroup = GetEntityQuery(carsQuery);
+        this.entityCommandBufferSystem = World.GetOrCreateSystem<BeginInitializationEntityCommandBufferSystem>();        
     }
-
 
     protected override void OnStartRunning()
     {
@@ -142,17 +96,14 @@ public class ContinousSpawnSystem : JobComponentSystem
         this.heroEntity = this.GetSingletonEntity<HeroComponent>();
     }
 
-
     protected override JobHandle OnUpdate(JobHandle inputDeps)
     {
         var heroTranslation = World.EntityManager.GetComponentData<Translation>(this.heroEntity);
-        
+
         var carCatalogueParent = this.GetSingletonEntity<StreetCarPrefabsBuffer>();
         var streetCarModels = this.EntityManager.GetBuffer<LinkedEntityGroup>(carCatalogueParent);
         var carDataFromEntity = GetComponentDataFromEntity<CarComponent>();
-
-        var activeCars = streetCarsGroup.CalculateEntityCount();
-
+        
         SpawnJob spwanJob = new SpawnJob
         {
             Time = Time.ElapsedTime,
@@ -163,13 +114,13 @@ public class ContinousSpawnSystem : JobComponentSystem
             CarModels = streetCarModels,
             EntityCommandBuffer = entityCommandBufferSystem.CreateCommandBuffer().ToConcurrent(),
             CarDataFromEntity = carDataFromEntity,
-            ActiveCars = activeCars,
+            //ActiveCars = activeCars,
             SpawningDistance = Settings.SpawningDistanceAheadOfHero,
             MaxSpeed = Settings.StreetCarMaxSpawnSpeed,
             MinSpeed = Settings.StreetCarMinSpawnSpeed,
-            CarCount = Settings.TrafficCount
+            CarCount = Settings.TrafficCount,
         };
 
-        return spwanJob.Schedule(this, inputDeps);        
+        return spwanJob.Schedule(this, inputDeps);
     }
 }

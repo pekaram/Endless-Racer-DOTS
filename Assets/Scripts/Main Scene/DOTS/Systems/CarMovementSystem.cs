@@ -41,13 +41,14 @@ public class CarMovementSystem : JobComponentSystem
 
         public void Execute(Entity entity, int index, ref CarComponent carComponent, ref Translation translation)
         {
+            var speed = carComponent.Speed;
             // TODO: Could be improved 
             if (carComponent.IsCollided)
             {
                 carComponent.Speed = 0;
             }
 
-            translation.Value.z += (carComponent.Speed / this.KMToTranslationUnit) * DeltaTime;
+            translation.Value.z += (speed / this.KMToTranslationUnit) * DeltaTime;
 
             if (carComponent.ID == this.HeroId)
             {
@@ -67,7 +68,6 @@ public class CarMovementSystem : JobComponentSystem
         this.entityCommandBufferSystem = World.GetOrCreateSystem<BeginInitializationEntityCommandBufferSystem>();
     }
 
-
     protected override void OnStartRunning()
     {
         base.OnStartRunning();
@@ -78,6 +78,7 @@ public class CarMovementSystem : JobComponentSystem
     protected override JobHandle OnUpdate(JobHandle inputDeps)
     {
         var heroTranslation = World.EntityManager.GetComponentData<Translation>(this.heroEntity);
+        
 
         MovementJob movementJob = new MovementJob
         {

@@ -16,6 +16,8 @@ public class InputSystem : JobComponentSystem
     /// </summary>
     public IGameInput GameInput { get; set; }
 
+    public InputSnapshots InputSnapshots { get; set; }
+
     [BurstCompile]
     [RequireComponentTag(typeof(HeroComponent))]
     struct MovementJob : IJobForEach<CarComponent, Rotation>
@@ -74,10 +76,12 @@ public class InputSystem : JobComponentSystem
         {
             var totalSpeed = this.SpeedPedalSenstivity * this.TimeDelta;
             carComponent.IsBraking = false;
+         
+            carComponent.CarDirection = this.CurrentMoveDirection;
 
             if (this.CurrentMoveDirection == MoveDirection.Forward)
             {
-                carComponent.Speed += totalSpeed - (totalSpeed * (carComponent.Speed / MaxSpeed));
+                carComponent.Speed += totalSpeed;
                 return;
             }
 
@@ -113,6 +117,8 @@ public class InputSystem : JobComponentSystem
             BrakePedalSenstivity = Settings.BrakeSenstivity,
         };
         
+        this.InputSnapshots.Add(this.GameInput.CurrentMoveDirection, this.GameInput.CurrentSteeringDirection);
+
         Entities
             .ForEach((ref CarComponent carComponent, ref Rotation rotation,
                       in HeroComponent heroComponent) =>
