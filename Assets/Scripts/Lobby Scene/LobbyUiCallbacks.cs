@@ -29,7 +29,7 @@ public class LobbyUiCallbacks : MonoBehaviourPunCallbacks
     {
         base.OnConnectedToMaster();
         // For quick testing and possible matchmaking
-        PhotonNetwork.NetworkingClient.OpJoinRandomOrCreateRoom(null, new EnterRoomParams{RoomOptions = new RoomOptions() { MaxPlayers = 2 } }); 
+        PhotonNetwork.NetworkingClient.OpJoinRandomOrCreateRoom(null, new EnterRoomParams { RoomOptions = new RoomOptions() { MaxPlayers = 2, EmptyRoomTtl = 1 } }); 
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
@@ -48,15 +48,22 @@ public class LobbyUiCallbacks : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
+        // For some reason create doesn't get invoked sometimes
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
+        {
+            this.OnCreatedRoom();
+        }
+
         this.StartCoroutine(this.WaitForTime());
     }
-
+    
     public override void OnCreatedRoom()
     {
         base.OnCreatedRoom();
-
+        
         var customRoomProps = new ExitGames.Client.Photon.Hashtable();
-      
+        customRoomProps["Time"] = PhotonNetwork.ServerTimestamp;
+
         PhotonNetwork.CurrentRoom.SetCustomProperties(customRoomProps);
     }
 
