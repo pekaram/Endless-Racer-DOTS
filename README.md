@@ -1,8 +1,8 @@
-# Top-view-racer_pure-ECS
+# Endless-Racer-DOTS
 
 [![name](https://github.com/pekaram/Top-view-racer_pure-ECS/blob/master/Screenshots/GooglePlay%20badge.png?raw=true)](https://play.google.com/store/apps/details?id=com.com.YouCompanyName.StreetRun.StreetRun)
 
-A work in progress top view racing game, purely based on Unity's new DOTS system.
+An endless racing game, purely based on Unity's new DOTS system. Multiplayer gameplay in progress. 
 
 Purpose: learning the new technology and gaining and advantage from signficant perfomance difference
 
